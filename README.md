@@ -12,7 +12,7 @@
 <p align="center"><img src="docs/images/screenshot.png?raw=true" width="70%" />  
 
 ## 1. GENERAL INFO:
-
+This is a GUI launcher application with history. Enables running in the terminal, as root, or entering the working directory of the application. Enables multiple applications to be launched one after the other (the FXRunner window does not close after launching the application).
 
 ## 2. COMPILATION AND INSTALLATION:
 *Dependecies:*
@@ -30,7 +30,7 @@ After downloading the project from Github (and possibly unzipping it), go to the
   sudo make install
 ```
 After successfully compiling and building the project, the resulting program, including the Lua language launcher, 
-will be installed in the directory /opt/Gorgona
+will be installed in the directory /usr/local/bin
 
 Note:
 The foxlib library MUST be installed on your system at compile time. Version 1.7 is a development version, so it is possible that you will not have it on your system and it will not be available in the repository, so you will have to install it manually. More information on how to do this can be found on the foxtoolkit website. The following lines refer to any CMakeLists modifications.
@@ -43,7 +43,7 @@ If you have the library installed in a location other than the standard one, thi
 These lines are commented out by default, so remove the leading '#' characters after editing, and then save the file. Next, follow the instructions for building and installing the project above as normal.
 
 ## 3. KNOWN ERRORS AND BUGS
-
+* 10/10/2020 - Checking multiple run options together will cancel each other out - OPEN
 
 ## 4. PROJECT STATE AND PLANS FOR THE FUTHURE
 
@@ -63,5 +63,6 @@ You should have received a copy of the GNU General Public License along with fox
 
 ## 6. INTERNET
   * [Author's blog (CZ)](http://bfuplusplus.blogspot.cz/)
+  * [Foxtoolkit (EN)](http://fox-toolkit.org/)
 
 === END ===
