@@ -1,4 +1,4 @@
-# FXRunner - GUI desktop applications launcher
+# FXRunner - Simple and universal GUI desktop launcher
 -25.09.2022-
 
 *Content:*
