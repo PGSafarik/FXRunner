@@ -84,7 +84,7 @@ FXint Application::task_exec( Task *cmd )
 
 void Application::task_write( Task *cmd, const FXString &pth )
 {
-  if( ( pth.empty( ) == true ) || ( cmd == false )  ) { return; }
+  if( ( pth.empty( ) == true ) || ( cmd == NULL )  ) { return; }
 
   std::cout << "writing " << pth.text( ) << std::endl;
 

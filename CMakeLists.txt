@@ -15,8 +15,8 @@ PROJECT( FXRunner )
 INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/include" )
 INCLUDE_DIRECTORIES( "${PROJECT_BINARY_DIR}" )
 
-#INCLUDE_DIRECTORIES( "/opt/foxlib/1.7/64/include" )    # foxtoolkit headers
-#LINK_DIRECTORIES( "/opt/foxlib/1.7/64/lib/" )          # foxtoolkit library
+INCLUDE_DIRECTORIES( "/opt/foxlib/1.7/64/include" )    # foxtoolkit headers
+LINK_DIRECTORIES( "/opt/foxlib/1.7/64/lib/" )          # foxtoolkit library
 
 # Add to the executable
 ADD_EXECUTABLE( fxrunner src/main.cpp src/Application.cpp src/FXIcon_Theme.cpp src/Runner.cpp src/Boxes.cpp 
