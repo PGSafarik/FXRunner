@@ -53,14 +53,14 @@ These lines are commented out by default, so remove the leading '#' characters a
 Copyright (C) 2015 - 2022 Pavel Šafařík <drakarax@seznam.cz>
 All rights reseved.
 
-This file is part of Gorgona.
+This file is part of FXRunner.
 
-Gorgona is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+FXRunner is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-Gorgona is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the 
+FXRunner is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the 
 implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with foxGHI. If not, see 
+You should have received a copy of the GNU General Public License along with FXRunner. If not, see 
 <https://www.gnu.org/licenses/>.
 
 ## 6. INTERNET
