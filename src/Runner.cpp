@@ -50,7 +50,7 @@ Runner::Runner( Application *a )
   whb->setText( ver_str );
 
   /* - menu */
-  new FXMenuBox( whb, this->getMenuIcon( ), this );
+  new FXMenuBox( whb, this->getMenuIcon( ) );
   new FXVerticalSeparator( whb );
   
   

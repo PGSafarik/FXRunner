@@ -28,27 +28,27 @@
 /*** Toolbar widget *****************************************************/
 class FXBaseBox : public FXVerticalFrame {
 FXDECLARE( FXBaseBox )
-  FXComposite *b_frame;  // Ramec pro boxiky
+  FXWindowHeader *b_frame;  // Ramec pro boxiky
   FXbool      b_separe; // Separovat ( ramec vlozi separator za boxik)
   FXbool      b_nohide; // Neskryvat
 
 public:
-  FXBaseBox( FXComposite *bf, FXuint opts = LAYOUT_CENTER_Y );
+  FXBaseBox( FXWindowHeader *bf, FXuint opts = LAYOUT_CENTER_Y );
   virtual ~FXBaseBox( );
 
   // Operations
   virtual void create( );
 
   // Access Methods
-  FXComposite* getBoxFrame( ) { return b_frame;  }
-  FXbool      getNohide( )   { return b_nohide; }
-  FXbool      getSepare( )   { return b_separe; }
-
+  FXWindowHeader* getBoxFrame( ) { return b_frame;  }
+  FXbool getNohide( )            { return b_nohide; }
   void setNohide( FXbool value ) { b_nohide = value; }
+  FXbool getSepare( )            { return b_separe; }
   void setSepare( FXbool value ) { b_separe = value; }
 
 protected:
   FXBaseBox( ) { }
+  
 
 };
 
@@ -56,9 +56,9 @@ protected:
 class FXMenuBox : public FXBaseBox {
 FXDECLARE( FXMenuBox )
   FXMenuButton *m_button;
-  FXObject     *m_tgt;
+  
 public :
-  FXMenuBox( FXComposite *p, FXIcon *ic, FXObject *tgt );
+  FXMenuBox( FXWindowHeader *p, FXIcon *ic );
   virtual ~FXMenuBox( ) { }
 
   // Operations
