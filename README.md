@@ -18,6 +18,7 @@ This is a GUI launcher application with history. Enables running in the terminal
 *Dependecies:*
   * [Foxtoolkit 1.7.76](http://fox-toolkit.org/ftp/fox-1.7.76.tar.gz)
   * [FoxGHI 0.2.1](https://github.com/PGSafarik/FoxGHI)
+  * Ikons scheme support: Oxygen (base), Gnome, Faenza, Adwaita
   
 *Aditional dependencies for compilation:*
   * cmake >= 3.10

@@ -35,8 +35,8 @@ FXDECLARE( Runner )
   FXTextField *r_pfield;
   FXTextField *r_tfield;
 
-  Task  *r_acmd;
-  //FXString  r_lpth;
+  Task         *r_acmd;
+  FXIconsTheme *r_icons;
 
   //FXStringList history;
   History_b r_history;

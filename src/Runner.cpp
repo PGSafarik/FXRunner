@@ -17,7 +17,7 @@ Runner::Runner( Application *a )
   app = a;
 
   this->load( );
-  setIcon( app->icon_copy( "system-run.png" ) );
+  
   
   //  Window composite mask
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
@@ -41,7 +41,9 @@ Runner::Runner( Application *a )
 
   /* HEADER BAR */
   FXWindowHeader *whb = this->getHeader( );
-  FXString ver_str = AutoVersion::UBUNTU_VERSION_STYLE;
+  FXIconsTheme *icons = app->get_iconstheme( );
+  setIcon( icons->get_icon( "run", "Menu" ) );
+  FXString      ver_str = AutoVersion::UBUNTU_VERSION_STYLE;
   ver_str += " ["; 
   ver_str += AutoVersion::STATUS;
   ver_str += "]";
@@ -51,11 +53,12 @@ Runner::Runner( Application *a )
   new FXMenuBox( whb, this->getMenuIcon( ), this );
   new FXVerticalSeparator( whb );
   
-  /* - Buttons */
-  new FXButton( whb, "\t\t Spustit",        app->icon_copy( "system-run.png" ),     this, Runner::ID_ACCEPT,   BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
   
-  new FXButton( whb, "\t\t Otevrit soubor", app->icon_copy( "run-build-file.png" ), this, Runner::ID_OPEN_FILE, BUTTON_TOOLBAR | LAYOUT_RIGHT );
-  new FXButton( whb, "\t\t Zmenit pracovni adresar", app->icon_copy( "document-open-folder.png" ), this, Runner::ID_OPEN_DIR, BUTTON_TOOLBAR | LAYOUT_RIGHT );
+  /* - Buttons */
+  new FXButton( whb, "\t\t Spustit",    icons->get_icon( "run", "HeaderBar" )    /*app->icon_copy( "system-run.png" )*/,     this, Runner::ID_ACCEPT,   BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
+  
+  new FXButton( whb, "\t\t Otevrit soubor", icons->get_icon( "open", "HeaderBar" ) /*app->icon_copy( "run-build-file.png" )*/, this, Runner::ID_OPEN_FILE, BUTTON_TOOLBAR | LAYOUT_RIGHT );
+  new FXButton( whb, "\t\t Zmenit pracovni adresar", icons->get_icon( "directory", "HeaderBar" ), this, Runner::ID_OPEN_DIR, BUTTON_TOOLBAR | LAYOUT_RIGHT );
 
   /* Initialize */
   r_acmd = new Task;
@@ -173,6 +176,8 @@ void Runner::load( )
   // Kontrola adresaru
   if( FXStat::exists( r_ShareDir ) == false ) { FXDir::create( r_ShareDir, FXIO::OwnerFull ); }
   if( FXStat::exists( r_CacheDir ) == false ) { FXDir::create( r_CacheDir, FXIO::OwnerFull ); }
+
+
 
   // Historie
   r_history.load( r_CacheDir + "/History" );

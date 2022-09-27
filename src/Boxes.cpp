@@ -39,6 +39,7 @@ void FXMenuBox::create( )
 FXMenuPane* FXMenuBox::make_menu( )
 {
   Application *app = ( Application * ) this->getApp( );
+  FXIconsTheme *icons = app->get_iconstheme( );
   //FXObject    *tgt = getBoxFrame( )->get_Delegate( );
 
   // Structura menu
@@ -55,28 +56,28 @@ FXMenuPane* FXMenuBox::make_menu( )
   new FXMenuCheck( ToolsMenu, "Nezavirat terminal", m_tgt, Runner::ID_TERMLOCK, 0 );
 
   // Roleta napovedy
-  new FXMenuCommand( HelpMenu, "Manual", app->icon_copy( "help-contents.png" ), m_tgt, Runner::ID_HELP );
+  new FXMenuCommand( HelpMenu, "Manual", icons->get_icon( "help", "Menu" ) /*app->icon_copy( "help-contents.png" )*/, m_tgt, Runner::ID_HELP );
   new FXVerticalSeparator( HelpMenu, SEPARATOR_GROOVE );
-  new FXMenuCommand( HelpMenu, "O aplikaci", app->icon_copy( "documentation.png" ), m_tgt, Runner::ID_HELP );
+  new FXMenuCommand( HelpMenu, "O aplikaci", icons->get_icon( "about", "Menu" ) /*app->icon_copy( "documentation.png" )*/, m_tgt, Runner::ID_HELP );
 
   // Hlavni nabidka
-  new FXMenuCommand( MyMenu, "Spustit", app->icon_copy( "dialog-ok-apply.png" ), m_tgt, Runner::ID_ACCEPT );
+  new FXMenuCommand( MyMenu, "Spustit", icons->get_icon( "run", "Menu" ) /*app->icon_copy( "dialog-ok-apply.png" )*/, m_tgt, Runner::ID_ACCEPT );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
-  new FXMenuCommand( MyMenu, "Vybrat prikaz", app->icon_copy( "run-build-file.png" ), m_tgt, Runner::ID_OPEN_FILE );
-  new FXMenuCommand( MyMenu, "Zmenit pracovni adresar", app->icon_copy( "document-open-folder.png" ), m_tgt, Runner::ID_OPEN_DIR );
-  new FXMenuCascade( MyMenu, "Volby spusteni", app->icon_copy( "view-task.png" ), ToolsMenu );
+  new FXMenuCommand( MyMenu, "Vybrat prikaz", icons->get_icon( "open", "Menu" ) /*app->icon_copy( "run-build-file.png" )*/, m_tgt, Runner::ID_OPEN_FILE );
+  new FXMenuCommand( MyMenu, "Zmenit pracovni adresar", icons->get_icon( "directory", "Menu" ) /*app->icon_copy( "document-open-folder.png" )*/, m_tgt, Runner::ID_OPEN_DIR );
+  new FXMenuCascade( MyMenu, "Volby spusteni", icons->get_icon( "view", "Menu" ) /*app->icon_copy( "view-task.png" )*/, ToolsMenu );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
-  new FXMenuCommand( MyMenu, "Nastaveni", app->icon_copy( "configure.png" ), m_tgt, Runner::ID_OPTIONS );
+  new FXMenuCommand( MyMenu, "Nastaveni", icons->get_icon( "properties", "Menu" ) /*app->icon_copy( "configure.png" )*/, m_tgt, Runner::ID_OPTIONS );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
-  new FXMenuCascade( MyMenu, "Napoveda", app->icon_copy( "documentinfo.png" ), HelpMenu );
-  new FXMenuCommand( MyMenu, "Zavrit", app->icon_copy( "dialog-close.png" ), m_tgt, Runner::ID_CANCEL );
+  new FXMenuCascade( MyMenu, "Napoveda", icons->get_icon( "help", "Menu" ) /*app->icon_copy( "documentinfo.png" )*/, HelpMenu );
+  new FXMenuCommand( MyMenu, "Zavrit", icons->get_icon( "close", "Menu" ) /*app->icon_copy( "dialog-close.png" )*/, m_tgt, Runner::ID_CANCEL );
 
   return MyMenu;
 }
 
 FXMenuCommand* FXMenuBox::makeCommand( FXMenuPane *pane, const FXString &title, const FXString &icon, FXSelector sel )
 {
-   return new FXMenuCommand( pane, title, (( Application * ) this->getApp( ))->icon_copy( icon ), m_tgt /*getBoxFrame( )->get_Delegate( )*/, sel );
+   return new FXMenuCommand( pane, title, (( Application * ) this->getApp( ))->get_iconstheme( )->get_icon( icon, "Menu" ), m_tgt /*getBoxFrame( )->get_Delegate( )*/, sel );
 }
 
 /*** FRAME TITLE ****************************************************************************

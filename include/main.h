@@ -27,6 +27,7 @@
 
 #include<../version.h>
 #include<Task.h>
+#include<FXIconsTheme.h>
 
 typedef FXArray<FXString> FXString_List;
 

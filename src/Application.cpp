@@ -18,10 +18,10 @@ Application::Application( )
   std::cout.flush( );
 
   a_cfg = new app_config;
-  a_icdict = new FXIconCache( this );
-
+  //a_icdict = new FXIconCache( this );
+  a_iconsth = new FXIconsTheme( this);
+ 
   settings_load( );
-  icons_make( );
 }
 
 Application::~Application( )
@@ -110,7 +110,7 @@ void Application::task_write( Task *cmd, const FXString &pth )
 
   desk_file.unparseFile( pth + "/" + name + ".desktop" );
 }
-
+/*
 FXIcon* Application::icon_copy( const FXString &ic_name )
 {
   FXIcon *ic = NULL;
@@ -130,7 +130,7 @@ FXIcon* Application::icon_copy( const FXString &ic_name )
 
   return ic;
 }
-
+*/
 void Application::settings_load( )
 {
    if( reg( ).no( ) <= 0 ) { reg( ).read( ); }
@@ -141,6 +141,14 @@ void Application::settings_load( )
    a_cfg->term_run     = reg( ).readStringEntry( getClassName( ), "Term run",      "-e" );
    a_cfg->icon_path    = reg( ).readStringEntry( getClassName( ), "Icons path",    "/usr/share/icons/oxygen/base/22x22/actions" );
    //a_cfg-> = reg( ).readStringEntry( getClassName( ), "", FXString::null ); */
+
+  // GUI Icons theme
+  FXString icons_name, icons_map; 
+  icons_name = reg( ).readStringEntry( "Theme", "icons",  "Faenza" );
+  icons_map   = reg( ).readStringEntry(  "Theme", "imap",   "/opt/FXRunner/data/icons.map" );
+  //icons_map = "/home/gabriel/Projects/Fox/sources/FXRunner/data/icons.map";
+  
+  a_iconsth->load( icons_map , icons_name );
 }
 
 void Application::settings_save( )
@@ -154,7 +162,7 @@ void Application::settings_save( )
 
   if( reg( ).isModified( ) == true ) { reg( ).write( ); }
 }
-
+/*
 FXbool Application::icons_make( )
 {
   /// nastaveni soarvce ikon
@@ -185,6 +193,6 @@ FXbool Application::icons_make( )
 
   return resh;
 }
-
+*/
 /*************************************************************************************************/
 /* END */
