@@ -21,8 +21,9 @@
 * Deklarace zakladnich datovych struktur a hlavickovych souboru          *
 * Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<fox-1.7/fx.h>
 #include<iostream>
+#include<fox-1.7/fx.h>
+#include<fxghi.h>
 
 #include<../version.h>
 #include<Task.h>

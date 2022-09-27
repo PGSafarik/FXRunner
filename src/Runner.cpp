@@ -7,10 +7,10 @@ FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
   FXMAPFUNCS( SEL_COMMAND, Runner::ID_NOQUIT, Runner::HYSTORY_CLEAR, Runner::onCmd_Tools )
 };
 
-FXIMPLEMENT( Runner, FXMainWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
+FXIMPLEMENT( Runner, FXGWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
 
 Runner::Runner( Application *a )
-      : FXMainWindow( a, "Program launcher", NULL, NULL )
+      : FXGWindow( a, "Fox Runner", NULL, NULL, CONTROLS_STATIC | WINDOW_PRIMARY | WINDOW_STATIC , 0, 0, 570, 110 )
 {
 
   FXString cmd;
@@ -20,60 +20,38 @@ Runner::Runner( Application *a )
   setIcon( app->icon_copy( "system-run.png" ) );
 
   //  Window composite mask
-  FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_LINE | LAYOUT_FILL );
-  FXBoxFrame *btnfr = new FXBoxFrame( content, this );
-  new FXMenuBox( btnfr, this->getIcon( ) );
-  new FXVerticalSeparator( btnfr );
-  FXHorizontalFrame *LeftBar = new FXHorizontalFrame( btnfr,   FRAME_NONE | LAYOUT_CENTER_Y, 0, 0, 0, 0,  0, 0, 0, 0,  2, 0 );
-  //new FXVerticalSeparator( btnfr );
-  FXVerticalFrame   *_titlefr = new FXVerticalFrame( btnfr,    FRAME_NONE | LAYOUT_CENTER_X| LAYOUT_FILL | PACK_UNIFORM_WIDTH | PACK_UNIFORM_HEIGHT, 0, 0, 0, 0,  0, 0, 0, 0,  2, 0 );
-  new FXVerticalSeparator( btnfr );
-  new FXLabel(  _titlefr, "Command Run\nTiger Desktop Utility",  NULL, FRAME_NONE| LAYOUT_FILL_Y | LAYOUT_CENTER_X );
-
-  FXHorizontalFrame *_windowfr = new FXHorizontalFrame( btnfr, FRAME_RAISED | LAYOUT_RIGHT | LAYOUT_CENTER_Y, 0, 0, 0, 0,  0, 0, 0, 0,  2, 0 );
- // FXHorizontalFrame *RightBar = new FXHorizontalFrame( btnfr, FRAME_RAISED | LAYOUT_RIGHT | LAYOUT_CENTER_Y  /*| PACK_UNIFORM_WIDTH | PACK_UNIFORM_HEIGHT*/, 0, 0, 0, 0,  0, 0, 0, 0,  2, 0 );
-
-
+  FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
+  
   /* Aplication layout */
-  FXVerticalFrame   *_content    = new FXVerticalFrame( content, FRAME_SUNKEN | LAYOUT_FILL );
-  FXVerticalFrame   *up_frame   = new FXVerticalFrame( _content, FRAME_NONE| LAYOUT_FILL);
+  FXVerticalFrame   *up_frame   = new FXVerticalFrame( content, FRAME_NONE| LAYOUT_FILL);
   FXMatrix          *matrix     = new FXMatrix( up_frame, 2, FRAME_NONE | MATRIX_BY_COLUMNS | LAYOUT_FILL );
-  //FXHorizontalFrame *toolbar    = new FXHorizontalFrame ( content, FRAME_NONE | PACK_UNIFORM_WIDTH | PACK_UNIFORM_HEIGHT | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0 );
-  //FXHorizontalFrame *down_frame = new FXHorizontalFrame( content, FRAME_NONE | LAYOUT_FILL_X  );
   new FXStatusBar( content, FRAME_RAISED | LAYOUT_SIDE_BOTTOM | LAYOUT_BOTTOM | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0  );
 
-  /* Content */
+  /* Command field */
   FXint ncol = 50;
   new FXLabel( matrix, "Prikaz ke spusteni: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
   FXHorizontalFrame *cmdfrm = new FXHorizontalFrame( matrix, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0  );
-  r_combo = new FXComboBox( /*matrix*/cmdfrm, 10, NULL, 0, FRAME_GROOVE | COMBOBOX_NORMAL | LAYOUT_FILL  );
+  r_combo = new FXComboBox( cmdfrm, 10, NULL, 0, FRAME_GROOVE | COMBOBOX_NORMAL | LAYOUT_FILL  );
   r_combo->setNumVisible( 10 );
+
+  /* Work dir field */ 
   new FXLabel( matrix, "Pracovni adresar: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL_X );
   r_tfield = new FXTextField( matrix, ncol, NULL, 0, TEXTFIELD_NORMAL | LAYOUT_FILL_X );
   r_tfield->setText( r_WorkDir );
 
-  // Frame for favorites buttons
-  //FXHorizontalFrame *favourite_fr = new FXHorizontalFrame( up_frame, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0  );
+  /* HEADER BAR - menu */
+  FXWindowHeader *whb = this->getHeader( );
 
-  ////////////////////////////////////////////////
-  /// Menu
-  ///
+  new FXMenuBox( whb, this->getMenuIcon( ), this );
+  new FXVerticalSeparator( whb );
+  
+  /* HEADER Bar - Buttons */
+  new FXButton( whb, "\t\t Spustit",        app->icon_copy( "system-run.png" ),     this, Runner::ID_ACCEPT,   BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
+  
+  new FXButton( whb, "\t\t Otevrit soubor", app->icon_copy( "run-build-file.png" ), this, Runner::ID_OPEN_FILE, BUTTON_TOOLBAR | LAYOUT_RIGHT );
+  new FXButton( whb, "\t\t Zmenit pracovni adresar", app->icon_copy( "document-open-folder.png" ), this, Runner::ID_OPEN_DIR, BUTTON_TOOLBAR | LAYOUT_RIGHT );
 
-  new FXButton( LeftBar, "\t\t Spustit",        app->icon_copy( "dialog-ok-apply.png" ),     this, Runner::ID_ACCEPT,   BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
-  new FXVerticalSeparator( LeftBar );
-  new FXButton( LeftBar, "\t\t Otevrit soubor", app->icon_copy( "run-build-file.png" ), this, Runner::ID_OPEN_FILE, BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
-  new FXButton( LeftBar, "\t\t Zmenit pracovni adresar", app->icon_copy( "document-open-folder.png" ), this, Runner::ID_OPEN_DIR, BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
-
-  //new FXButton( LeftBar, "\t\t Zmenit prava", app->icon_copy( "meeting-attending.png" ), this, Runner::ID_OPEN_FILE, BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
-  //new FXMenuButton( LeftBar, "\t Konsole",   app->icon_copy( "run-build-install.png" ) /* FXGIFIcon( getApp( ), bigapp )*/, NULL, BUTTON_TOOLBAR|ICON_ABOVE_TEXT|LAYOUT_FILL_Y );
-
-  new FXButton( _windowfr, "\t\t Zavrit",    app->icon_copy( "dialog-close.png" ),  this, Runner::ID_CANCEL, BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
-  //new FXButton( RightBar, "\t\t Napoveda",  app->icon_copy( "help-contents.png" ), this, Runner::ID_HELP,    BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
-  //new FXButton( RightBar, "\t\t Nastaveni", app->icon_copy( "configure.png" ),     this, Runner::ID_OPTIONS, BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
-
-  ////////////////////////////////////////////////
-  ///
-  ///
+  /* Initialize */
   r_acmd = new Task;
 
   this->readHistory( r_history );
@@ -100,7 +78,7 @@ Runner::~Runner( )
 
 void Runner::create( )
 {
-  FXMainWindow::create( );
+  FXGWindow::create( );
   show( PLACEMENT_SCREEN );
 }
 

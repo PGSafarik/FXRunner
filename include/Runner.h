@@ -26,7 +26,9 @@
 #include<FXBoxFrame.h>
 #include<Boxes.h>
 
-class Runner : public FXMainWindow {
+
+//class Runner : public FXMainWindow {
+class Runner : public FXGWindow {
 FXDECLARE( Runner )
   Application *app;
   FXComboBox  *r_combo;
@@ -70,7 +72,7 @@ public:
   ///
   ///
   enum {
-    ID_ACCEPT = FXMainWindow::ID_LAST,
+    ID_ACCEPT = FXGWindow::ID_LAST,
     ID_CANCEL,
     ID_OPTIONS,
     ID_HELP,

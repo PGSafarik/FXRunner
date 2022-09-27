@@ -28,19 +28,19 @@
 /*** Toolbar widget *****************************************************/
 class FXBaseBox : public FXVerticalFrame {
 FXDECLARE( FXBaseBox )
-  FXBoxFrame *b_frame;  // Ramec pro boxiky
+  FXComposite *b_frame;  // Ramec pro boxiky
   FXbool      b_separe; // Separovat ( ramec vlozi separator za boxik)
   FXbool      b_nohide; // Neskryvat
 
 public:
-  FXBaseBox( FXBoxFrame *bf, FXuint opts = LAYOUT_CENTER_Y );
+  FXBaseBox( FXComposite *bf, FXuint opts = LAYOUT_CENTER_Y );
   virtual ~FXBaseBox( );
 
   // Operations
   virtual void create( );
 
   // Access Methods
-  FXBoxFrame* getBoxFrame( ) { return b_frame;  }
+  FXComposite* getBoxFrame( ) { return b_frame;  }
   FXbool      getNohide( )   { return b_nohide; }
   FXbool      getSepare( )   { return b_separe; }
 
@@ -56,9 +56,9 @@ protected:
 class FXMenuBox : public FXBaseBox {
 FXDECLARE( FXMenuBox )
   FXMenuButton *m_button;
-
+  FXObject     *m_tgt;
 public :
-  FXMenuBox( FXBoxFrame *p, FXIcon *ic );
+  FXMenuBox( FXComposite *p, FXIcon *ic, FXObject *tgt );
   virtual ~FXMenuBox( ) { }
 
   // Operations
@@ -70,7 +70,7 @@ protected :
   FXMenuCommand* makeCommand( FXMenuPane *pane, const FXString &Title, const FXString &icon, FXSelector sel );
 };
 
-/*** Titulek aplikace ***************************************************/
+/*** Titulek aplikace ***************************************************
 class FXTitleBox : public FXBaseBox {
 FXDECLARE( FXTitleBox )
    FXLabel *m_label;      // Prostor pro text titulku
@@ -79,7 +79,7 @@ FXDECLARE( FXTitleBox )
    FXbool   m_handled;    // Indikator zachyceni okna mysi
 
 public:
-  FXTitleBox( FXBoxFrame *p, const FXString &title );
+  FXTitleBox( FXComposite *p, const FXString &title );
   virtual ~FXTitleBox( ) { }
 
   // Operations
@@ -92,7 +92,7 @@ public:
 protected:
   FXTitleBox( ) { }
 
-};
+};*/
 
 #endif /*__BOXES_H */
 

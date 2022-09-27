@@ -1,27 +1,30 @@
-CMAKE_MINIMUM_REQUIRED( VERSION 3.7 )
-PROJECT( FXRunner )
+CMAKE_MINIMUM_REQUIRED( VERSION 3.10 )
+PROJECT( FXRunner VERSION 0.2 DESCRIPTION "GUI application launcher for Linux with history" )
 
 # The project settings
-# EMPTY
+SET( CMAKE_INSTALL_PREFIX "/opt/${PROJECT_NAME}" )  # Install target directory
+SET( LIB_FOX   "/opt/foxlib/1.7/64" )       # Fox toolkit path
+SET( LIB_FXGHI "/opt/foxghi/0.2/1"  )       # Fox GHI path
+SET( CMAKE_CXX_STANDARD 98 )                # C++ Standard
+SET( CMAKE_CXX_STANDARD_REQUIRED True )     # C++ Standard
+#add_compile_options(-Wall -Wextra -pedantic -Werror)
+#add_compile_options(-Wall -pedantic)
 
 # Configure project
-# CONFIGURE_FILE(
-#   "${PROJECT_SOURCE_DIR}/MakeConfig.h.in"
-#   "${PROJECT_BINARY_DIR}/MakeConfig.h"
-# )
-# EMPTY
-
-# Add directories for project
+#CONFIGURE_FILE( MakeConfig.h.in MakeConfig.h )
+FILE( GLOB SOURCES src/*.cpp )                          # List of implementation files
+#FILE( GLOB HEADERS include/*.h )                        # List of C++ header files (for install - API)
 INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/include" )
-INCLUDE_DIRECTORIES( "${PROJECT_BINARY_DIR}" )
 
-INCLUDE_DIRECTORIES( "/opt/foxlib/1.7/64/include" )    # foxtoolkit headers
-LINK_DIRECTORIES( "/opt/foxlib/1.7/64/lib/" )          # foxtoolkit library
+# Add directories for project dependecies
+INCLUDE_DIRECTORIES( "${LIB_FOX}/include/" )
+LINK_DIRECTORIES(    "${LIB_FOX}/lib/" )
+INCLUDE_DIRECTORIES( "${LIB_FXGHI}/include/" )
+LINK_DIRECTORIES(    "${LIB_FXGHI}/lib/" )
 
 # Add to the executable
-ADD_EXECUTABLE( fxrunner src/main.cpp src/Application.cpp src/FXIcon_Theme.cpp src/Runner.cpp src/Boxes.cpp 
-src/FXBoxFrame.cpp src/History.cpp src/Task.cpp )
-TARGET_LINK_LIBRARIES( fxrunner FOX-1.7 CHART-1.7 )
+ADD_EXECUTABLE( ${PROJECT_NAME} ${SOURCES} )
+TARGET_LINK_LIBRARIES( ${PROJECT_NAME} FOX-1.7 FXGHI )
 
 # Install build project
-INSTALL( TARGETS fxrunner RUNTIME DESTINATION bin )
+INSTALL( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin )

@@ -13,6 +13,7 @@ Application::Application( )
   std::cout << "App version: "<< AutoVersion::MAJOR<< "."<< AutoVersion::MINOR << "." << AutoVersion::REVISION;
   std::cout << " [" << AutoVersion::STATUS << "]" << std::endl;
   std::cout << "lib Fox    : " << FOX_MAJOR << "." << FOX_MINOR << "." << FOX_LEVEL << std::endl;
+  std::cout << "lib FoxGHI : " << 0 << "." << 2 << "." << 1 << std::endl;
   std::cout << "=== Message =========================================" << std::endl;
   std::cout.flush( );
 

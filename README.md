@@ -9,7 +9,7 @@
   5. [Author and project licencion](#5-Author-and-project-licencion)
   6. [Internet](#6-internet)
   
-<p align="center"><img src="docs/images/screenshot.png?raw=true" width="70%" />  
+<p align="center"><img src="docs/images/screenshot.png?raw=true" width="100%" />  
 
 ## 1. GENERAL INFO:
 This is a GUI launcher application with history. Enables running in the terminal, as root, or entering the working directory of the application. Enables multiple applications to be launched one after the other (the FXRunner window does not close after launching the application).
@@ -17,7 +17,8 @@ This is a GUI launcher application with history. Enables running in the terminal
 ## 2. COMPILATION AND INSTALLATION:
 *Dependecies:*
   * [Foxtoolkit 1.7.76](http://fox-toolkit.org/ftp/fox-1.7.76.tar.gz)
-
+  * [FoxGHI 0.2.1](https://github.com/PGSafarik/FoxGHI)
+  
 *Aditional dependencies for compilation:*
   * cmake >= 3.10
   * g++
