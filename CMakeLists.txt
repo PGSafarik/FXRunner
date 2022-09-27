@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED( VERSION 3.10 )
-PROJECT( FXRunner VERSION 0.2 DESCRIPTION "GUI application launcher for Linux with history" )
+PROJECT( FXRunner VERSION 0.1 DESCRIPTION "GUI application launcher for Linux with history" )
 
 # The project settings
 SET( CMAKE_INSTALL_PREFIX "/opt/${PROJECT_NAME}" )  # Install target directory
@@ -13,7 +13,6 @@ SET( CMAKE_CXX_STANDARD_REQUIRED True )     # C++ Standard
 # Configure project
 #CONFIGURE_FILE( MakeConfig.h.in MakeConfig.h )
 FILE( GLOB SOURCES src/*.cpp )                          # List of implementation files
-#FILE( GLOB HEADERS include/*.h )                        # List of C++ header files (for install - API)
 INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/include" )
 
 # Add directories for project dependecies

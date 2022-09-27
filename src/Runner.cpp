@@ -18,7 +18,7 @@ Runner::Runner( Application *a )
 
   this->load( );
   setIcon( app->icon_copy( "system-run.png" ) );
-
+  
   //  Window composite mask
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
   
@@ -39,13 +39,19 @@ Runner::Runner( Application *a )
   r_tfield = new FXTextField( matrix, ncol, NULL, 0, TEXTFIELD_NORMAL | LAYOUT_FILL_X );
   r_tfield->setText( r_WorkDir );
 
-  /* HEADER BAR - menu */
+  /* HEADER BAR */
   FXWindowHeader *whb = this->getHeader( );
+  FXString ver_str = AutoVersion::UBUNTU_VERSION_STYLE;
+  ver_str += " ["; 
+  ver_str += AutoVersion::STATUS;
+  ver_str += "]";
+  whb->setText( ver_str );
 
+  /* - menu */
   new FXMenuBox( whb, this->getMenuIcon( ), this );
   new FXVerticalSeparator( whb );
   
-  /* HEADER Bar - Buttons */
+  /* - Buttons */
   new FXButton( whb, "\t\t Spustit",        app->icon_copy( "system-run.png" ),     this, Runner::ID_ACCEPT,   BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
   
   new FXButton( whb, "\t\t Otevrit soubor", app->icon_copy( "run-build-file.png" ), this, Runner::ID_OPEN_FILE, BUTTON_TOOLBAR | LAYOUT_RIGHT );
@@ -78,6 +84,8 @@ Runner::~Runner( )
 
 void Runner::create( )
 {
+  
+
   FXGWindow::create( );
   show( PLACEMENT_SCREEN );
 }
