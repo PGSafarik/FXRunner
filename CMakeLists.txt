@@ -2,7 +2,8 @@ CMAKE_MINIMUM_REQUIRED( VERSION 3.10 )
 PROJECT( FXRunner VERSION 0.1 DESCRIPTION "GUI application launcher for Linux with history" )
 
 # The project settings
-SET( CMAKE_INSTALL_PREFIX "/opt/${PROJECT_NAME}" )  # Install target directory
+SET( BIN_NAME "fxrunner" )                   # Executable binnary filename
+SET( CMAKE_INSTALL_PREFIX "/usr" )  # Install target directory
 SET( LIB_FOX   "/opt/foxlib/1.7/64" )       # Fox toolkit path
 SET( LIB_FXGHI "/opt/foxghi/0.2/1"  )       # Fox GHI path
 SET( CMAKE_CXX_STANDARD 98 )                # C++ Standard
@@ -22,9 +23,9 @@ INCLUDE_DIRECTORIES( "${LIB_FXGHI}/include/" )
 LINK_DIRECTORIES(    "${LIB_FXGHI}/lib/" )
 
 # Add to the executable
-ADD_EXECUTABLE( ${PROJECT_NAME} ${SOURCES} )
-TARGET_LINK_LIBRARIES( ${PROJECT_NAME} FOX-1.7 FXGHI )
+ADD_EXECUTABLE( ${BIN_NAME} ${SOURCES} )
+TARGET_LINK_LIBRARIES( ${BIN_NAME} FOX-1.7 FXGHI )
 
 # Install build project
-INSTALL( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin )
-INSTALL( DIRECTORY data DESTINATION ${CMAKE_INSTALL_PREFIX} )		# Globalni data
+INSTALL( TARGETS ${BIN_NAME} RUNTIME DESTINATION bin )
+INSTALL( DIRECTORY data DESTINATION ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME} )		# Globalni data
