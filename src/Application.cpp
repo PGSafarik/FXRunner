@@ -15,13 +15,17 @@ Application::Application( )
   std::cout << "lib Fox    : " << FOX_MAJOR << "." << FOX_MINOR << "." << FOX_LEVEL << std::endl;
   std::cout << "lib FoxGHI : " << 0 << "." << 2 << "." << 1 << std::endl;
   std::cout << "=== Message =========================================" << std::endl;
-  std::cout.flush( );
+
+  //if( reg( ).used( ) <= 0 ) { reg( ).read( ); }
+
+  
 
   a_cfg = new app_config;
   //a_icdict = new FXIconCache( this );
   a_iconsth = new FXIconsTheme( this);
  
   settings_load( );
+  std::cout.flush( );
 }
 
 Application::~Application( )
@@ -133,18 +137,30 @@ FXIcon* Application::icon_copy( const FXString &ic_name )
 */
 void Application::settings_load( )
 {
-   if( reg( ).no( ) <= 0 ) { reg( ).read( ); }
-
-   a_cfg->su           = reg( ).readStringEntry( getClassName( ), "Change user",  "kdesudo" );
-   a_cfg->term         = reg( ).readStringEntry( getClassName( ), "Terminal",     "konsole" );
-   a_cfg->term_noclose = reg( ).readStringEntry( getClassName( ), "No close term", "--noclose" );
-   a_cfg->term_run     = reg( ).readStringEntry( getClassName( ), "Term run",      "-e" );
-   a_cfg->icon_path    = reg( ).readStringEntry( getClassName( ), "Icons path",    "/usr/share/icons/oxygen/base/22x22/actions" );
-   //a_cfg-> = reg( ).readStringEntry( getClassName( ), "", FXString::null ); */
+  reg( ).read( );
+  /*
+  std::cout << "Application key    :" << reg( ).getAppKey( ).text( )            << std::endl;
+  std::cout << "Vendor key         :" << reg( ).getVendorKey( ).text( )         << std::endl;
+  std::cout << "System directories :" << reg( ).getSystemDirectories( ).text( ) << std::endl;
+  std::cout << "User directory     :" << reg( ).getUserDirectory( ).text( )     << std::endl;
+  std::cout << "Theme section num  :" << reg( ).used( )                         << std::endl;
+  for ( FXint i = 0; i != reg( ).no( ); i++ ) {
+    if( !reg( ).empty( i ) ) {
+      std::cout << "\tRegistry section (" << i << "): " << reg( ).key( i ).text( ) << std::endl; 
+    }
+  }
+  */
+   
+  a_cfg->su           = reg( ).readStringEntry( getClassName( ), "Change user",  "kdesudo" );
+  a_cfg->term         = reg( ).readStringEntry( getClassName( ), "Terminal",     "konsole" );
+  a_cfg->term_noclose = reg( ).readStringEntry( getClassName( ), "No close term", "--noclose" );
+  a_cfg->term_run     = reg( ).readStringEntry( getClassName( ), "Term run",      "-e" );
+  a_cfg->icon_path    = reg( ).readStringEntry( getClassName( ), "Icons path",    "/usr/share/icons/oxygen/base/22x22/actions" );
+  //a_cfg-> = reg( ).readStringEntry( getClassName( ), "", FXString::null ); */
 
   // GUI Icons theme
   FXString icons_name, icons_map; 
-  icons_name = reg( ).readStringEntry( "Theme", "icons", "Gnome" );
+  icons_name = reg( ).readStringEntry( "Theme", "icons", "Oxygen" );
   icons_map  = reg( ).readStringEntry( "Theme", "imap",  "/usr/share/FXRunner/data/icons.map" );
   a_iconsth->load( icons_map, icons_name );
 }

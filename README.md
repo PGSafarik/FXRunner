@@ -46,6 +46,8 @@ These lines are commented out by default, so remove the leading '#' characters a
 
 ## 3. KNOWN ERRORS AND BUGS
 * 10/10/2020 - Checking multiple run options together will cancel each other out - OPEN
+* 27/08/2022 - The program does not load local user settings - FIXED  
+  Bad checking of data preload in FXRegistry. Removed, preloading now happens immediately, without checking
 
 ## 4. PROJECT STATE AND PLANS FOR THE FUTHURE
 
