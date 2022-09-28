@@ -59,7 +59,7 @@ public:
   FXIcon* get_icon( const FXString &name, FXint size = 16 ) { return t_cache->insert( this->get_path( ) + "/" + this->at( name, size ) ); }
   FXIcon* get_icon( const FXString &name, const FXString &size_alias );
 
-  void load( const FXString &themefile, const FXString &imap );
+  void load( const FXString &themefile, const FXString &name );
 };
 
 

@@ -25,6 +25,7 @@ help=actions/help-contents
 buffer_clean=actions/remove
 buffer_size=actions/zoom-select-y
 properties=actions/settings-configure
+settings=categories/preferences-system
 
 view="actions/document-page-setup"
 
@@ -46,6 +47,7 @@ help=actions/help-contents
 buffer_clean=actions/remove
 buffer_size=actions/view-refresh
 properties=actions/gtk-properties
+settings=categories/preferences-system
 
 view="actions/document-page-setup"
 
@@ -55,10 +57,10 @@ map.path="/usr/share/icons/gnome"
 map.pattern="${SIZE}x${SIZE}/${TYPE}/${NAME}.${EXP}"
 
 new=actions/document-new
-open=actions/document-open
+open=mimetypes/exec
 edit=apps/accessories-text-editor
 save=actions/document-save-as
-directory=actions/folder-new
+directory=places/folder
 modules=actions/document-properties
 close=actions/exit
 run=actions/system-run
@@ -67,6 +69,7 @@ help=actions/help-contents
 buffer_clean=actions/remove
 buffer_size=actions/view-refresh
 properties=actions/gtk-properties
+settings=categories/preferences-system
 
 view="actions/document-page-setup"
 
@@ -88,6 +91,7 @@ help=actions/help-contents
 buffer_clean=actions/list-remove-symbolic.symbolic
 buffer_size=status/content-loading-symbolic.symbolic
 properties=categiries/prefereces-system-symbolic.symbolic
+settings=categories/preferences-system
 
 view="actions/document-page-setup"
 

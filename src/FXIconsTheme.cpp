@@ -46,7 +46,7 @@ FXIcon* FXIconsTheme::get_icon( const FXString &name, const FXString &size_alias
    return get_icon( name, _size );
 }
 
-void FXIconsTheme::load( const FXString &themefile, const FXString &imap )
+void FXIconsTheme::load( const FXString &themefile, const FXString &name )
 {
   FXSettings data;
   FXString   head;
@@ -57,7 +57,7 @@ void FXIconsTheme::load( const FXString &themefile, const FXString &imap )
   t_list.clear( );
 
   if( FXStat::exists( themefile ) && data.parseFile( themefile ) ) {
-    std::cout << "Load icons theme \'" << themefile.text( ) << "\'" << std::endl;
+    std::cout << "Load icons theme \'" << name.text( ) << "\' from \'" << themefile.text( ) << "\' mapfile" << std::endl;
 
     if ( data.existingSection( "Sizes" ) ) {
       FXStringDictionary sm = data.at( "Sizes" );
@@ -82,7 +82,7 @@ void FXIconsTheme::load( const FXString &themefile, const FXString &imap )
   */
 
     // Read base informations about icon theme
-    t_name    = imap; 
+    t_name    = name; 
     if( data.existingSection( t_name ) ) {
       t_prefix  = data.readStringEntry( t_name, "map.type", "png" );
       t_path    = data.readStringEntry( t_name, "map.path" );

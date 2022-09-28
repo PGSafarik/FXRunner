@@ -144,11 +144,9 @@ void Application::settings_load( )
 
   // GUI Icons theme
   FXString icons_name, icons_map; 
-  icons_name = reg( ).readStringEntry( "Theme", "icons",  "Faenza" );
-  icons_map   = reg( ).readStringEntry(  "Theme", "imap",   "/opt/FXRunner/data/icons.map" );
-  //icons_map = "/home/gabriel/Projects/Fox/sources/FXRunner/data/icons.map";
-  
-  a_iconsth->load( icons_map , icons_name );
+  icons_name = reg( ).readStringEntry( "Theme", "icons", "Gnome" );
+  icons_map  = reg( ).readStringEntry( "Theme", "imap",  "/usr/share/FXRunner/data/icons.map" );
+  a_iconsth->load( icons_map, icons_name );
 }
 
 void Application::settings_save( )
