@@ -1,4 +1,19 @@
-// Application.cpp; Copyright (c) 22/09/2012 D.A.Tiger; GNU GPL 3
+/*************************************************************************
+* Application.cpp Copyright (c) 2012 - 2022 by  D.A.Tiger                     *
+*                                                                        *
+* This program is free software: you can redistribute it and/or modify   *
+* it under the terms of the GNU General Public License as published by   *
+* the Free Software Foundation, either version 3 of the License, or      *
+* (at your option) any later version.                                    *
+*                                                                        *
+* This program is distributed in the hope that it will be useful,        *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+* GNU General Public License for more details.                           *
+*                                                                        *
+* You should have received a copy of the GNU General Public License      *
+* along with this program.  If not, see <https://www.gnu.org/licenses/>. *
+*************************************************************************/
 #include<Application.h>
 
 FXDEFMAP( Application ) APPLICATION_MAP[ ] = { };
@@ -22,7 +37,7 @@ Application::Application( )
 
   a_cfg = new app_config;
   //a_icdict = new FXIconCache( this );
-  a_iconsth = new FXIconsTheme( this);
+  a_iconsth = new FXIconsTheme( this );
  
   settings_load( );
   std::cout.flush( );
@@ -155,7 +170,7 @@ void Application::settings_load( )
   a_cfg->term         = reg( ).readStringEntry( getClassName( ), "Terminal",     "konsole" );
   a_cfg->term_noclose = reg( ).readStringEntry( getClassName( ), "No close term", "--noclose" );
   a_cfg->term_run     = reg( ).readStringEntry( getClassName( ), "Term run",      "-e" );
-  a_cfg->icon_path    = reg( ).readStringEntry( getClassName( ), "Icons path",    "/usr/share/icons/oxygen/base/22x22/actions" );
+  // a_cfg->icon_path    = reg( ).readStringEntry( getClassName( ), "Icons path",    "/usr/share/icons/oxygen/base/22x22/actions" );
   //a_cfg-> = reg( ).readStringEntry( getClassName( ), "", FXString::null ); */
 
   // GUI Icons theme

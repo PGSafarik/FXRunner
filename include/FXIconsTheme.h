@@ -1,7 +1,7 @@
 /*******************************************************************************
 * File:      FXIconsTheme                                                      *
 * Project:   FXDesktop                                                         *
-* Copyright: Copyriright (C) 2021 by D.A.Tiger GNU GPL v3                      *
+* Copyright: Copyriright (C) 2019 - 2022 by D.A.Tiger GNU GPL v3               *
 * Author(s): D.A.Tiger ( drakarax@seznam.cz )                                  *
 * Note:      Application icon manager (dictionary - pattern method )           *
 *******************************************************************************/
