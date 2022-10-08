@@ -31,12 +31,7 @@ Application::Application( )
   std::cout << "lib FoxGHI : " << 0 << "." << 2 << "." << 1 << std::endl;
   std::cout << "=== Message =========================================" << std::endl;
 
-  //if( reg( ).used( ) <= 0 ) { reg( ).read( ); }
-
-  
-
   a_cfg = new app_config;
-  //a_icdict = new FXIconCache( this );
   a_iconsth = new FXIconsTheme( this );
  
   settings_load( );
@@ -129,27 +124,7 @@ void Application::task_write( Task *cmd, const FXString &pth )
 
   desk_file.unparseFile( pth + "/" + name + ".desktop" );
 }
-/*
-FXIcon* Application::icon_copy( const FXString &ic_name )
-{
-  FXIcon *ic = NULL;
-  FXIcon *source = NULL;
-  FXColor *_data = NULL;
-  FXint w, h, size;
 
-  if( ( source = a_icdict->find( ic_name.text( ) ) ) != NULL ) {
-    source->restore( );
-    w = source->getWidth( );
-    h = source->getHeight( );
-    size = w * h;
-    callocElms( _data, size );
-    copyElms( _data, source->getData( ), size );
-    ic = new FXIcon( this, _data, source->getTransparentColor( ), source->getOptions( ) | IMAGE_KEEP | IMAGE_SHMI, w, h );
-  }
-
-  return ic;
-}
-*/
 void Application::settings_load( )
 {
   reg( ).read( );
@@ -170,7 +145,6 @@ void Application::settings_load( )
   a_cfg->term         = reg( ).readStringEntry( getClassName( ), "Terminal",     "konsole" );
   a_cfg->term_noclose = reg( ).readStringEntry( getClassName( ), "No close term", "--noclose" );
   a_cfg->term_run     = reg( ).readStringEntry( getClassName( ), "Term run",      "-e" );
-  // a_cfg->icon_path    = reg( ).readStringEntry( getClassName( ), "Icons path",    "/usr/share/icons/oxygen/base/22x22/actions" );
   //a_cfg-> = reg( ).readStringEntry( getClassName( ), "", FXString::null ); */
 
   // GUI Icons theme
@@ -191,37 +165,6 @@ void Application::settings_save( )
 
   if( reg( ).isModified( ) == true ) { reg( ).write( ); }
 }
-/*
-FXbool Application::icons_make( )
-{
-  /// nastaveni soarvce ikon
-  FXString path = a_cfg->icon_path;
-  a_icdict->setIconPath( path );
 
-  ///nacteni ikon
-  FXint num;
-  FXbool resh = false;
-  FXString *filelist;
-  FXString file, im_path;
-  FXString exp = "*.CUR|*.BMP|*.GIF|*.ICO|*.IFF|*.JPEG|*.PCX|*.PNG|*.PPM|*.RAS|*.RGB|*.TGA|*.TIFF|*.XBM|*.XPM";
-  exp += "|*.cur|*.bmp|*.gif|*.ico|*.iff|*.jpeg|*.pcx|*.png|*.ppm|*.ras|*.rgb|*.tga|*.tiff|*.xbm|*.xpm";
-
-  if( ( path.empty( ) != true ) && ( FXStat::isDirectory( path ) == true ) ) {
-    if( path[ path.length( ) ] != PATHSEP ) { im_path = path + PATHSEP; }
-    else { im_path = path; }
-
-    if( ( num = FXDir::listFiles( filelist, im_path, exp ) ) > 0 ) {
-      for( FXint i = 0; i != num; i++ ) {
-        a_icdict->insert( FXPath::name( filelist[ i ] ).text( ) );
-        //if( verb == true ) { std::cout << filelist[ i ].text( ) << std::endl; }
-      }
-      resh = true;
-    }
-    else { std::cout << getClassName( ) << "::icons_make - Path " << path.text( ) << " not found " << std::endl; }
-  }
-
-  return resh;
-}
-*/
 /*************************************************************************************************/
 /* END */

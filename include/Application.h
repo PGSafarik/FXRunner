@@ -36,14 +36,12 @@ public :
   // Operations
   int task_exec( Task *cmd );                                         // Spusti prikaz
   void task_write( Task *cmd, const FXString &pth = FXString::null );  // Zapise prikaz do desktop souboru
-  //FXIcon* icon_copy( const FXString &ic_name );
   FXIconsTheme* get_iconstheme( ) { return a_iconsth; }
 
 protected :
   // Helpers
   void settings_load( );
   void settings_save( );
-  //FXbool icons_make( );
 
 };
 
