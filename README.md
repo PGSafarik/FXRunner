@@ -1,5 +1,5 @@
 # FXRunner - Simple, universal GUI desktop launcher
--28.09.2022-
+-30.10.2022-
 
 *Content:*
   1. [General info](#1-general-info)
