@@ -16,38 +16,17 @@
 *************************************************************************/
 #include<Boxes.h>
 
-/*** Base of boxes *******************************************************************************/
-FXIMPLEMENT( FXBaseBox, FXVerticalFrame, NULL, 0 )
-
-FXBaseBox::FXBaseBox( FXWindowHeader *bf, FXuint opts )
-         : FXVerticalFrame( bf, bf->getBoxOpts( ) | opts, 0, 0, 0, 0,  0, 0, 0, 0,  HV_SPACING2, HV_SPACING2 )
-{
-  b_frame  = bf;
-  b_separe = false;
-  b_nohide = false;
-}
-
-FXBaseBox::~FXBaseBox( )
-{ }
-
-void FXBaseBox::create( )
-{
-  FXVerticalFrame::create( );
-  b_frame->recolorize( this );
-}
-
-
 /*** APPLICATION MENU ****************************************************************************/
-FXIMPLEMENT( FXMenuBox, FXBaseBox, NULL, 0 )
+FXIMPLEMENT( FXMenuBox, FXGHI_HeaderBox, NULL, 0 )
 
-FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXBaseBox( p )
+FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXGHI_HeaderBox( p, NULL, 0, LAYOUT_CENTER_Y, 0, 0, 0 )
 {
   m_button = new FXMenuButton( this, "\t\t Menu aplikace", ic, make_menu( ), BUTTON_TOOLBAR|ICON_ABOVE_TEXT|LAYOUT_FILL_Y );
 }
 
 void FXMenuBox::create( )
 {
-  FXBaseBox::create( );
+  FXGHI_HeaderBox::create( );
   m_button->create( );
 }
 
@@ -95,25 +74,22 @@ FXMenuCommand* FXMenuBox::makeCommand( FXMenuPane *pane, const FXString &title, 
    return new FXMenuCommand( pane, title, (( Application * ) this->getApp( ))->get_iconstheme( )->get_icon( icon, "Menu" ), getBoxFrame( )->getBoxTarget( ), sel );
 }
 
-/*** FRAME TITLE ****************************************************************************
-FXIMPLEMENT( FXTitleBox, FXBaseBox, NULL, 0 )
+/*** Tool bar *************************************************************************************/
+FXIMPLEMENT( Toolbar, FXGHI_HeaderBox, NULL, 0 )
 
-FXTitleBox::FXTitleBox( FXBoxFrame *p, const FXString &title ) : FXBaseBox( p )
+Toolbar::Toolbar( FXWindowHeader *p ) : FXGHI_HeaderBox( p, NULL, 0, FRAME_SUNKEN | LAYOUT_RIGHT, 0, 0, 0 )
 {
-  m_title = title;
-  m_label = new FXLabel( this, m_title, NULL, LABEL_NORMAL | LAYOUT_FILL_Y | LAYOUT_CENTER_X | LAYOUT_CENTER_Y );
+  Application  *app = ( Application * ) this->getApp( );
+  FXIconsTheme *icons = app->get_iconstheme( );
+  FXObject     *tgt = getBoxFrame( )->getBoxTarget( );  
+
+  new FXButton( this, "\t\t Otevrit soubor", icons->get_icon( "open", "HeaderBar" ), tgt, Runner::ID_OPEN_FILE, BUTTON_NORMAL | LAYOUT_RIGHT );
+  new FXButton( this, "\t\t Zmenit pracovni adresar", icons->get_icon( "directory", "HeaderBar" ), tgt, Runner::ID_OPEN_DIR, BUTTON_NORMAL | LAYOUT_RIGHT );
 }
 
-void FXTitleBox::create( )
+void Toolbar::create( )
 {
-  FXBaseBox::create( );
-  m_label->create( );
+  FXGHI_HeaderBox::create( );
 }
-
-void FXTitleBox::setSubtext( const FXString &text )
-{
-  if( !text.empty( ) ) { m_label->setText( m_title + "\n" + text ); }
-  else { m_label->setText( m_title ); }
-}*/
 
 /*** END ******************************************************************************************/

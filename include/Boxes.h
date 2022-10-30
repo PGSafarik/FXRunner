@@ -18,42 +18,15 @@
 /*************************************************************************
 * Boxes.cpp                                                              *
 * EXPERIMENTAL                                                           *
-* Male prvky (boxiky, widgety) do Toolbaru aplikace                      *
+* Male prvky (boxiky, widgety) do Header baru aplikace                   *
 * Copyright (c) 01/11/2017 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<FXBoxFrame.h>
+#include<fxghi.h>
 #include<Application.h>
 #include<Runner.h>
 
-/*** Toolbar widget *****************************************************/
-class FXBaseBox : public FXVerticalFrame {
-FXDECLARE( FXBaseBox )
-  FXWindowHeader *b_frame;  // Ramec pro boxiky
-  FXbool      b_separe; // Separovat ( ramec vlozi separator za boxik)
-  FXbool      b_nohide; // Neskryvat
-
-public:
-  FXBaseBox( FXWindowHeader *bf, FXuint opts = LAYOUT_CENTER_Y );
-  virtual ~FXBaseBox( );
-
-  // Operations
-  virtual void create( );
-
-  // Access Methods
-  FXWindowHeader* getBoxFrame( ) { return b_frame;  }
-  FXbool getNohide( )            { return b_nohide; }
-  void setNohide( FXbool value ) { b_nohide = value; }
-  FXbool getSepare( )            { return b_separe; }
-  void setSepare( FXbool value ) { b_separe = value; }
-
-protected:
-  FXBaseBox( ) { }
-  
-
-};
-
-/*** Menu aplikace ******************************************************/
-class FXMenuBox : public FXBaseBox {
+/*** Menu aplikace ********************************************************************************/
+class FXMenuBox : public FXGHI_HeaderBox {
 FXDECLARE( FXMenuBox )
   FXMenuButton *m_button;
   
@@ -61,38 +34,37 @@ public :
   FXMenuBox( FXWindowHeader *p, FXIcon *ic );
   virtual ~FXMenuBox( ) { }
 
-  // Operations
+  /* Operations */
   virtual void create( );
+
+  /* Access methods */
 
 protected :
   FXMenuBox( ) { }
+  
+  /* Helpers methods */
   FXMenuPane* make_menu( );
   FXMenuCommand* makeCommand( FXMenuPane *pane, const FXString &Title, const FXString &icon, FXSelector sel );
 };
 
-/*** Titulek aplikace ***************************************************
-class FXTitleBox : public FXBaseBox {
-FXDECLARE( FXTitleBox )
-   FXLabel *m_label;      // Prostor pro text titulku
-
-   FXString m_title;      // Bufffer Text hlavniho titlku.
-   FXbool   m_handled;    // Indikator zachyceni okna mysi
-
+/*** ToolBox **************************************************************************************/
+class Toolbar : public FXGHI_HeaderBox {
+FXDECLARE( Toolbar )
+  
 public:
-  FXTitleBox( FXComposite *p, const FXString &title );
-  virtual ~FXTitleBox( ) { }
+  Toolbar( FXWindowHeader *p);
+  virtual ~Toolbar( ) { }
 
-  // Operations
+  /* Operations */
   virtual void create( );
 
-  // Access
-  void setSubtext( const FXString &text );
-  //FXString getSubtext( ) const;
-
+  /* Access methods */
+  
 protected:
-  FXTitleBox( ) { }
+  Toolbar( ) { }
 
-};*/
+  /* Helpers methods */
+};
 
 #endif /*__BOXES_H */
 

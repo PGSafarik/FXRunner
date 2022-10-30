@@ -23,7 +23,6 @@
 #include<main.h>
 #include<Application.h>
 #include<History.h>
-#include<FXBoxFrame.h>
 #include<Boxes.h>
 
 
