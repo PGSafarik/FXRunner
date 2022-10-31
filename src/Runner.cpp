@@ -33,7 +33,6 @@ Runner::Runner( Application *a )
 
   this->load( );
   
-  
   //  Window composite mask
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
   
@@ -63,20 +62,12 @@ Runner::Runner( Application *a )
   ver_str += AutoVersion::STATUS;
   ver_str += "]";
   //whb->setText( ver_str );
-
-  /* - menu */
+  
   new FXMenuBox( whb, this->getMenuIcon( ) );
   new FXVerticalSeparator( whb );
-  
-  
-  /* - Buttons */
-  new FXButton( whb, "\t\t Spustit",    icons->get_icon( "run", "HeaderBar" )    /*app->icon_copy( "system-run.png" )*/,     this, Runner::ID_ACCEPT,   BUTTON_TOOLBAR | FRAME_RAISED | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
-  new Toolbar( whb );  
+  new Toolbar( whb );
+  new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
-  /*
-  new FXButton( whb, "\t\t Otevrit soubor", icons->get_icon( "open", "HeaderBar" ), this, Runner::ID_OPEN_FILE, BUTTON_TOOLBAR | LAYOUT_RIGHT );
-  new FXButton( whb, "\t\t Zmenit pracovni adresar", icons->get_icon( "directory", "HeaderBar" ), this, Runner::ID_OPEN_DIR, BUTTON_TOOLBAR | LAYOUT_RIGHT );
-  */
   /* Initialize */
   r_acmd = new Task;
 
