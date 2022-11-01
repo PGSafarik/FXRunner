@@ -25,12 +25,25 @@
 #include<History.h>
 #include<Boxes.h>
 
-
-
 class Settings : public FXVerticalFrame {
 FXDECLARE( Settings )
-  FXbool m_changed;
+  FXbool m_changed;  // indicate change settings state
+  FXbool m_revert;   // indicate revert back is available 
 
+  /* Terminal emulator */
+  FXComboBox   *tecb_enable;     // [enable]       - Enable/on request/disable 
+  FXTextField  *tetf_command;    // [command]      - Terminal emulator program path
+  FXTextField  *tetf_execprm;    // [prm_exec]     - Argument for executable command with TE 
+  FXTextField  *tetf_disclosprm; // [prm_disclose] - Argument for disable closse with exit run command in TE
+  FXTextField  *tetf_workdirprm; // [prm_workdir]  - Argument for set workdir for shell in TE
+
+  /* Super user access */
+  FXCheckButton *such_enable;      // [enable]  - enable / disable
+  FXTextField   *sutf_askpassprm;  // [askpass] - Argument for using askpass 
+  
+  /* UI settings */
+  FXComboBox *uicb_IconsTheme;     // [icons_theme] - icons theme name
+ 
 public :
   Settings( FXComposite *p, FXObject *tgt = NULL, FXSelector sel = 0, FXuint opts = FRAME_NONE | LAYOUT_FILL );
   virtual ~Settings( );
