@@ -17,8 +17,8 @@
 #include<Runner.h>
 
 FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
-  FXMAPFUNCS( SEL_COMMAND, Runner::ID_ACCEPT, Runner::ID_HELP, Runner::onCmd_Run ),
-  FXMAPFUNCS( SEL_COMMAND, Runner::ID_OPEN_DIR, Runner::ID_OPEN_FILE, Runner::onCmd_Open ),
+  FXMAPFUNCS( SEL_COMMAND, Runner::ID_ACCEPT, Runner::ID_CANCEL, Runner::onCmd_Run ),
+  FXMAPFUNCS( SEL_COMMAND, Runner::OPEN_DIR,  Runner::OPEN_HELP, Runner::onCmd_Open ),
   FXMAPFUNCS( SEL_COMMAND, Runner::ID_NOQUIT, Runner::HYSTORY_CLEAR, Runner::onCmd_Tools )
 };
 
@@ -201,7 +201,7 @@ void Runner::save( )
 long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
 {
    switch( FXSELID( sel ) ) {
-     case Runner::ID_OPEN_FILE :{
+     case Runner::OPEN_FILE :{
        FXString file, pth;
 
        FXFileDialog filedlg( this, "Vyberte soubor ke spusteni :" );
@@ -215,12 +215,17 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
        }
        break;
      }
-     case Runner::ID_OPEN_DIR :{
+     case Runner::OPEN_DIR :{
         FXDirDialog *dir = new FXDirDialog ( app, "Vyberte pracovni adresar aplikace :" );
         if( dir->execute( ) ) {
           r_tfield->setText( dir->getDirectory( ) );
         }
        break;
+     }
+     case Runner::OPEN_OPTIONS :{
+       SettingsDialog *set = new SettingsDialog( app );
+       if( set->execute( ) ) { }
+       break; 
      }
    }
 

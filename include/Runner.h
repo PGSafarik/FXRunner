@@ -24,6 +24,7 @@
 #include<Application.h>
 #include<History.h>
 #include<Boxes.h>
+#include<Settings.h>
 
 
 //class Runner : public FXMainWindow {
@@ -73,11 +74,11 @@ public:
   enum {
     ID_ACCEPT = FXGWindow::ID_LAST,
     ID_CANCEL,
-    ID_OPTIONS,
-    ID_HELP,
 
-    ID_OPEN_DIR,
-    ID_OPEN_FILE,
+    OPEN_DIR,
+    OPEN_FILE,
+    OPEN_OPTIONS,
+    OPEN_HELP,
 
     ID_NOQUIT,
     ID_USER,

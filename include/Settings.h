@@ -22,13 +22,14 @@
 *************************************************************************/
 #include<main.h>
 #include<Application.h>
+#include<FXIconsTheme.h>
 #include<History.h>
 #include<Boxes.h>
 
 class Settings : public FXVerticalFrame {
 FXDECLARE( Settings )
-  FXbool m_changed;  // indicate change settings state
-  FXbool m_revert;   // indicate revert back is available 
+  FXbool m_change;             // indicate change settings state
+  FXStringDictionary m_revert; // indicate revert back is available 
 
   /* Terminal emulator */
   FXComboBox   *tecb_enable;     // [enable]       - Enable/on request/disable 
@@ -38,8 +39,8 @@ FXDECLARE( Settings )
   FXTextField  *tetf_workdirprm; // [prm_workdir]  - Argument for set workdir for shell in TE
 
   /* Super user access */
-  FXCheckButton *such_enable;      // [enable]  - enable / disable
-  FXTextField   *sutf_askpassprm;  // [askpass] - Argument for using askpass 
+  FXCheckButton *such_enable;  // [enable]  - enable / disable
+  FXCheckButton *such_askpass; // [askpass] - Enable using askpass 
   
   /* UI settings */
   FXComboBox *uicb_IconsTheme;     // [icons_theme] - icons theme name
@@ -49,8 +50,8 @@ public :
   virtual ~Settings( );
 
   /* Access methods */
-  FXbool isChanged( ) { }
-  FXbool isBackup( )  { }
+  FXbool isChanged( ) { return m_change; }
+  FXbool isBackup( )  { return !m_revert.empty( );  }
   
 
   /* Operations */
@@ -80,6 +81,22 @@ protected:
 
   /* Helper methods */
   void Notify( ) { if( target ) { target->tryHandle( this, FXSEL( SEL_CHANGED, message ), NULL ); } }
+  void MakeTitle( FXComposite *p, const FXString &text, FXIcon *ic = NULL );
+
+};
+
+
+class SettingsDialog : public FXGDialogBox {
+FXDECLARE( SettingsDialog )
+
+public :
+  SettingsDialog( FXApp *a );
+  ~SettingsDialog( );
+
+  virtual void create( );
+
+protected:
+  SettingsDialog( ) { }
 };
 
 #endif /* __SETTINGS_H */

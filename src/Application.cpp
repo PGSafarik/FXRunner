@@ -140,18 +140,28 @@ void Application::settings_load( )
     }
   }
   */
-   
-  a_cfg->su           = reg( ).readStringEntry( getClassName( ), "Change user",  "kdesudo" );
-  a_cfg->term         = reg( ).readStringEntry( getClassName( ), "Terminal",     "konsole" );
-  a_cfg->term_noclose = reg( ).readStringEntry( getClassName( ), "No close term", "--noclose" );
-  a_cfg->term_run     = reg( ).readStringEntry( getClassName( ), "Term run",      "-e" );
+  
+  FXString cfg_prefix = CFG_UI_PREFIX;
+  a_cfg->icons_name   =  reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", "Oxygen" );
+
+  cfg_prefix = CFG_SUDO_PREFIX;
+  a_cfg->sudo    = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".Enable", true );
+  a_cfg->askpass = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".Askpass", false );  
+  a_cfg->su      = reg( ).readStringEntry( getClassName( ), "Change user",  "kdesudo" );
+  
+  cfg_prefix = CFG_TERM_PREFIX;
+  a_cfg->term         = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".Command", "/usr/bin/xterm" );
+  a_cfg->term_noclose = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", "+hold" );
+  a_cfg->term_run     = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec", "-e" );
   //a_cfg-> = reg( ).readStringEntry( getClassName( ), "", FXString::null ); */
 
   // GUI Icons theme
+  /*
   FXString icons_name, icons_map; 
   icons_name = reg( ).readStringEntry( "Theme", "icons", "Oxygen" );
-  icons_map  = reg( ).readStringEntry( "Theme", "imap",  "/usr/share/FXRunner/data/icons.map" );
-  a_iconsth->load( icons_map, icons_name );
+  icons_map  = reg( ).readStringEntry( "Theme", "imap",  ICON_THEME_MAP );
+  */
+  a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
 }
 
 void Application::settings_save( )
