@@ -43,8 +43,9 @@ FXDECLARE( Settings )
   FXCheckButton *such_askpass; // [askpass] - Enable using askpass 
   
   /* UI settings */
-  FXComboBox *uicb_IconsTheme;     // [icons_theme] - icons theme name
- 
+  FXComboBox  *uicb_IconsTheme; // [icons_theme] - icons theme name
+  FXTextField *uitf_cache;      // [cache dir]   - slozka pro ukladani pouzitych prikazu a historie
+  
 public :
   Settings( FXComposite *p, FXObject *tgt = NULL, FXSelector sel = 0, FXuint opts = FRAME_NONE | LAYOUT_FILL );
   virtual ~Settings( );

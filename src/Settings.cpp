@@ -70,6 +70,9 @@ Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   uicb_IconsTheme->appendItem( "Adwaita" );
   uicb_IconsTheme->appendItem( "Faenza" );
 
+  new FXLabel( this, "Cache directory : ", NULL, LABEL_STYLE );
+  tetf_execprm = new FXTextField( this, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  
   target   = tgt;
   message = sel;
 }

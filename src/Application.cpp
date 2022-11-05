@@ -60,8 +60,13 @@ FXint Application::task_exec( Task *cmd )
   std::cout << cmd->ow << std::endl;
   std::cout << cmd->te << std::endl;
 */
-  // Spustit s pravy uzivatele root?
-  if( cmd->su == true ) { _command += a_cfg->su + " "; }
+
+  // Run command as super user
+  if( cmd->su && a_cfg->sudo  ) { 
+    _command += "sudo"; 
+    _command += ( a_cfg->askpass ? " -A " : " " );
+  }
+
   // Spustit v terminalu
   if( cmd->te == true ) {
     _term = a_cfg->term + " ";
@@ -128,18 +133,6 @@ void Application::task_write( Task *cmd, const FXString &pth )
 void Application::settings_load( )
 {
   reg( ).read( );
-  /*
-  std::cout << "Application key    :" << reg( ).getAppKey( ).text( )            << std::endl;
-  std::cout << "Vendor key         :" << reg( ).getVendorKey( ).text( )         << std::endl;
-  std::cout << "System directories :" << reg( ).getSystemDirectories( ).text( ) << std::endl;
-  std::cout << "User directory     :" << reg( ).getUserDirectory( ).text( )     << std::endl;
-  std::cout << "Theme section num  :" << reg( ).used( )                         << std::endl;
-  for ( FXint i = 0; i != reg( ).no( ); i++ ) {
-    if( !reg( ).empty( i ) ) {
-      std::cout << "\tRegistry section (" << i << "): " << reg( ).key( i ).text( ) << std::endl; 
-    }
-  }
-  */
   
   FXString cfg_prefix = CFG_UI_PREFIX;
   a_cfg->icons_name   =  reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", "Oxygen" );
