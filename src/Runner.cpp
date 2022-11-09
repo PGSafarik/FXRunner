@@ -43,13 +43,13 @@ Runner::Runner( Application *a )
 
   /* Command field */
   FXint ncol = 50;
-  new FXLabel( matrix, "Prikaz ke spusteni: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
+  new FXLabel( matrix, "Command to run: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
   FXHorizontalFrame *cmdfrm = new FXHorizontalFrame( matrix, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0  );
   r_combo = new FXComboBox( cmdfrm, 10, NULL, 0, FRAME_GROOVE | COMBOBOX_NORMAL | LAYOUT_FILL  );
   r_combo->setNumVisible( 10 );
 
   /* Work dir field */ 
-  new FXLabel( matrix, "Pracovni adresar: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL_X );
+  new FXLabel( matrix, "Workdir: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL_X );
   r_tfield = new FXTextField( matrix, ncol, NULL, 0, TEXTFIELD_NORMAL | LAYOUT_FILL_X );
   r_tfield->setText( r_WorkDir );
 

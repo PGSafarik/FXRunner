@@ -79,6 +79,7 @@ FXint Application::task_exec( Task *cmd )
     if( cmd->lt == true ) { _term += a_cfg->term_noclose + " "; }
     _term += a_cfg->term_run + " ";
   }
+
   // Prikaz
   if( !cmd->cmd.empty( ) ) { _cmd += cmd->cmd; }
   // Parametry
