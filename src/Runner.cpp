@@ -124,7 +124,6 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
         // Set command history
         History( )->insert( r_acmd->cmd );
         this->CheckHistory( );
-        //this->p_buffer.append( r_acmd );
         r_combo->setText( "" );
         // Command reset
         r_acmd = NULL;
