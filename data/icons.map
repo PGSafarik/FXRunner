@@ -1,5 +1,5 @@
 [Maps]
-list=Faenza,Oxygen
+list=Faenza,Oxygen,Gnome,Adwaita
 
 [Sizes]
 small=16
@@ -28,6 +28,11 @@ properties=actions/settings-configure
 settings=categories/preferences-system
 
 view="actions/document-page-setup"
+accept="actions/dialog-ok-apply"
+discard="actions/edit-delete"
+default="actions/rating"
+
+
 
 [Faenza]
 map.type="png"
@@ -49,6 +54,9 @@ buffer_size=actions/view-refresh
 properties=actions/gtk-properties
 settings=categories/preferences-system
 
+accept="actions/dialog-ok"
+discard="actions/edit-delete"
+default="actions/gnome-app-install-star"
 view="actions/document-page-setup"
 
 [Gnome]
@@ -72,6 +80,9 @@ properties=actions/gtk-properties
 settings=categories/preferences-system
 
 view="actions/document-page-setup"
+accept="actions/gtk-execute"
+discard="actions/edit-delete"
+default="actions/help-about"
 
 [Adwaita]
 map.type="png"
@@ -94,6 +105,9 @@ properties=categiries/prefereces-system-symbolic.symbolic
 settings=categories/preferences-system
 
 view="actions/document-page-setup"
+accept="actions/gtk-execute"
+discard="actions/edit-delete"
+default="actions/help-about"
 
 [Tango2]
 map.type="png"
