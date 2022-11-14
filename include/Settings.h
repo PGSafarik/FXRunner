@@ -26,7 +26,7 @@
 #include<History.h>
 #include<Boxes.h>
 
-class Settings : public FXVerticalFrame {
+class Settings : public FXScrollWindow {
 FXDECLARE( Settings )
   FXbool m_change;             // indicate change settings state
   FXStringDictionary m_revert; // indicate revert back is available 
@@ -63,7 +63,7 @@ public :
 
   /* GUI messages & handlers */ 
   enum {
-    SETTINGS_SAVE = FXVerticalFrame::ID_LAST,
+    SETTINGS_SAVE = FXScrollWindow::ID_LAST,
     SETTINGS_RESTORE,
     SETTINGS_DEFAULT,
     ID_CHANGE,

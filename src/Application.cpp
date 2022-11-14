@@ -150,16 +150,12 @@ void Application::settings_load( )
   //a_cfg-> = reg( ).readStringEntry( getClassName( ), "", FXString::null ); */
 
   // GUI Icons theme
-  /*
-  FXString icons_name, icons_map; 
-  icons_name = reg( ).readStringEntry( "Theme", "icons", "Oxygen" );
-  icons_map  = reg( ).readStringEntry( "Theme", "imap",  ICON_THEME_MAP );
-  */
   a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
 }
 
 void Application::settings_save( )
 {
+  /*
   reg( ).writeStringEntry( getClassName( ), "Change user",   a_cfg->su.text( ) );
   reg( ).writeStringEntry( getClassName( ), "Terminal",      a_cfg->term.text( ) );
   reg( ).writeStringEntry( getClassName( ), "No close term", a_cfg->term_noclose.text( ) );
@@ -168,6 +164,7 @@ void Application::settings_save( )
   //reg( ).writeStringEntry( getClassName( ), "", a_cfg->  );
 
   if( reg( ).isModified( ) == true ) { reg( ).write( ); }
+  */
 }
 
 /*************************************************************************************************/

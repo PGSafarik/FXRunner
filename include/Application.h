@@ -25,7 +25,6 @@
 
 class Application : public FXApp {
 FXDECLARE( Application )
-  //FXIconCache  *a_icdict;    // Prednactene GUI ikony
   app_config   *a_cfg;       // Konfiguracni data aplikace
   FXIconsTheme *a_iconsth;
    

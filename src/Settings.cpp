@@ -27,51 +27,55 @@ FXDEFMAP( Settings ) SETTINGS_MAP[ ] = {
   FXMAPFUNC( SEL_COMMAND, Settings::SETTINGS_DEFAULT, Settings::onCmd_Settings ),
   FXMAPFUNC( SEL_COMMAND, Settings::ID_CHANGE,        Settings::onCmd_Update   )
 };
-FXIMPLEMENT( Settings, FXVerticalFrame, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) )
+FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) )
 
 /*************************************************************************************************/
 Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
-        : FXVerticalFrame( p, opts ) 
+        :FXScrollWindow( p, VSCROLLER_ALWAYS | LAYOUT_FILL, 0, 0, 0, 0 ) 
 {
-  MakeTitle( this, "Terminal emulator"  );
+  
+  //FXScrollWindow  *scroller = new FXScrollWindow( this, VSCROLLER_ALWAYS | LAYOUT_FILL, 0, 0, 0, 0 );
+  FXVerticalFrame *content  = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL ); 
+
+  MakeTitle( content, "Terminal emulator"  );
   //FXMatrix *mte = new FXMatrix( this, 2, MATRIX_BY_COLUMNS | LAYOUT_FILL_X ); 
 
-  new FXLabel( this, "Enable: ", NULL, LABEL_STYLE );
-  tecb_enable = new FXComboBox( this, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
+  new FXLabel( content, "Enable: ", NULL, LABEL_STYLE );
+  tecb_enable = new FXComboBox( content, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
   tecb_enable->appendItem ( "Enable"  /*, FXptr ptr=nullptr, FXbool notify=false */);
   tecb_enable->appendItem ( "On request" );
   tecb_enable->appendItem ( "Disable" );
   tecb_enable->setNumVisible( 3 );
   //tecb_enable->setCurrentItem( 1 );
 
-  new FXLabel( this, "Command: ", NULL, LABEL_STYLE);
-  tetf_command = new FXTextField( this, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  new FXLabel( content, "Command: ", NULL, LABEL_STYLE);
+  tetf_command = new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
 
-  new FXLabel( this, "Argument for exec : ", NULL, LABEL_STYLE );
-  tetf_execprm = new FXTextField( this, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  new FXLabel( content, "Argument for exec : ", NULL, LABEL_STYLE );
+  tetf_execprm = new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
 
-  new FXLabel( this, "Argument for disable close : ", NULL, LABEL_STYLE );
-  tetf_disclosprm = new FXTextField( this,  51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  new FXLabel( content, "Argument for disable close : ", NULL, LABEL_STYLE );
+  tetf_disclosprm = new FXTextField( content,  51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
 
-  new FXLabel( this, "Argument for set workpath : ", NULL, LABEL_STYLE );
-  tetf_workdirprm = new FXTextField( this,  51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  new FXLabel( content, "Argument for set workpath : ", NULL, LABEL_STYLE );
+  tetf_workdirprm = new FXTextField( content,  51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
 
-  MakeTitle( this, "Super user access" );
-  such_enable  = new FXCheckButton( this, "Enable using sudo", this, Settings::ID_CHANGE );
-  such_askpass = new FXCheckButton( this, "Enable using askpass - must be installed!", this, Settings::ID_CHANGE );
+  MakeTitle( content, "Super user access" );
+  such_enable  = new FXCheckButton( content, "Enable using sudo", this, Settings::ID_CHANGE );
+  such_askpass = new FXCheckButton( content, "Enable using askpass - must be installed!", this, Settings::ID_CHANGE );
 
-  MakeTitle( this, "User interface" );
+  MakeTitle( content, "User interface" );
 
-  new FXLabel( this, "Icons Theme: ", NULL, LABEL_STYLE );
-  uicb_IconsTheme = new FXComboBox( this, 5, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
+  new FXLabel( content, "Icons Theme: ", NULL, LABEL_STYLE );
+  uicb_IconsTheme = new FXComboBox( content, 5, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
   uicb_IconsTheme->setNumVisible( 5 );
   uicb_IconsTheme->appendItem( "Oxygen" );
   uicb_IconsTheme->appendItem( "Gnome" );
   uicb_IconsTheme->appendItem( "Adwaita" );
   uicb_IconsTheme->appendItem( "Faenza" );
 
-  new FXLabel( this, "Cache directory : ", NULL, LABEL_STYLE );
-  tetf_execprm = new FXTextField( this, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  new FXLabel( content, "Cache directory : ", NULL, LABEL_STYLE );
+  uitf_cache = new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
   
   target   = tgt;
   message = sel;
@@ -85,7 +89,7 @@ void Settings::create( )
   read_config( );
   m_change = false;
 
-  FXVerticalFrame::create( );
+ FXScrollWindow::create( );
 }
 
 /*************************************************************************************************/
@@ -98,8 +102,11 @@ void Settings::read_config( )
 
   cfg_prefix = CFG_UI_PREFIX;
   FXString icth_str = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", "Faenza" );
+  FXString cache_str = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir", ( FXSystem::getHomeDirectory( ) + "/.cache").text( ) );
   cfg_id =  uicb_IconsTheme->findItem( icth_str );
   if( cfg_id >= 0 ) { uicb_IconsTheme->setCurrentItem( cfg_id ); } 
+  uitf_cache->setText( cache_str );
+  
 
   cfg_prefix = CFG_SUDO_PREFIX;
   FXbool sudo_enable  = getApp( )->reg( ).readBoolEntry(   CFG_RUNNER, cfg_prefix + ".Enable", true );
@@ -135,6 +142,7 @@ void Settings::write_config( )
   cfg_prefix = CFG_UI_PREFIX;
   cfg_id = uicb_IconsTheme->getCurrentItem( );  
   getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", uicb_IconsTheme->getItem( cfg_id ).text( ) );
+  getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir", uitf_cache->getText( ).text( ) );
 
   cfg_prefix = CFG_SUDO_PREFIX;
   getApp( )->reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".Enable",  such_enable->getCheck( ) );
@@ -239,17 +247,18 @@ FXIMPLEMENT( SettingsDialog, FXGDialogBox, NULL, 0 )
 
 /**************************************************************************************************/
 SettingsDialog::SettingsDialog( FXApp *a )
-              : FXGDialogBox( a, "Configure", WINDOW_STATIC, 0, 0, 550, 450 )
+              : FXGDialogBox( a, "Configure", WINDOW_STATIC, 0, 0, 550, 480 )
 {
   
   Application  *app = ( Application * ) this->getApp( );
   FXIconsTheme *icons = app->get_iconstheme( );
 
   setIcon( icons->get_icon( "settings" ) );
-
-  Settings *config = new Settings( this, this, SettingsDialog::ID_RECONFIGURE );
-
-  new FXStatusBar( this, FRAME_RAISED | LAYOUT_SIDE_BOTTOM | LAYOUT_BOTTOM | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0  );
+  
+  FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
+  Settings *config = new Settings( content, this, SettingsDialog::ID_RECONFIGURE );
+  FXHorizontalSeparator( content, FRAME_GROOVE | LAYOUT_FILL_X );
+  new FXStatusBar( content, FRAME_RAISED | LAYOUT_SIDE_BOTTOM | LAYOUT_BOTTOM | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0  );
 
   new FXButton( getHeader( ), "\t\t Accept", icons->get_icon( "accept", "HeaderBar" ),   config, Settings::SETTINGS_SAVE,  BUTTON_TOOLBAR | LAYOUT_LEFT ); 
   new FXVerticalSeparator( getHeader( ), SEPARATOR_GROOVE | LAYOUT_FILL_Y ); 
