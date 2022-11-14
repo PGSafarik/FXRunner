@@ -27,7 +27,6 @@ FXIMPLEMENT( Runner, FXGWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
 Runner::Runner( Application *a )
       : FXGWindow( a, "Fox Runner", NULL, NULL, CONTROLS_STATIC | WINDOW_PRIMARY | WINDOW_STATIC , 0, 0, 570, 110 )
 {
-
   FXString cmd;
   app = a;
 
@@ -85,67 +84,7 @@ void Runner::create( )
   show( PLACEMENT_SCREEN );
 }
 
-long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
-{
-  long     resh = 1;
-  FXString err_str = "";     // Hlaseni uzivatelseke chyby
-  FXbool   err_flg = false;  // Priznak uzivatelske chyby
 
-  switch( FXSELID( sel ) ) {
-    case Runner::ID_ACCEPT : {
-      ///FXint id = -1;
-      // Get command and working path
-      FXString cmd = r_combo->getText( );
-      FXString pth = r_tfield->getText( );
-
-      if( r_acmd == NULL ) { r_acmd = new Task; }
-      // Set command
-      if( cmd.empty( ) != true ) { r_acmd->cmd = cmd; }
-      else {
-		err_flg = true;
-	    err_str = "Pole pro zadani prikazu nesmi byt prazdne!\nZadejte, prosim, pozadovany prikaz ke spusteni";
-	  }
-	  // Set command working path
-      r_acmd->prm = FXString::null;
-      if( pth.empty( ) != true ) {
-        r_acmd->wpth = pth;
-        if( r_acmd->wpth[ r_acmd->wpth.length( ) - 1 ] != '/' ) { r_acmd->wpth += "/"; }
-      }
-      // Compile the command
-      if( err_flg != true ) {
-        // Create the gui Link (The desktop file)
-        ///if( r_acmd->cl == true ) { app->command_write( r_acmd, r_WorkDir ); }
-        // Cretae the alias (on .~/profile)
-        ///if( this->OnAlias == true ) { app->command_write( r_acmd, "~/.profile", Compile::ALIAS ); }
-        // Running application
-        app->task_exec( r_acmd );
-        ///if( exec( r_acmd ) == false ) { FXMessageBox::warning( this, MBOX_OK, "Novy proces", " Proces nebyl spusten!" ); }
-        ///app->command_write( r_acmd, r_lpth );
-        // Set command history
-        History( )->insert( r_acmd->cmd );
-        this->CheckHistory( );
-        r_combo->setText( "" );
-        // Command reset
-        r_acmd = NULL;
-      }
-      else {
-        FXMessageBox::error( this, MBOX_OK, "Chybne zadani", err_str.text( ) );
-        resh = 0;
-      }
-      break;
-    }
-    case Runner::ID_CANCEL : {
-      FXuint answer = FXMessageBox::question( this, MBOX_YES_NO, "Dotaz", "Opravdu chcete ukoncit aplikaci Runner?" );
-      if( answer == MBOX_CLICKED_YES ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
-      else{ err_flg = true; }
-      break;
-    }
-  }
-
-  if( ( r_NoQuit == false ) && ( err_flg == false ) ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
-  else { r_acmd = new Task; }
-  return resh;
-}
 
 void Runner::load( )
 {
@@ -178,6 +117,74 @@ void Runner::save( )
 }
 
 /**************************************************************************************************/
+long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
+{
+  long     resh = 1;
+  FXString err_str = "";     // Hlaseni uzivatelseke chyby
+  FXbool   err_flg = false;  // Priznak uzivatelske chyby
+
+  switch( FXSELID( sel ) ) {
+    case Runner::ID_ACCEPT : {
+      ///FXint id = -1;
+      // Get command and working path
+      FXString cmd = r_combo->getText( );
+      FXString pth = r_tfield->getText( );
+
+      if( r_acmd == NULL ) { r_acmd = new Task; }
+      
+      // Set command
+      if( cmd.empty( ) != true ) { r_acmd->cmd = cmd; }
+      else {
+		    err_flg = true;
+	      err_str = "Pole pro zadani prikazu nesmi byt prazdne!\nZadejte, prosim, pozadovany prikaz ke spusteni";
+	    }
+
+	    // Set command working path
+      r_acmd->prm = FXString::null;
+      if( pth.empty( ) != true ) {
+        r_acmd->wpth = pth;
+        if( r_acmd->wpth[ r_acmd->wpth.length( ) - 1 ] != '/' ) { r_acmd->wpth += "/"; }
+      }
+
+      // Compile the command
+      if( err_flg != true ) {
+        // Create the gui Link (The desktop file)
+        ///if( r_acmd->cl == true ) { app->command_write( r_acmd, r_WorkDir ); }
+        // Cretae the alias (on .~/profile)
+        ///if( this->OnAlias == true ) { app->command_write( r_acmd, "~/.profile", Compile::ALIAS ); }
+        // Running application
+        app->task_exec( r_acmd );
+        ///if( exec( r_acmd ) == false ) { FXMessageBox::warning( this, MBOX_OK, "Novy proces", " Proces nebyl spusten!" ); }
+        ///app->command_write( r_acmd, r_lpth );
+        // Set command history
+        History( )->insert( r_acmd->cmd );
+        this->CheckHistory( );
+        r_combo->setText( "" );
+
+        // Command reset
+        r_acmd = NULL;
+      }
+      else {
+        FXMessageBox::error( this, MBOX_OK, "Chybne zadani", err_str.text( ) );
+        resh = 0;
+      }
+
+      break;
+    }
+
+    case Runner::ID_CANCEL : {
+      FXuint answer = FXMessageBox::question( this, MBOX_YES_NO, "Dotaz", "Opravdu chcete ukoncit aplikaci Runner?" );
+      if( answer == MBOX_CLICKED_YES ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
+      else{ err_flg = true; }
+      break;
+    }
+  }
+
+  if( ( r_NoQuit == false ) && ( err_flg == false ) ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
+  else { r_acmd = new Task; }
+  return resh;
+}
+
 long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
 {
    switch( FXSELID( sel ) ) {

@@ -42,9 +42,9 @@ Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
 
   new FXLabel( content, "Enable: ", NULL, LABEL_STYLE );
   tecb_enable = new FXComboBox( content, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
-  tecb_enable->appendItem ( "Enable"  /*, FXptr ptr=nullptr, FXbool notify=false */);
-  tecb_enable->appendItem ( "On request" );
-  tecb_enable->appendItem ( "Disable" );
+  tecb_enable->appendItem ( "Always" );     // Vsechno spuustet v terminalu
+  tecb_enable->appendItem ( "On request" ); // Jen na vyzadani ( i pro sudo, kdyz neni k dispozici askpass ) 
+  tecb_enable->appendItem ( "Disable" );    // Zakaze emulator terminalu 
   tecb_enable->setNumVisible( 3 );
   //tecb_enable->setCurrentItem( 1 );
 
@@ -108,7 +108,7 @@ void Settings::check( )
     such_askpass->setCheck( app->a_cfg->askpass );
 
     cfg_id = tecb_enable->findItem( app->a_cfg->term_enable );
-      if( cfg_id >= 0 && !app->a_cfg->term.empty( ) ) { 
+    if( cfg_id >= 0 && !app->a_cfg->term.empty( ) ) { 
       tecb_enable->setCurrentItem( cfg_id ); 
       tetf_command->setText( app->a_cfg->term );
       tetf_execprm->setText( app->a_cfg->term_run );
