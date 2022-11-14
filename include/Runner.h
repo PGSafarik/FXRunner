@@ -38,9 +38,6 @@ FXDECLARE( Runner )
   Task         *r_acmd;
   FXIconsTheme *r_icons;
 
-  //FXStringList history;
-  History_b r_history;
-  //FXArray<Task*> p_buffer;
 
   /* Configuration data */
   // Paths
@@ -64,7 +61,7 @@ public:
   ///
   ///
   virtual void create( );
-  FXint readHistory( const History_b &buff );
+  
   void load( );
   void save( );
 
@@ -96,6 +93,11 @@ public:
 
 protected:
   Runner( ) { }
+  
+  /* Help methods */
+  History_b* History( ) { return dynamic_cast<Application*>( getApp( ) )->get_History( ); } 
+  FXint      CheckHistory( );
+
 };
 
 #endif /* __RUNNER_H */

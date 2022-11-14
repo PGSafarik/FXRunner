@@ -33,7 +33,8 @@ Application::Application( )
 
   a_cfg = new app_config;
   a_iconsth = new FXIconsTheme( this );
- 
+  a_history = new History_b( );
+
   settings_load( );
   std::cout.flush( );
 }
@@ -133,10 +134,13 @@ void Application::task_write( Task *cmd, const FXString &pth )
 
 void Application::settings_load( )
 {
+  // a->getAppName( )
+
   reg( ).read( );
   
   FXString cfg_prefix = CFG_UI_PREFIX;
-  a_cfg->icons_name   =  reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", "Oxygen" );
+  a_cfg->icons_name   = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", "Oxygen" );
+  a_cfg->cache_dir    = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir", ( FXSystem::getHomeDirectory( ) + "/.cache").text( ) );
 
   cfg_prefix = CFG_SUDO_PREFIX;
   a_cfg->sudo    = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".Enable", true );
@@ -151,20 +155,20 @@ void Application::settings_load( )
 
   // GUI Icons theme
   a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
+
+  // Read a launch history 
+  a_history->load( a_cfg->cache_dir + "/" +  getAppName( ) + "/History" );
 }
 
 void Application::settings_save( )
 {
-  /*
-  reg( ).writeStringEntry( getClassName( ), "Change user",   a_cfg->su.text( ) );
-  reg( ).writeStringEntry( getClassName( ), "Terminal",      a_cfg->term.text( ) );
-  reg( ).writeStringEntry( getClassName( ), "No close term", a_cfg->term_noclose.text( ) );
-  reg( ).writeStringEntry( getClassName( ), "Term run",      a_cfg->term_run.text( ) );
-  reg( ).writeStringEntry( getClassName( ), "Icons path",    a_cfg->icon_path.text( ) );
-  //reg( ).writeStringEntry( getClassName( ), "", a_cfg->  );
+  /* // Save config here! ONLY!!!!!!!!!!
+    
 
   if( reg( ).isModified( ) == true ) { reg( ).write( ); }
   */
+
+  a_history->save( a_cfg->cache_dir + "/" +  getAppName( ) + "/History", true );
 }
 
 /*************************************************************************************************/

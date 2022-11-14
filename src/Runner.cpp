@@ -71,34 +71,16 @@ Runner::Runner( Application *a )
   /* Initialize */
   r_acmd = new Task;
 
-  this->readHistory( r_history );
+  this->CheckHistory( );
   r_combo->setText( "" );
 }
 
 
 Runner::~Runner( )
-{
-  //FXint num = 0;
-
-  //if( r_acmd != NULL ) { delete r_acmd; }
-  r_history.save( r_CacheDir + "/History", true );
-
-  /*
-  FXFileStream b_fd( r_CacheDir + "/History.buf", FXStreamSave );
-  if( ( num = p_buffer.no( ) ) > 0 ) {
-    std::cout << "Number object for saving on stream: " << num << std::endl;
-    for( FXint i = 0; i != num; i++ ) {
-      p_buffer[ i ]->save( b_fd );
-    }
-  }
-  b_fd.close( );
-  */
-}
+{  }
 
 void Runner::create( )
 {
-  
-
   FXGWindow::create( );
   show( PLACEMENT_SCREEN );
 }
@@ -140,8 +122,8 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
         ///if( exec( r_acmd ) == false ) { FXMessageBox::warning( this, MBOX_OK, "Novy proces", " Proces nebyl spusten!" ); }
         ///app->command_write( r_acmd, r_lpth );
         // Set command history
-        r_history.insert( r_acmd->cmd );
-        this->readHistory( r_history );
+        History( )->insert( r_acmd->cmd );
+        this->CheckHistory( );
         //this->p_buffer.append( r_acmd );
         r_combo->setText( "" );
         // Command reset
@@ -172,7 +154,7 @@ void Runner::load( )
 
   // Nacist ulozena configuracni data
   r_ShareDir = a->reg( ).readStringEntry( "Path",   "Share",   ( FXSystem::getHomeDirectory( ) + "/.local/share/" + a->getAppName( ) ).text( ) );
-  r_CacheDir = a->reg( ).readStringEntry( "Path",   "Cache",   ( FXSystem::getHomeDirectory( ) + "/.cache/" + a->getAppName( ) ).text( ) );
+//  r_CacheDir = a->reg( ).readStringEntry( "Path",   "Cache",   ( FXSystem::getHomeDirectory( ) + "/.cache/" + a->getAppName( ) ).text( ) );
   r_WorkDir  = a->reg( ).readStringEntry( "Path",   "Work",    FXSystem::getHomeDirectory( ).text( ) );
 
   r_NoQuit = a->reg( ).readBoolEntry(     "Runner", "NoQuit",     false );
@@ -187,10 +169,6 @@ void Runner::load( )
   if( FXStat::exists( r_ShareDir ) == false ) { FXDir::create( r_ShareDir, FXIO::OwnerFull ); }
   if( FXStat::exists( r_CacheDir ) == false ) { FXDir::create( r_CacheDir, FXIO::OwnerFull ); }
 
-
-
-  // Historie
-  r_history.load( r_CacheDir + "/History" );
 }
 
 void Runner::save( )
@@ -199,7 +177,7 @@ void Runner::save( )
 
 }
 
-/*************************************************************************************************/
+/**************************************************************************************************/
 long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
 {
    switch( FXSELID( sel ) ) {
@@ -248,7 +226,7 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
      case Runner::ID_NOQUIT   : { r_NoQuit    = status; break; }
      case Runner::HYSTORY_CLEAR : {
        r_combo->clearItems( );
-       r_history._clear( );
+       History( )->_clear( );
      }
    }
    //
@@ -257,17 +235,17 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
    return 1;
 }
 
-
-
-FXint Runner::readHistory( const History_b &buff )
+/**************************************************************************************************/
+FXint Runner::CheckHistory( )
 {
   FXint id, num = 0;
   FXString cmd;
+  History_b *history = dynamic_cast<Application*>( getApp( ) )->get_History( );
 
   r_combo->clearItems( );
-  if( buff.no( ) > 0 ) {
-    for( FXint i = ( buff.no( ) - 1 ); i >= 0; i-- ) {
-      cmd = buff.at( i );
+  if( history->no( ) > 0 ) {
+    for( FXint i = ( history->no( ) - 1 ); i >= 0; i-- ) {
+      cmd = history->at( i );
       //std::cout << cmd.text( ) << std::endl;
       if( r_combo->findItem( cmd ) == -1 ) {
         id = r_combo->getNumItems( );

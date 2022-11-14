@@ -42,6 +42,7 @@ struct app_config {       // konfiguracni data tridy Application
   FXString term_work;     // parametr terminalu, nastavit pracovni adresar 
   FXString icon_path;     // cesta k ikonam aplikace
   FXString icons_name;    // Nazev ikonoveho tematu
+  FXString cache_dir;     // Cache Adresas 
 };
 
 
