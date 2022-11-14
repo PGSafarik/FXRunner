@@ -40,7 +40,7 @@ FXDECLARE( Runner )
 
   //FXStringList history;
   History_b r_history;
-  FXArray<Task*> p_buffer;
+  //FXArray<Task*> p_buffer;
 
   /* Configuration data */
   // Paths

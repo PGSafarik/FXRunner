@@ -78,11 +78,12 @@ Runner::Runner( Application *a )
 
 Runner::~Runner( )
 {
-  FXint num = 0;
+  //FXint num = 0;
 
   //if( r_acmd != NULL ) { delete r_acmd; }
   r_history.save( r_CacheDir + "/History", true );
 
+  /*
   FXFileStream b_fd( r_CacheDir + "/History.buf", FXStreamSave );
   if( ( num = p_buffer.no( ) ) > 0 ) {
     std::cout << "Number object for saving on stream: " << num << std::endl;
@@ -91,6 +92,7 @@ Runner::~Runner( )
     }
   }
   b_fd.close( );
+  */
 }
 
 void Runner::create( )
@@ -140,7 +142,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
         // Set command history
         r_history.insert( r_acmd->cmd );
         this->readHistory( r_history );
-        this->p_buffer.append( r_acmd );
+        //this->p_buffer.append( r_acmd );
         r_combo->setText( "" );
         // Command reset
         r_acmd = NULL;
