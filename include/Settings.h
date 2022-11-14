@@ -58,8 +58,8 @@ public :
   /* Operations */
   virtual void create( );
 
-  void read_config( );
-  void write_config( );  
+  void check( );
+  void apply( );
 
   /* GUI messages & handlers */ 
   enum {
@@ -74,8 +74,6 @@ public :
   long onCmd_Settings( FXObject *sender, FXSelector sel, void *data );
   long onUpd_Settings( FXObject *sender, FXSelector sel, void *data );
   long onCmd_Update( FXObject *sender, FXSelector sel, void *data );
-
-  
 
 protected:
   Settings( ) { }

@@ -51,7 +51,7 @@ Runner::Runner( Application *a )
   /* Work dir field */ 
   new FXLabel( matrix, "Workdir: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL_X );
   r_tfield = new FXTextField( matrix, ncol, NULL, 0, TEXTFIELD_NORMAL | LAYOUT_FILL_X );
-  r_tfield->setText( r_WorkDir );
+  r_tfield->setText( FXSystem::getHomeDirectory( ) );
 
   /* HEADER BAR */
   FXWindowHeader *whb = this->getHeader( );
@@ -149,6 +149,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
 
 void Runner::load( )
 {
+/*
   FXApp *a = getApp( );
 
   // Nacist ulozena configuracni data
@@ -167,7 +168,7 @@ void Runner::load( )
   // Kontrola adresaru
   if( FXStat::exists( r_ShareDir ) == false ) { FXDir::create( r_ShareDir, FXIO::OwnerFull ); }
   if( FXStat::exists( r_CacheDir ) == false ) { FXDir::create( r_CacheDir, FXIO::OwnerFull ); }
-
+*/
 }
 
 void Runner::save( )

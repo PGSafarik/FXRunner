@@ -86,77 +86,59 @@ Settings::~Settings( )
 
 void Settings::create( )
 {
-  read_config( );
+  //read_config( );
+  check( );
   m_change = false;
 
  FXScrollWindow::create( );
 }
 
 /*************************************************************************************************/
-void Settings::read_config( )
+void Settings::check( )
 {
-  FXint    cfg_id;
-  FXString cfg_prefix;
+  FXint        cfg_id;
+  Application *app = dynamic_cast<Application*>( getApp( ) );
 
-  if ( getApp( )->reg( ).used( ) < 1 ) { getApp( )->reg( ).read( ); }
+  if( app ) {
+    cfg_id =  uicb_IconsTheme->findItem( app->a_cfg->icons_name );
+    if( cfg_id >= 0 ) { uicb_IconsTheme->setCurrentItem( cfg_id ); } 
+    uitf_cache->setText( app->a_cfg->cache_dir );
 
-  cfg_prefix = CFG_UI_PREFIX;
-  FXString icth_str = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", "Faenza" );
-  FXString cache_str = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir", ( FXSystem::getHomeDirectory( ) + "/.cache").text( ) );
-  cfg_id =  uicb_IconsTheme->findItem( icth_str );
-  if( cfg_id >= 0 ) { uicb_IconsTheme->setCurrentItem( cfg_id ); } 
-  uitf_cache->setText( cache_str );
-  
+    such_enable->setCheck( app->a_cfg->sudo );
+    such_askpass->setCheck( app->a_cfg->askpass );
 
-  cfg_prefix = CFG_SUDO_PREFIX;
-  FXbool sudo_enable  = getApp( )->reg( ).readBoolEntry(   CFG_RUNNER, cfg_prefix + ".Enable", true );
-  FXbool sudo_askpass = getApp( )->reg( ).readBoolEntry(   CFG_RUNNER, cfg_prefix + ".Askpass", false );
-  such_enable->setCheck( sudo_enable );
-  such_askpass->setCheck( sudo_askpass );
-
-  cfg_prefix = CFG_TERM_PREFIX;
-  FXString tenable_str = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".Enable", "On request" );
-  FXString tcmd     = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".Command", "/usr/bin/xterm" );
-  FXString texecprm = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec", "-e" );
-  FXString tnoclprm = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", "+hold" );
-  FXString tworkprm = getApp( )->reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_workdir", FXString::null );
-
-  cfg_id =  tecb_enable->findItem( tenable_str );
-  if( cfg_id >= 0 && !tcmd.empty( ) ) { 
-    tecb_enable->setCurrentItem( cfg_id ); 
-    tetf_command->setText( tcmd );
-    tetf_execprm->setText( texecprm );
-    tetf_disclosprm->setText( tnoclprm );
-    tetf_workdirprm->setText( tworkprm );
-  } 
-  else { tecb_enable->setCurrentItem( 2 ); }
+    cfg_id = tecb_enable->findItem( app->a_cfg->term_enable );
+      if( cfg_id >= 0 && !app->a_cfg->term.empty( ) ) { 
+      tecb_enable->setCurrentItem( cfg_id ); 
+      tetf_command->setText( app->a_cfg->term );
+      tetf_execprm->setText( app->a_cfg->term_run );
+      tetf_disclosprm->setText( app->a_cfg->term_noclose );
+      tetf_workdirprm->setText( app->a_cfg->term_work );
+    } 
+    else { tecb_enable->setCurrentItem( 2 ); }
+  }
 }
 
-void Settings::write_config( )  
+void Settings::apply( )
 {
-  FXint    cfg_id;
-  FXString cfg_prefix;
+  FXint        cfg_id;
+  Application *app = dynamic_cast<Application*>( getApp( ) );
 
-  if( getApp( )->reg( ).existingSection( CFG_RUNNER ) ) { m_revert = getApp( )->reg( ).at( CFG_RUNNER ); }
- 
-  cfg_prefix = CFG_UI_PREFIX;
   cfg_id = uicb_IconsTheme->getCurrentItem( );  
-  getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", uicb_IconsTheme->getItem( cfg_id ).text( ) );
-  getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir", uitf_cache->getText( ).text( ) );
+  app->a_cfg->icons_name = uicb_IconsTheme->getItem( cfg_id );
+  app->a_cfg->cache_dir  = uitf_cache->getText( );
 
-  cfg_prefix = CFG_SUDO_PREFIX;
-  getApp( )->reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".Enable",  such_enable->getCheck( ) );
-  getApp( )->reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".Askpass", such_askpass->getCheck( ) );
+  app->a_cfg->sudo    = such_enable->getCheck( );
+  app->a_cfg->askpass = such_askpass->getCheck( );
 
-  cfg_prefix = CFG_TERM_PREFIX;
   cfg_id = tecb_enable->getCurrentItem( );
-  getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".Enable",       tecb_enable->getItem( cfg_id ).text( ) );
-  getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".Command",      tetf_command->getText( ).text( ) );
-  getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec",     tetf_execprm->getText( ).text( ) );
-  getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", tetf_disclosprm->getText( ).text( ) );
-  getApp( )->reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_workdir",  tetf_workdirprm->getText( ).text( ) );
+  app->a_cfg->term_enable  = tecb_enable->getItem( cfg_id ).text( );
+  app->a_cfg->term         = tetf_command->getText( ).text( );
+  app->a_cfg->term_run     = tetf_execprm->getText( ).text( );
+  app->a_cfg->term_noclose = tetf_disclosprm->getText( ).text( );
+  app->a_cfg->term_work    = tetf_workdirprm->getText( ).text( );
 
-  getApp( )->reg( ).write( );
+  app->a_cfg->change = true; 
 }
 
 /*************************************************************************************************/
@@ -168,7 +150,8 @@ long Settings::onCmd_Settings( FXObject *sender, FXSelector sel, void *data )
   switch( id ) {
     case Settings::SETTINGS_SAVE :
     {
-      write_config( ); 
+      //write_config( ); 
+      apply( );
       m_change = false;
       Notify( );
 
@@ -176,6 +159,7 @@ long Settings::onCmd_Settings( FXObject *sender, FXSelector sel, void *data )
     }
     case Settings::SETTINGS_RESTORE :
     {
+      /* 
       if( isBackup( ) )
       {
         if( FXMessageBox::question( this, MBOX_YES_NO, "Restore FoxGHI settings", "Do you really want to restore the original settings?" ) == MBOX_CLICKED_YES ) {
@@ -188,15 +172,18 @@ long Settings::onCmd_Settings( FXObject *sender, FXSelector sel, void *data )
         }  
       }
       else { FXMessageBox::warning( this, MBOX_OK, "Restore FoxGHI settings", "Unfortunately there is no data available for recovery." ); } 
+      */
       break; 
     }
     case Settings::SETTINGS_DEFAULT :
     {
       if( FXMessageBox::question( this, MBOX_YES_NO, "Predefined FoxGHI settings", "Do you really want predefined settings?" ) == MBOX_CLICKED_YES ) {
+        /*
         if( getApp( )->reg( ).existingSection( CFG_RUNNER ) ) { getApp( )->reg( ).deleteSection( CFG_RUNNER ); }
         read_config( );
         m_change = true;
         Notify( );
+        */
       }
       break;
     }

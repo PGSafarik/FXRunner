@@ -32,6 +32,7 @@ Application::Application( )
   std::cout << "=== Message =========================================" << std::endl;
 
   a_cfg = new app_config;
+  
   a_iconsth = new FXIconsTheme( this );
   a_history = new History_b( );
 
@@ -114,7 +115,8 @@ void Application::task_write( Task *cmd, const FXString &pth )
   FXString   desk_head = "Desktop Entry";
   FXString   command, name = FXPath::name( cmd->cmd );
 
-  if( cmd->su == true ) { command += a_cfg->su + " "; }
+  /// FIXME APP_001 : sudo!
+  //if( cmd->su == true ) { command += a_cfg->su + " "; }
   command += cmd->cmd;
   if( !cmd->prm.empty( ) ) { command += " " + cmd->prm; }
 
@@ -134,8 +136,6 @@ void Application::task_write( Task *cmd, const FXString &pth )
 
 void Application::settings_load( )
 {
-  // a->getAppName( )
-
   reg( ).read( );
   
   FXString cfg_prefix = CFG_UI_PREFIX;
@@ -145,30 +145,58 @@ void Application::settings_load( )
   cfg_prefix = CFG_SUDO_PREFIX;
   a_cfg->sudo    = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".Enable", true );
   a_cfg->askpass = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".Askpass", false );  
-  a_cfg->su      = reg( ).readStringEntry( getClassName( ), "Change user",  "kdesudo" );
   
   cfg_prefix = CFG_TERM_PREFIX;
+  a_cfg->term_enable  = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".Enable", "On request" );
   a_cfg->term         = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".Command", "/usr/bin/xterm" );
   a_cfg->term_noclose = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", "+hold" );
   a_cfg->term_run     = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec", "-e" );
-  //a_cfg-> = reg( ).readStringEntry( getClassName( ), "", FXString::null ); */
+
 
   // GUI Icons theme
   a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
 
   // Read a launch history 
-  a_history->load( a_cfg->cache_dir + "/" +  getAppName( ) + "/History" );
+  a_history->read( a_cfg->cache_dir + "/" +  getAppName( ) );
+
+  a_cfg->change = false;
 }
 
 void Application::settings_save( )
 {
-  /* // Save config here! ONLY!!!!!!!!!!
-    
+   
+  FXint    cfg_id;
+  FXString cfg_prefix;
 
-  if( reg( ).isModified( ) == true ) { reg( ).write( ); }
-  */
+  if( a_cfg->change ) {
+    //if( reg( ).existingSection( CFG_RUNNER ) ) { m_revert = getApp( )->reg( ).at( CFG_RUNNER ); }
+ 
+    cfg_prefix = CFG_UI_PREFIX;
+    //cfg_id = uicb_IconsTheme->getCurrentItem( );  
+    reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", a_cfg->icons_name.text( ) );
+    reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir",   a_cfg->cache_dir.text( )  );
 
-  a_history->save( a_cfg->cache_dir + "/" +  getAppName( ) + "/History", true );
+    cfg_prefix = CFG_SUDO_PREFIX;
+    reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".Enable",  a_cfg->sudo );
+    reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".Askpass", a_cfg->askpass );
+
+    cfg_prefix = CFG_TERM_PREFIX;
+    //cfg_id = tecb_enable->getCurrentItem( );
+    reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".Enable",       a_cfg->term_enable.text( ) );
+    reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".Command",      a_cfg->term.text( ) );
+    reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec",     a_cfg->term_run.text( ) );
+    reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", a_cfg->term_noclose.text( ) );
+    reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_workdir",  a_cfg->term_work.text( ) );
+
+  //reg( ).write( );    
+
+    if( reg( ).isModified( ) == true ) { 
+      reg( ).write( ); 
+      a_cfg->change = true;
+    }
+  }
+
+  a_history->write( a_cfg->cache_dir + "/" +  getAppName( ), true );
 }
 
 /*************************************************************************************************/

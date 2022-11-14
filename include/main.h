@@ -34,8 +34,7 @@ typedef FXArray<FXString> FXString_List;
 struct app_config {       // konfiguracni data tridy Application
   FXbool sudo;            // [Sudo.Enable]  - Povolit spusteni s pravy superuzivatele (s pomoci sudo )
   FXbool askpass;         // [Sudo.Askpass] - Povolit pouziti parametru askpass ( sudo -A ... )
-  FXString su;            // [X]
-  FXbool   term_enable;   // 
+  FXString term_enable;   // 
   FXString term;          // aplikace emulatoru terminalu
   FXString term_noclose;  // parametr terminalu, nezavirat terminal
   FXString term_run;      // parametr terminalu, spustit prikaz
@@ -43,30 +42,18 @@ struct app_config {       // konfiguracni data tridy Application
   FXString icon_path;     // cesta k ikonam aplikace
   FXString icons_name;    // Nazev ikonoveho tematu
   FXString cache_dir;     // Cache Adresas 
+
+  FXbool  change; 
 };
 
 
 /* Runner configure sections */
-/*
-[Runner]
-Term.arg_disclose=+hold
-Term.Enable=On request
-Term.arg_workdir=
-Sudo.Askpass=false
-Term.Command=/usr/bin/xterm
-Interface.IconsTheme=Oxygen
-Sudo.Enable=true
-Term.arg_exec=-e
-*/
 #define CFG_RUNNER      "Runner"
 #define CFG_TERM_PREFIX "Term"
 #define CFG_SUDO_PREFIX "Sudo"
 #define CFG_UI_PREFIX   "Interface"
 
 #define ICON_THEME_MAP  "/usr/share/FXRunner/data/icons.map"
-
-
-
 
 #endif /* __MAIN_H */
 /*** END ****************************************************************/

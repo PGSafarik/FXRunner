@@ -22,10 +22,12 @@
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
-#include<History.h>
+#include<History.h> 
 
 class Application : public FXApp {
 FXDECLARE( Application )
+  friend class Settings;
+
   app_config   *a_cfg;       // Konfiguracni data aplikace
   FXIconsTheme *a_iconsth;   // Spravce ikonoveho schematu
   History_b    *a_history;   // Spravce historie spustenych prikazu
@@ -35,10 +37,10 @@ public :
   virtual ~Application( );
 
   // Operations
-  int task_exec( Task *cmd );                                         // Spusti prikaz
+  int task_exec( Task *cmd );                                          // Spusti prikaz
   void task_write( Task *cmd, const FXString &pth = FXString::null );  // Zapise prikaz do desktop souboru
-  FXIconsTheme* get_iconstheme( ) { return a_iconsth; }
-  History_b*    get_History( )    { return a_history; }
+  FXIconsTheme* get_iconstheme( ) { return a_iconsth; }                // Get a icons theme instance
+  History_b*    get_History( )    { return a_history; }                // Get cache object, represent the launch history 
 
 protected :
   // Helpers
