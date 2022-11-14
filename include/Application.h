@@ -47,6 +47,8 @@ protected :
   void settings_load( );
   void settings_save( );
 
+  FXString CheckPrivilege( Task *t );  // Check to using sudo
+  FXString CheckTerminal( Task *t );   // Check to using terminal emulator 
 };
 
 #endif /* __APPLICATION_H */

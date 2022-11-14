@@ -21,7 +21,7 @@ FXIMPLEMENT( Application, FXApp, APPLICATION_MAP, ARRAYNUMBER( APPLICATION_MAP )
 
 /*************************************************************************************************/
 Application::Application( )
-           : FXApp( "Runner", "TigerDesktopTools" )
+           : FXApp( "Runner", "FOX-DESKTOP" )
 {
   std::cout << "=== FXRunner ========================================" << std::endl;
   std::cout << "Copyright " << AutoVersion::DATE << "/" << AutoVersion::MONTH << "/" << AutoVersion::YEAR << "  D.A.Tiger <drakarax@seznam.cz>, GNU GPL 3" << std::endl;
@@ -50,37 +50,10 @@ Application::~Application( )
 FXint Application::task_exec( Task *cmd )
 {
   FXint resh = -1;
-  FXString _command = "";
-  FXString _cmd = "";
-  FXString _term = "";
-
-  std::cout << "Running: " << cmd->cmd.text( ) << std::endl;
-/*
-  std::cout << cmd->cmd.text( ) << std::endl;
-  std::cout << cmd->wpth.text( ) << std::endl;
-  std::cout << cmd->su << std::endl;
-  std::cout << cmd->ow << std::endl;
-  std::cout << cmd->te << std::endl;
-*/
-
-  // Run command as super user
-  if( cmd->su && a_cfg->sudo  ) { 
-    _command += "sudo"; 
-    _command += ( a_cfg->askpass ? " -A " : " " );
-  }
-
-  // Spustit v terminalu
-  if( cmd->te == true ) {
-    _term = a_cfg->term + " ";
-    // Nastavit pracovni cestu v terminalu
-    if( !cmd->wpth.empty( ) ) {
-      if( cmd->te ) { _term += "--workdir " + cmd->wpth + " "; }
-      else { _cmd += "cd " + cmd->wpth + "; "; }
-    }
-    // Nezavirat terminal
-    if( cmd->lt == true ) { _term += a_cfg->term_noclose + " "; }
-    _term += a_cfg->term_run + " ";
-  }
+  FXString _command = "";  // Kompletni prikaz ke spusteni
+  FXString _cmd = "";      // zadany prikaz  
+  FXString _term = "";     // prikaz terminalu
+  FXString _paccess = "";  // prikaz pro privilegovany pristup
 
   // Prikaz
   if( !cmd->cmd.empty( ) ) { _cmd += cmd->cmd; }
@@ -91,16 +64,12 @@ FXint Application::task_exec( Task *cmd )
   //if( cmd->te == true ) { _cmd = "\"" + _cmd + "\""; }
 
   if( _cmd.empty( ) != true  ) {
-    _command += _term + _cmd;
-    std::cout << _command.text( ) << std::endl;
+    _command = CheckTerminal( cmd ) + CheckPrivilege( cmd ) + _cmd;
+    std::cout << "Running: " << _command.text( ) << std::endl;
     resh = system( _command.text( ) );
   }
-  /*
-    FXProcess proc;
-    proc.start( _cmd.text( ), _args.data( ) );
-    a_processes->insert( &proc );
-  */
-  //std::cout<< "Execute resulth " << resh << std::endl;
+  
+  std::cout<< "Execute resulth " << resh << std::endl;
 
   return resh;
 }
@@ -164,8 +133,6 @@ void Application::settings_load( )
 
 void Application::settings_save( )
 {
-   
-  FXint    cfg_id;
   FXString cfg_prefix;
 
   if( a_cfg->change ) {
@@ -188,8 +155,6 @@ void Application::settings_save( )
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", a_cfg->term_noclose.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_workdir",  a_cfg->term_work.text( ) );
 
-  //reg( ).write( );    
-
     if( reg( ).isModified( ) == true ) { 
       reg( ).write( ); 
       a_cfg->change = true;
@@ -199,5 +164,49 @@ void Application::settings_save( )
   a_history->write( a_cfg->cache_dir + "/" +  getAppName( ), true );
 }
 
+FXString Application::CheckPrivilege( Task *t )
+{
+  FXString resh = "";
+
+  if( t->su && a_cfg->sudo  ) { 
+    resh = "sudo"; 
+    resh += ( a_cfg->askpass ? " -A " : " " );
+  }
+  
+  return resh;
+}
+
+FXString Application::CheckTerminal( Task *t )
+{
+  FXString resh       = "";                            // Vysledny prikaz
+  FXString supplement = "";                            // Doplnek prikazu
+  FXbool   pa_term    = ( t->su && !a_cfg->askpass );  // Ma byt ET pouzit k autentizaci pro sudo?
+  FXbool   use        = false;                         // Je ET vubec vyzadovan a povolen?
+
+  if( a_cfg->term_enable != "Disable" ) {
+    if( a_cfg->term_enable == "Always" )  { use = true; }
+    else if( t->te || pa_term )           { use = true; }
+  }
+  //else { std::cout << "TE is disable" << std::endl; }
+  
+  if( use ) {
+    // Zakldni prikaz - binarka
+    resh = a_cfg->term + " ";
+
+    // Nezavirat terminal
+    if( t->lt == true ) { resh += a_cfg->term_noclose + " "; }
+
+    // Nastavit pracovni cestu v terminalu
+    if( !t->wpth.empty( ) ) {
+      if( !a_cfg->term_work.empty( ) ) { resh += a_cfg->term_work + t->wpth + " "; }
+      //else { supplement = "/bin/cd " + t->wpth + "; "; }
+    }
+
+    // Kompletni retezec prikazu emul. term.
+    resh += a_cfg->term_run + " " + supplement;
+  }
+
+  return resh;
+}
 /*************************************************************************************************/
 /* END */
