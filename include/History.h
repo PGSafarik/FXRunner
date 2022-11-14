@@ -30,7 +30,7 @@ class History_b : public FXArray<FXString> {
   FXbool   h_change;
 
 public :
-  History_b( FXint num = 0, const FXString name = "UNAMED CACHE" );
+  History_b( FXint num = 0, const FXString name = "History" );
   virtual ~History_b( );
 
   void dump( );
@@ -38,8 +38,8 @@ public :
   void insert( const FXString &data );
   void _clear( );
 
-  FXbool save( const FXString &file, FXbool mk = false );
-  FXbool load( const FXString &file );
+  FXbool write( const FXString &cache_dir, FXbool mk = false );
+  FXbool read( const FXString &cache_dir );
 };
 
 #endif /* __HISTORY_H */
