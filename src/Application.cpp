@@ -17,7 +17,7 @@
 #include<Application.h>
 
 FXDEFMAP( Application ) APPLICATION_MAP[ ] = { 
-  FXMAPFUNCS( SEL_COMMAND, Application::QUIT_NEGATIONON, Application::QUIT_NEGATIONOFF, Application::OnCmd_QuitNegation )
+  FXMAPFUNC( SEL_COMMAND, Application::QUIT_NEGATION, Application::OnCmd_QuitNegation )
 };
 
 FXIMPLEMENT( Application, FXApp, APPLICATION_MAP, ARRAYNUMBER( APPLICATION_MAP ) )
@@ -111,7 +111,6 @@ void Application::task_write( Task *cmd, const FXString &pth )
 /**************************************************************************************************/
 long Application::OnCmd_QuitNegation( FXObject *tgt, FXSelector sel, void *data )
 {
-  //a_nquit_flg = ( FXSELID( sel ) == Application::QUIT_NEGATIONON ); 
   a_nquit_flg = !a_nquit_flg;
   return 1;
 }

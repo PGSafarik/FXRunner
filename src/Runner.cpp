@@ -242,7 +242,7 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
          FXbool state =  App( )->autoexit( );
          check->setCheck( state ); 
        }
-       else { App( )->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATIONON ), NULL ); }
+       else { App( )->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATION ), NULL ); }
        break; 
      }
      case Runner::HYSTORY_CLEAR : {

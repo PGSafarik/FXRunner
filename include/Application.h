@@ -49,8 +49,7 @@ public :
   FXbool        is_silent( )      { return a_cfg->silent_exit; }
 
   enum {
-    QUIT_NEGATIONON = FXApp::ID_LAST,
-    QUIT_NEGATIONOFF,
+    QUIT_NEGATION = FXApp::ID_LAST,
     ID_LAST
   };
   long OnCmd_QuitNegation( FXObject *tgt, FXSelector sel, void *data );
