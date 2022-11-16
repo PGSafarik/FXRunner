@@ -25,6 +25,7 @@ FXDEFMAP( Settings ) SETTINGS_MAP[ ] = {
   FXMAPFUNC( SEL_COMMAND, Settings::SETTINGS_RESTORE, Settings::onCmd_Settings ),
   FXMAPFUNC( SEL_UPDATE,  Settings::SETTINGS_RESTORE, Settings::onUpd_Settings ),
   FXMAPFUNC( SEL_COMMAND, Settings::SETTINGS_DEFAULT, Settings::onCmd_Settings ),
+  FXMAPFUNCS( SEL_COMMAND, Settings::SELECT_DIRECTORY, Settings::SELECT_FILE, Settings::onCmd_Select ),
   FXMAPFUNC( SEL_COMMAND, Settings::ID_CHANGE,        Settings::onCmd_Update   )
 };
 FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) )
@@ -33,53 +34,34 @@ FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) 
 Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
         :FXScrollWindow( p, VSCROLLER_ALWAYS | LAYOUT_FILL, 0, 0, 0, 0 ) 
 {
-  
-  //FXScrollWindow  *scroller = new FXScrollWindow( this, VSCROLLER_ALWAYS | LAYOUT_FILL, 0, 0, 0, 0 );
-  FXVerticalFrame *content  = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL ); 
+  content  = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL ); 
 
-  MakeTitle( content, "Terminal emulator"  );
-  //FXMatrix *mte = new FXMatrix( this, 2, MATRIX_BY_COLUMNS | LAYOUT_FILL_X ); 
-
-  new FXLabel( content, "Enable: ", NULL, LABEL_STYLE );
-  tecb_enable = new FXComboBox( content, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
-  tecb_enable->appendItem ( "Always" );     // Vsechno spuustet v terminalu
-  tecb_enable->appendItem ( "On request" ); // Jen na vyzadani ( i pro sudo, kdyz neni k dispozici askpass ) 
-  tecb_enable->appendItem ( "Disable" );    // Zakaze emulator terminalu 
-  tecb_enable->setNumVisible( 3 );
-  //tecb_enable->setCurrentItem( 1 );
-
-  new FXLabel( content, "Command: ", NULL, LABEL_STYLE);
-  tetf_command = new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
-
-  new FXLabel( content, "Argument for exec : ", NULL, LABEL_STYLE );
-  tetf_execprm = new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
-
-  new FXLabel( content, "Argument for disable close : ", NULL, LABEL_STYLE );
-  tetf_disclosprm = new FXTextField( content,  51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
-
-  new FXLabel( content, "Argument for set workpath : ", NULL, LABEL_STYLE );
-  tetf_workdirprm = new FXTextField( content,  51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
-
-  MakeTitle( content, "Super user access" );
-  such_enable  = new FXCheckButton( content, "Enable using sudo", this, Settings::ID_CHANGE );
-  such_askpass = new FXCheckButton( content, "Enable using askpass - must be installed!", this, Settings::ID_CHANGE );
-
-  MakeTitle( content, "User interface" );
-
-  new FXLabel( content, "Icons Theme: ", NULL, LABEL_STYLE );
-  uicb_IconsTheme = new FXComboBox( content, 5, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
+  MakeTitle( "User interface" );
+  uicb_IconsTheme = MakeComboBox( "Icons Theme: " ); 
   uicb_IconsTheme->setNumVisible( 5 );
   uicb_IconsTheme->appendItem( "Oxygen" );
   uicb_IconsTheme->appendItem( "Gnome" );
   uicb_IconsTheme->appendItem( "Adwaita" );
   uicb_IconsTheme->appendItem( "Faenza" );
+  uitf_cache = MakeSelector( "Cache directory : ", this, Settings::SELECT_DIRECTORY ); 
+  uich_aexit = MakeCheckButton( "Exit after run application");
+  uich_sexit = MakeCheckButton( "Not to require confirmation of program termination" );
 
-  new FXLabel( content, "Cache directory : ", NULL, LABEL_STYLE );
-  uitf_cache = new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  MakeTitle( "Terminal emulator"  );
+  tecb_enable = MakeComboBox( "Enable: " ); 
+  tecb_enable->appendItem ( "Always" );     // Alway  all commands run in TE
+  tecb_enable->appendItem ( "On request" ); // Use TE only on request ( also for sudo when askpass is not available ) 
+  tecb_enable->appendItem ( "Disable" );    // Disable TE
+  tecb_enable->setNumVisible( 3 );
+  tetf_command    = MakeSelector( "Command: ", this, Settings::SELECT_FILE );
+  tetf_execprm    = MakeTextField( "Argument for exec : " );
+  tetf_disclosprm = MakeTextField(  "Argument for disable close : " );
+  tetf_workdirprm = MakeTextField(  "Argument for set workpath : " );
   
-  uich_aexit = new FXCheckButton( content, "Exit after run application", this, Settings::ID_CHANGE );
-  uich_sexit = new FXCheckButton( content, "Not to require confirmation of program termination", this, Settings::ID_CHANGE );
- 
+  MakeTitle( "Super user access" );
+  such_enable  = MakeCheckButton( "Enable using sudo" ); 
+  such_askpass = MakeCheckButton( "Enable using askpass - must be installed!" ); 
+
   target   = tgt;
   message = sel;
 }
@@ -221,6 +203,31 @@ long Settings::onUpd_Settings( FXObject *sender, FXSelector sel, void *data )
   return 1;
 }
 
+long Settings::onCmd_Select( FXObject *sender, FXSelector sel, void *data )
+{
+  long resh = 1;
+  FXButton    *btn = static_cast<FXButton*>( sender );
+  FXTextField *tf  = static_cast<FXTextField*>( btn->getUserData( ) );
+
+  switch( FXSELID( sel ) ) {
+    case Settings::SELECT_DIRECTORY :
+    {
+      FXDirDialog dirdlg( this, "Select directory:" );
+      if( dirdlg.execute( ) ) { tf->setText( dirdlg.getDirectory( ) ); } 
+      break;
+    } 
+     
+    case Settings::SELECT_FILE :
+    {
+      FXFileDialog filedlg( this, "Select file:" );
+      if( filedlg.execute( ) ) { tf->setText( filedlg.getFilename( ) ); }
+      break;
+    }
+  }
+
+  return resh;
+}
+
 long Settings::onCmd_Update( FXObject *sender, FXSelector sel, void *data )
 {
   
@@ -229,10 +236,39 @@ long Settings::onCmd_Update( FXObject *sender, FXSelector sel, void *data )
 }
 
 /**************************************************************************************************/
-void Settings::MakeTitle( FXComposite *p, const FXString &text, FXIcon *ic )
+void Settings::MakeTitle( const FXString &text, FXIcon *ic )
 {
-  FXLabel *label = new FXLabel( p, text, ic, LABEL_NORMAL | LAYOUT_FILL_X  );
+  FXLabel *label = new FXLabel( content, text, ic, LABEL_NORMAL | LAYOUT_FILL_X  );
   label->setBackColor( getApp( )->getShadowColor( ) );
+}
+
+FXCheckButton* Settings::MakeCheckButton( const FXString &label )
+{
+  return new FXCheckButton( content, label, this, Settings::ID_CHANGE );
+}
+
+FXComboBox* Settings::MakeComboBox( const FXString &label )
+{
+ new FXLabel( content, label, NULL, LABEL_STYLE );
+ FXHorizontalFrame *frame = new FXHorizontalFrame( content, FRAME_SUNKEN | LAYOUT_FILL_X, 0, 0, 0, 0,  1, 1, 1, 1 );
+ return new FXComboBox( frame, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
+}
+
+FXTextField* Settings::MakeTextField( const FXString &label )
+{
+  new FXLabel( content, label, NULL, LABEL_STYLE);
+  return new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+}
+
+FXTextField* Settings::MakeSelector( const FXString &label, FXObject *_tgt, FXSelector _sel )
+{
+  new FXLabel( content, label, NULL, LABEL_STYLE);
+  FXHorizontalFrame *frame = new FXHorizontalFrame( content, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0 );
+  FXTextField *field = new FXTextField( frame, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  FXButton *button = new FXButton( frame, " ... ", NULL, _tgt, _sel, BUTTON_NORMAL );
+  button->setUserData( field );
+
+  return field;
 }
 
 /**************************************************************************************************/

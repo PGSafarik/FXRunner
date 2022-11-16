@@ -30,6 +30,7 @@ class Settings : public FXScrollWindow {
 FXDECLARE( Settings )
   FXbool m_change;             // indicate change settings state
   FXStringDictionary m_revert; // indicate revert back is available 
+  FXVerticalFrame *content;     // Frame for configurations content
 
   /* Terminal emulator */
   FXComboBox   *tecb_enable;     // [enable]       - Enable/on request/disable 
@@ -68,11 +69,13 @@ public :
     SETTINGS_SAVE = FXScrollWindow::ID_LAST,
     SETTINGS_RESTORE,
     SETTINGS_DEFAULT,
+    SELECT_DIRECTORY,
+    SELECT_FILE,
     ID_CHANGE,
     ID_LAST,
   };
 
-  //long onCmd_Select( FXObject *sender, FXSelector sel, void *data );
+  long onCmd_Select( FXObject *sender, FXSelector sel, void *data );
   long onCmd_Settings( FXObject *sender, FXSelector sel, void *data );
   long onUpd_Settings( FXObject *sender, FXSelector sel, void *data );
   long onCmd_Update( FXObject *sender, FXSelector sel, void *data );
@@ -82,7 +85,11 @@ protected:
 
   /* Helper methods */
   void Notify( ) { if( target ) { target->tryHandle( this, FXSEL( SEL_CHANGED, message ), NULL ); } }
-  void MakeTitle( FXComposite *p, const FXString &text, FXIcon *ic = NULL );
+  void MakeTitle( const FXString &text, FXIcon *ic = NULL );
+  FXCheckButton* MakeCheckButton( const FXString &label );
+  FXComboBox*    MakeComboBox( const FXString &label );
+  FXTextField*   MakeTextField( const FXString &label );
+  FXTextField*   MakeSelector( const FXString &label, FXObject *_tgt = NULL, FXSelector _sel = 0 );
 
 };
 
