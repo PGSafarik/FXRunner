@@ -16,7 +16,7 @@
 *************************************************************************/
 #include<Settings.h>
 
-/* SETTINGS FRAME */
+/*** SETTINGS FRAME *******************************************************************************/
 #define LABEL_STYLE JUSTIFY_LEFT | ICON_BEFORE_TEXT | LAYOUT_FILL_X
 
 FXDEFMAP( Settings ) SETTINGS_MAP[ ] = { 
@@ -71,7 +71,6 @@ Settings::~Settings( )
 
 void Settings::create( )
 {
-  //read_config( );
   check( );
   m_change = false;
 
@@ -82,7 +81,7 @@ void Settings::create( )
 void Settings::check( )
 {
   FXint        cfg_id;
-  Application *app = dynamic_cast<Application*>( getApp( ) );
+  Application *app = App( );
 
   if( app ) {
     cfg_id =  uicb_IconsTheme->findItem( app->a_cfg->icons_name );
@@ -109,25 +108,27 @@ void Settings::check( )
 void Settings::apply( )
 {
   FXint        cfg_id;
-  Application *app = dynamic_cast<Application*>( getApp( ) );
+  Application *app = App( );
 
-  cfg_id = uicb_IconsTheme->getCurrentItem( );  
-  app->a_cfg->icons_name  = uicb_IconsTheme->getItem( cfg_id );
-  app->a_cfg->cache_dir   = uitf_cache->getText( );
-  app->a_cfg->auto_exit   = uich_aexit->getCheck( );
-  app->a_cfg->silent_exit = uich_sexit->getCheck( );
+  if( app ) {
+    cfg_id = uicb_IconsTheme->getCurrentItem( );  
+    app->a_cfg->icons_name  = uicb_IconsTheme->getItem( cfg_id );
+    app->a_cfg->cache_dir   = uitf_cache->getText( );
+    app->a_cfg->auto_exit   = uich_aexit->getCheck( );
+    app->a_cfg->silent_exit = uich_sexit->getCheck( );
 
-  app->a_cfg->sudo    = such_enable->getCheck( );
-  app->a_cfg->askpass = such_askpass->getCheck( );
+    app->a_cfg->sudo    = such_enable->getCheck( );
+    app->a_cfg->askpass = such_askpass->getCheck( );
 
-  cfg_id = tecb_enable->getCurrentItem( );
-  app->a_cfg->term_enable  = tecb_enable->getItem( cfg_id ).text( );
-  app->a_cfg->term         = tetf_command->getText( ).text( );
-  app->a_cfg->term_run     = tetf_execprm->getText( ).text( );
-  app->a_cfg->term_noclose = tetf_disclosprm->getText( ).text( );
-  app->a_cfg->term_work    = tetf_workdirprm->getText( ).text( );
+    cfg_id = tecb_enable->getCurrentItem( );
+    app->a_cfg->term_enable  = tecb_enable->getItem( cfg_id ).text( );
+    app->a_cfg->term         = tetf_command->getText( ).text( );
+    app->a_cfg->term_run     = tetf_execprm->getText( ).text( );
+    app->a_cfg->term_noclose = tetf_disclosprm->getText( ).text( );
+    app->a_cfg->term_work    = tetf_workdirprm->getText( ).text( );
 
-  app->a_cfg->change = true; 
+    app->a_cfg->change = true; 
+  }
 }
 
 /*************************************************************************************************/
@@ -139,7 +140,6 @@ long Settings::onCmd_Settings( FXObject *sender, FXSelector sel, void *data )
   switch( id ) {
     case Settings::SETTINGS_SAVE :
     {
-      //write_config( ); 
       apply( );
       m_change = false;
       Notify( );
@@ -187,45 +187,55 @@ long Settings::onUpd_Settings( FXObject *sender, FXSelector sel, void *data )
 {
   FXWindow *actor = static_cast<FXWindow*>( sender );
   
-  switch( FXSELID( sel ) ) {
-    case Settings::SETTINGS_SAVE : 
-    { 
-      isChanged( ) ? actor->enable( ) : actor->disable( );
-      break;
+  if( actor ) {
+    switch( FXSELID( sel ) ) {
+      case Settings::SETTINGS_SAVE : 
+      { 
+        isChanged( ) ? actor->enable( ) : actor->disable( );
+        break;
+      }
+
+      case Settings::SETTINGS_RESTORE :  
+      { 
+        isBackup( ) ? actor->enable( ) : actor->disable( );
+        break;
+      }
     }
-    case Settings::SETTINGS_RESTORE :  
-    { 
-      isBackup( ) ? actor->enable( ) : actor->disable( );
-      break;
-    }
+  
+    return 1;
   }
 
-  return 1;
+  return 0;
 }
 
 long Settings::onCmd_Select( FXObject *sender, FXSelector sel, void *data )
 {
-  long resh = 1;
   FXButton    *btn = static_cast<FXButton*>( sender );
   FXTextField *tf  = static_cast<FXTextField*>( btn->getUserData( ) );
 
-  switch( FXSELID( sel ) ) {
-    case Settings::SELECT_DIRECTORY :
-    {
-      FXDirDialog dirdlg( this, "Select directory:" );
-      if( dirdlg.execute( ) ) { tf->setText( dirdlg.getDirectory( ) ); } 
-      break;
-    } 
+  if( btn && tf ) {
+    switch( FXSELID( sel ) ) {
+      case Settings::SELECT_DIRECTORY :
+      {
+        FXDirDialog dirdlg( this, "Select directory:" );
+        dirdlg.setDirectory( FXSystem::getHomeDirectory( ) );
+        if( dirdlg.execute( ) ) { tf->setText( dirdlg.getDirectory( ) ); } 
+        break;
+      } 
      
-    case Settings::SELECT_FILE :
-    {
-      FXFileDialog filedlg( this, "Select file:" );
-      if( filedlg.execute( ) ) { tf->setText( filedlg.getFilename( ) ); }
-      break;
+      case Settings::SELECT_FILE :
+      {
+        FXFileDialog filedlg( this, "Select file:" );
+        filedlg.setDirectory( FXSystem::getHomeDirectory( ) );
+        if( filedlg.execute( ) ) { tf->setText( filedlg.getFilename( ) ); }
+        break;
+      }
     }
+
+    return 1;
   }
 
-  return resh;
+  return 0;
 }
 
 long Settings::onCmd_Update( FXObject *sender, FXSelector sel, void *data )
@@ -271,8 +281,7 @@ FXTextField* Settings::MakeSelector( const FXString &label, FXObject *_tgt, FXSe
   return field;
 }
 
-/**************************************************************************************************/
-/* SETTINGS DIALOG */
+/*** SETTINGS DIALOG ******************************************************************************/
 FXIMPLEMENT( SettingsDialog, FXGDialogBox, NULL, 0 )
 
 /**************************************************************************************************/
