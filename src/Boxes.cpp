@@ -44,7 +44,7 @@ FXMenuPane* FXMenuBox::make_menu( )
   // Nabidka volby
   new FXMenuCheck( ToolsMenu, "Superuzivatelska prava", tgt, Runner::ID_USER, 0 );
   new FXMenuCheck( ToolsMenu, "Neblokujici rezim", tgt, Runner::ID_ANNOUNCE, 0 );
-  new FXMenuCheck( ToolsMenu, "Nezavirat Launcher", tgt, Runner::ID_NOQUIT, 0 );
+  new FXMenuCheck( ToolsMenu, "Exit after run", tgt, Runner::ID_NOQUIT, 0 );
   new FXVerticalSeparator( ToolsMenu, SEPARATOR_GROOVE );
   new FXMenuCheck( ToolsMenu, "Spustit v terminalu", tgt, Runner::ID_TERMINAL, 0 );
   new FXMenuCheck( ToolsMenu, "Nezavirat terminal", tgt, Runner::ID_TERMLOCK, 0 );
@@ -100,7 +100,7 @@ FXMenuPane* FXOptionsBox::make_menu( )
   // Nabidka volby
   new FXMenuCheck( ToolsMenu, "Superuzivatelska prava", tgt, Runner::ID_USER, 0 );
   new FXMenuCheck( ToolsMenu, "Neblokujici rezim", tgt, Runner::ID_ANNOUNCE, 0 );
-  new FXMenuCheck( ToolsMenu, "Nezavirat Launcher", tgt, Runner::ID_NOQUIT, 0 );
+  new FXMenuCheck( ToolsMenu, "Exit after run", tgt, Runner::ID_NOQUIT, 0 );
   new FXVerticalSeparator( ToolsMenu, SEPARATOR_GROOVE );
   new FXMenuCheck( ToolsMenu, "Spustit v terminalu", tgt, Runner::ID_TERMINAL, 0 );
   new FXMenuCheck( ToolsMenu, "Nezavirat terminal", tgt, Runner::ID_TERMLOCK, 0 );
