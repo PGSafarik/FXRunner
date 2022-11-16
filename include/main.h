@@ -42,8 +42,10 @@ struct app_config {       // konfiguracni data tridy Application
   FXString icon_path;     // cesta k ikonam aplikace
   FXString icons_name;    // Nazev ikonoveho tematu
   FXString cache_dir;     // Cache Adresas 
+  FXbool   auto_exit;     // Automaticaly exit FXRunner after launch application
+  FXbool   silent_exit;   // Require confirmation of program termination
 
-  FXbool  change; 
+  FXbool  change;         // Indicate changes
 };
 
 

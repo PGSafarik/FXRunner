@@ -16,7 +16,10 @@
 *************************************************************************/
 #include<Application.h>
 
-FXDEFMAP( Application ) APPLICATION_MAP[ ] = { };
+FXDEFMAP( Application ) APPLICATION_MAP[ ] = { 
+  FXMAPFUNCS( SEL_COMMAND, Application::QUIT_NEGATIONON, Application::QUIT_NEGATIONOFF, Application::OnCmd_QuitNegation )
+};
+
 FXIMPLEMENT( Application, FXApp, APPLICATION_MAP, ARRAYNUMBER( APPLICATION_MAP ) )
 
 /*************************************************************************************************/
@@ -37,6 +40,8 @@ Application::Application( )
   a_history = new History_b( );
 
   settings_load( );
+
+  a_nquit_flg = false;
   std::cout.flush( );
 }
 
@@ -103,13 +108,24 @@ void Application::task_write( Task *cmd, const FXString &pth )
   desk_file.unparseFile( pth + "/" + name + ".desktop" );
 }
 
+/**************************************************************************************************/
+long Application::OnCmd_QuitNegation( FXObject *tgt, FXSelector sel, void *data )
+{
+  //a_nquit_flg = ( FXSELID( sel ) == Application::QUIT_NEGATIONON ); 
+  a_nquit_flg = !a_nquit_flg;
+  return 1;
+}
+
+/**************************************************************************************************/
 void Application::settings_load( )
 {
   reg( ).read( );
   
   FXString cfg_prefix = CFG_UI_PREFIX;
   a_cfg->icons_name   = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", "Oxygen" );
-  a_cfg->cache_dir    = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir", ( FXSystem::getHomeDirectory( ) + "/.cache").text( ) );
+  a_cfg->cache_dir    = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir",   ( FXSystem::getHomeDirectory( ) + "/.cache").text( ) );
+  a_cfg->auto_exit    = reg( ).readBoolEntry(   CFG_RUNNER, cfg_prefix + ".AutoExit",   true );
+  a_cfg->silent_exit  = reg( ).readBoolEntry(   CFG_RUNNER, cfg_prefix + ".SilentExit", false );
 
   cfg_prefix = CFG_SUDO_PREFIX;
   a_cfg->sudo    = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".Enable", true );
@@ -139,16 +155,16 @@ void Application::settings_save( )
     //if( reg( ).existingSection( CFG_RUNNER ) ) { m_revert = getApp( )->reg( ).at( CFG_RUNNER ); }
  
     cfg_prefix = CFG_UI_PREFIX;
-    //cfg_id = uicb_IconsTheme->getCurrentItem( );  
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", a_cfg->icons_name.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir",   a_cfg->cache_dir.text( )  );
-
+    reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".AutoExit",   a_cfg->auto_exit );
+    reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".SilentExit", a_cfg->silent_exit );
+  
     cfg_prefix = CFG_SUDO_PREFIX;
     reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".Enable",  a_cfg->sudo );
     reg( ).writeBoolEntry(   CFG_RUNNER, cfg_prefix + ".Askpass", a_cfg->askpass );
 
     cfg_prefix = CFG_TERM_PREFIX;
-    //cfg_id = tecb_enable->getCurrentItem( );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".Enable",       a_cfg->term_enable.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".Command",      a_cfg->term.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec",     a_cfg->term_run.text( ) );

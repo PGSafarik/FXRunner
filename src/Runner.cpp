@@ -19,7 +19,8 @@
 FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
   FXMAPFUNCS( SEL_COMMAND, Runner::ID_ACCEPT, Runner::ID_CANCEL, Runner::onCmd_Run ),
   FXMAPFUNCS( SEL_COMMAND, Runner::OPEN_DIR,  Runner::OPEN_HELP, Runner::onCmd_Open ),
-  FXMAPFUNCS( SEL_COMMAND, Runner::ID_NOQUIT, Runner::HYSTORY_CLEAR, Runner::onCmd_Tools )
+  FXMAPFUNCS( SEL_COMMAND, Runner::ID_NOQUIT, Runner::HYSTORY_CLEAR, Runner::onCmd_Tools ),
+  FXMAPFUNC(  SEL_UPDATE,  Runner::ID_NOQUIT, Runner::onCmd_Tools )
 };
 
 FXIMPLEMENT( Runner, FXGWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
@@ -30,14 +31,14 @@ Runner::Runner( Application *a )
   FXString cmd;
   app = a;
 
-  this->load( );
+  //this->load( );
   
   //  Window composite mask
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
   
   /* Aplication layout */
-  FXVerticalFrame   *up_frame   = new FXVerticalFrame( content, FRAME_NONE| LAYOUT_FILL);
-  FXMatrix          *matrix     = new FXMatrix( up_frame, 2, FRAME_NONE | MATRIX_BY_COLUMNS | LAYOUT_FILL );
+  FXVerticalFrame *up_frame = new FXVerticalFrame( content, FRAME_NONE| LAYOUT_FILL);
+  FXMatrix        *matrix   = new FXMatrix( up_frame, 2, FRAME_NONE | MATRIX_BY_COLUMNS | LAYOUT_FILL );
   new FXStatusBar( content, FRAME_RAISED | LAYOUT_SIDE_BOTTOM | LAYOUT_BOTTOM | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0  );
 
   /* Command field */
@@ -68,6 +69,9 @@ Runner::Runner( Application *a )
   new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
   /* Initialize */
+
+  r_SilentQuit = false;
+
   r_acmd = new Task;
 
   this->CheckHistory( );
@@ -180,7 +184,8 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
     }
   }
 
-  if( ( r_NoQuit == false ) && ( err_flg == false ) ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
+  //if( ( r_NoQuit == false ) && ( err_flg == false ) ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
+  if( App( )->autoexit( ) && !err_flg ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
   else { r_acmd = new Task; }
   return resh;
 }
@@ -222,15 +227,24 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
 long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
 {
    FXMenuCheck *check = ( FXMenuCheck* ) tgt;
-   FXbool status = check->getCheck( );
+   FXbool status  = check->getCheck( );
+   FXuint msgtype = FXSELTYPE( sel );
+   FXuint msgid   = FXSELID( sel );
 
-   switch( FXSELID( sel ) ) {
+   switch( msgid ) {
      case Runner::ID_USER     : { r_acmd->su  = status; break; }
      case Runner::ID_ANNOUNCE : { r_acmd->ow  = status; break; }
      case Runner::ID_LINK     : { r_acmd->cl  = status; break; }
      case Runner::ID_TERMINAL : { r_acmd->te  = status; break; }
      case Runner::ID_TERMLOCK : { r_acmd->lt  = status; break; }
-     case Runner::ID_NOQUIT   : { r_NoQuit    = status; break; }
+     case Runner::ID_NOQUIT   : { 
+       if( msgtype == SEL_UPDATE ) {
+         FXbool state =  App( )->autoexit( );
+         check->setCheck( state ); 
+       }
+       else { App( )->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATIONON ), NULL ); }
+       break; 
+     }
      case Runner::HYSTORY_CLEAR : {
        r_combo->clearItems( );
        History( )->_clear( );

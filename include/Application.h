@@ -32,15 +32,28 @@ FXDECLARE( Application )
   FXIconsTheme *a_iconsth;   // Spravce ikonoveho schematu
   History_b    *a_history;   // Spravce historie spustenych prikazu
 
+  FXbool a_nquit_flg;        // Priznak o docasne negaci nastaveni autoexitu
+
 public :
   Application( );
   virtual ~Application( );
 
-  // Operations
+  /* Operations */
   int task_exec( Task *cmd );                                          // Spusti prikaz
   void task_write( Task *cmd, const FXString &pth = FXString::null );  // Zapise prikaz do desktop souboru
+
+  /* Access methods */
   FXIconsTheme* get_iconstheme( ) { return a_iconsth; }                // Get a icons theme instance
   History_b*    get_History( )    { return a_history; }                // Get cache object, represent the launch history 
+  FXbool        autoexit( )       { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
+  FXbool        is_silent( )      { return a_cfg->silent_exit; }
+
+  enum {
+    QUIT_NEGATIONON = FXApp::ID_LAST,
+    QUIT_NEGATIONOFF,
+    ID_LAST
+  };
+  long OnCmd_QuitNegation( FXObject *tgt, FXSelector sel, void *data );
 
 protected :
   // Helpers

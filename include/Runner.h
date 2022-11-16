@@ -40,18 +40,7 @@ FXDECLARE( Runner )
 
 
   /* Configuration data */
-  // Paths
-  //FXString r_CacheDir;   // Ukladani historie prikazu
-  //FXString r_ShareDir;   // Uzivatelska data programu
-  //FXString r_WorkDir;    // Defaultni pracovni cesta pro spustene aplikace ( "~/" )
-
-  // Application
-  FXbool    r_NoQuit;       // false - Po spusteni prikazu bude runner ukoncen
-  FXbool    r_SilentQuit;   // false - Bude vyzadovat potvrzeni ukonceni programu
-
-  // Utils
-  //FXString r_SuDialog;  // Utilita pro udelovani superuzivatelskych prav
-  //FXString r_TermEmu;   // Emulator terminalu (XTerm, Konsole, ... )
+  FXbool r_SilentQuit;   // false - Bude vyzadovat potvrzeni ukonceni programu
 
 public:
   Runner( Application *a );
@@ -95,9 +84,9 @@ protected:
   Runner( ) { }
   
   /* Help methods */
-  History_b* History( ) { return dynamic_cast<Application*>( getApp( ) )->get_History( ); } 
-  FXint      CheckHistory( );
-
+  Application* App( )           { return dynamic_cast<Application*>( getApp( ) ); }
+  History_b*   History( )       { return App( )->get_History( ); } 
+  FXint        CheckHistory( );
 };
 
 #endif /* __RUNNER_H */

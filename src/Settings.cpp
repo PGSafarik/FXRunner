@@ -77,6 +77,9 @@ Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   new FXLabel( content, "Cache directory : ", NULL, LABEL_STYLE );
   uitf_cache = new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
   
+  uich_aexit = new FXCheckButton( content, "Exit after run application", this, Settings::ID_CHANGE );
+  uich_sexit = new FXCheckButton( content, "Not to require confirmation of program termination", this, Settings::ID_CHANGE );
+ 
   target   = tgt;
   message = sel;
 }
@@ -103,6 +106,8 @@ void Settings::check( )
     cfg_id =  uicb_IconsTheme->findItem( app->a_cfg->icons_name );
     if( cfg_id >= 0 ) { uicb_IconsTheme->setCurrentItem( cfg_id ); } 
     uitf_cache->setText( app->a_cfg->cache_dir );
+    uich_aexit->setCheck( app->a_cfg->auto_exit );
+    uich_sexit->setCheck( app->a_cfg->silent_exit );
 
     such_enable->setCheck( app->a_cfg->sudo );
     such_askpass->setCheck( app->a_cfg->askpass );
@@ -125,8 +130,10 @@ void Settings::apply( )
   Application *app = dynamic_cast<Application*>( getApp( ) );
 
   cfg_id = uicb_IconsTheme->getCurrentItem( );  
-  app->a_cfg->icons_name = uicb_IconsTheme->getItem( cfg_id );
-  app->a_cfg->cache_dir  = uitf_cache->getText( );
+  app->a_cfg->icons_name  = uicb_IconsTheme->getItem( cfg_id );
+  app->a_cfg->cache_dir   = uitf_cache->getText( );
+  app->a_cfg->auto_exit   = uich_aexit->getCheck( );
+  app->a_cfg->silent_exit = uich_sexit->getCheck( );
 
   app->a_cfg->sudo    = such_enable->getCheck( );
   app->a_cfg->askpass = such_askpass->getCheck( );
