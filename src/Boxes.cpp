@@ -50,21 +50,22 @@ FXMenuPane* FXMenuBox::make_menu( )
   new FXMenuCheck( ToolsMenu, "Nezavirat terminal", tgt, Runner::ID_TERMLOCK, 0 );
 
   // Roleta napovedy
-  new FXMenuCommand( HelpMenu, "Manual", icons->get_icon( "help", "Menu" ) /*help-contents.png*/, tgt, Runner::OPEN_HELP );
+  new FXMenuCommand( HelpMenu, "Manual", icons->get_icon( "help", "Menu" ), tgt, Runner::OPEN_HELP );
   new FXVerticalSeparator( HelpMenu, SEPARATOR_GROOVE );
-  new FXMenuCommand( HelpMenu, "O aplikaci", icons->get_icon( "about", "Menu" ) /*documentation.png*/, tgt, Runner::OPEN_HELP );
+  new FXMenuCommand( HelpMenu, "O aplikaci", icons->get_icon( "about", "Menu" ), tgt, Runner::OPEN_HELP );
 
   // Hlavni nabidka
-  new FXMenuCommand( MyMenu, "Spustit", icons->get_icon( "run", "Menu" ) /*app->icon_copy( "dialog-ok-apply.png" )*/, tgt, Runner::ID_ACCEPT );
+  new FXMenuCommand( MyMenu, "Spustit", icons->get_icon( "run", "Menu" ), tgt, Runner::ID_ACCEPT );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
-  new FXMenuCommand( MyMenu, "Vybrat prikaz", icons->get_icon( "open", "Menu" ) /*app->icon_copy( "run-build-file.png" )*/, tgt, Runner::OPEN_FILE );
-  new FXMenuCommand( MyMenu, "Zmenit pracovni adresar", icons->get_icon( "directory", "Menu" ) /*app->icon_copy( "document-open-folder.png" )*/, tgt, Runner::OPEN_DIR );
-  new FXMenuCascade( MyMenu, "Volby spusteni", icons->get_icon( "properties", "Menu" ) /*app->icon_copy( "view-task.png" )*/, ToolsMenu );
+  new FXMenuCascade( MyMenu, "Moznosti spusteni", icons->get_icon( "properties", "Menu" ), ToolsMenu );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
-  new FXMenuCommand( MyMenu, "Nastaveni", icons->get_icon( "settings", "Menu" ) /*app->icon_copy( "configure.png" )*/, tgt, Runner::OPEN_OPTIONS );
+  new FXMenuCommand( MyMenu, "Vybrat prikaz", icons->get_icon( "open", "Menu" ), tgt, Runner::OPEN_FILE );
+  new FXMenuCommand( MyMenu, "Zmenit pracovni adresar", icons->get_icon( "directory", "Menu" ), tgt, Runner::OPEN_DIR );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
-  new FXMenuCascade( MyMenu, "Napoveda", icons->get_icon( "help", "Menu" ) /*app->icon_copy( "documentinfo.png" )*/, HelpMenu );
-  new FXMenuCommand( MyMenu, "Zavrit", icons->get_icon( "close", "Menu" ) /*app->icon_copy( "dialog-close.png" )*/, tgt, Runner::ID_CANCEL );
+  new FXMenuCommand( MyMenu, "Nastaveni", icons->get_icon( "settings", "Menu" ), tgt, Runner::OPEN_OPTIONS );
+  new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
+  new FXMenuCascade( MyMenu, "Napoveda", icons->get_icon( "help", "Menu" ), HelpMenu );
+  new FXMenuCommand( MyMenu, "Zavrit", icons->get_icon( "close", "Menu" ), tgt, Runner::ID_CANCEL );
 
   return MyMenu;
 }
