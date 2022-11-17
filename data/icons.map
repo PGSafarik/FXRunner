@@ -4,6 +4,7 @@ list=Faenza,Oxygen,Gnome,Adwaita
 [Sizes]
 small=16
 big=48
+
 HeaderBar=32
 Menu=16
 
@@ -31,7 +32,9 @@ view="actions/document-page-setup"
 accept="actions/dialog-ok-apply"
 discard="actions/edit-delete"
 default="actions/rating"
-
+user="actions/user-identity"
+terminal="apps/utilities-terminal"
+ui="actions/umbrello_diagram_class"
 
 
 [Faenza]
@@ -58,6 +61,9 @@ accept="actions/dialog-ok"
 discard="actions/edit-delete"
 default="actions/gnome-app-install-star"
 view="actions/document-page-setup"
+user="stock/avatar-default"
+terminal="apps/utilities-terminal"
+ui="categories/preferences-desktop"
 
 [Gnome]
 map.type="png"
@@ -83,6 +89,9 @@ view="actions/document-page-setup"
 accept="actions/gtk-execute"
 discard="actions/edit-delete"
 default="actions/help-about"
+user="status/avatar-default"
+terminal="apps/utilities-terminal"
+ui="categories/preferences-desktop"
 
 [Adwaita]
 map.type="png"
@@ -97,17 +106,20 @@ directory=places/folder-symbolic.symbolic
 modules=actions/document-properties-symbolic.symbolic
 close=ui/window-close-symbolic.symbolic
 run=actions/system-run-symbolic.symbolic
-about=actions/help-about
-help=actions/help-contents
+about=actions/help-about-symbolic.symbolic
+help=categories/system-help-symbolic.symbolic
 buffer_clean=actions/list-remove-symbolic.symbolic
 buffer_size=status/content-loading-symbolic.symbolic
 properties=categiries/prefereces-system-symbolic.symbolic
-settings=categories/preferences-system
+settings=categories/preferences-system-symbolic.symbolic
 
 view="actions/document-page-setup"
-accept="actions/gtk-execute"
-discard="actions/edit-delete"
-default="actions/help-about"
+accept="actions/object-select-symbolic.symbolic"
+discard="actions/view-refresh-symbolic.symbolic"
+default="actions/star-new-symbolic.symbolic"
+user="status/avatar-default-symbolic.symbolic"
+terminal="apps/utilities-terminal-symbolic.symbolic"
+ui="categories/preferences-other-symbolic.symbolic"
 
 [Tango2]
 map.type="png"
