@@ -26,6 +26,7 @@ FXDEFMAP( Settings ) SETTINGS_MAP[ ] = {
   FXMAPFUNC( SEL_UPDATE,  Settings::SETTINGS_RESTORE, Settings::onUpd_Settings ),
   FXMAPFUNC( SEL_COMMAND, Settings::SETTINGS_DEFAULT, Settings::onCmd_Settings ),
   FXMAPFUNCS( SEL_COMMAND, Settings::SELECT_DIRECTORY, Settings::SELECT_FILE, Settings::onCmd_Select ),
+  FXMAPFUNC( SEL_COMMAND, Settings::FRAME_SWITCH,     Settings::onCmd_Frame ),
   FXMAPFUNC( SEL_COMMAND, Settings::ID_CHANGE,        Settings::onCmd_Update   )
 };
 FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) )
@@ -34,8 +35,15 @@ FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) 
 Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
         :FXScrollWindow( p, VSCROLLER_ALWAYS | LAYOUT_FILL, 0, 0, 0, 0 ) 
 {
-  content  = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL ); 
+  //m_content  = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL ); 
+  m_content  = new FXHorizontalFrame( this, FRAME_NONE | LAYOUT_FILL );
+  FXSplitter *splframe = new FXSplitter( m_content, SPLITTER_HORIZONTAL | LAYOUT_FILL );
+  
+  m_sections = new FXList( splframe, this, Settings::FRAME_SWITCH, FRAME_LINE | LIST_NORMAL | LAYOUT_FILL );
+  m_switcher = new FXSwitcher( splframe, FRAME_LINE | LAYOUT_FILL,  0, 0, 0, 0,  0, 0, 0, 0  );
 
+  splframe->setSplit( 0, 150 );
+/*
   MakeTitle( "User interface" );
   uicb_IconsTheme = MakeComboBox( "Icons Theme: " ); 
   uicb_IconsTheme->setNumVisible( 5 );
@@ -61,7 +69,7 @@ Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   MakeTitle( "Super user access" );
   such_enable  = MakeCheckButton( "Enable using sudo" ); 
   such_askpass = MakeCheckButton( "Enable using askpass - must be installed!" ); 
-
+*/
   target   = tgt;
   message = sel;
 }
@@ -71,7 +79,7 @@ Settings::~Settings( )
 
 void Settings::create( )
 {
-  check( );
+  //check( );
   m_change = false;
 
  FXScrollWindow::create( );
@@ -245,35 +253,55 @@ long Settings::onCmd_Update( FXObject *sender, FXSelector sel, void *data )
   return 0;
 }
 
+long Settings::onCmd_Frame( FXObject *sender, FXSelector sel, void *data )
+{
+  long resh = 0;
+  
+  switch( FXSELID( sel ) ) {
+    case Settings::FRAME_SWITCH :
+    {
+      FXint frid = m_sections->getCurrentItem( );
+      if( frid >= 0 ) { 
+        m_switcher->setCurrent( frid ); 
+        resh = 1;
+      } 
+      break;
+    }
+  }
+
+  return resh;
+}
+
+
 /**************************************************************************************************/
 void Settings::MakeTitle( const FXString &text, FXIcon *ic )
 {
-  FXLabel *label = new FXLabel( content, text, ic, LABEL_NORMAL | LAYOUT_FILL_X  );
+  FXLabel *label = new FXLabel( m_content, text, ic, LABEL_NORMAL | LAYOUT_FILL_X  );
   label->setBackColor( getApp( )->getShadowColor( ) );
 }
 
 FXCheckButton* Settings::MakeCheckButton( const FXString &label )
 {
-  return new FXCheckButton( content, label, this, Settings::ID_CHANGE );
+  return new FXCheckButton( m_content, label, this, Settings::ID_CHANGE );
 }
 
 FXComboBox* Settings::MakeComboBox( const FXString &label )
 {
- new FXLabel( content, label, NULL, LABEL_STYLE );
- FXHorizontalFrame *frame = new FXHorizontalFrame( content, FRAME_SUNKEN | LAYOUT_FILL_X, 0, 0, 0, 0,  1, 1, 1, 1 );
+ new FXLabel( m_content, label, NULL, LABEL_STYLE );
+ FXHorizontalFrame *frame = new FXHorizontalFrame( m_content, FRAME_SUNKEN | LAYOUT_FILL_X, 0, 0, 0, 0,  1, 1, 1, 1 );
  return new FXComboBox( frame, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
 }
 
 FXTextField* Settings::MakeTextField( const FXString &label )
 {
-  new FXLabel( content, label, NULL, LABEL_STYLE);
-  return new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  new FXLabel( m_content, label, NULL, LABEL_STYLE);
+  return new FXTextField( m_content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
 }
 
 FXTextField* Settings::MakeSelector( const FXString &label, FXObject *_tgt, FXSelector _sel )
 {
-  new FXLabel( content, label, NULL, LABEL_STYLE);
-  FXHorizontalFrame *frame = new FXHorizontalFrame( content, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0 );
+  new FXLabel( m_content, label, NULL, LABEL_STYLE);
+  FXHorizontalFrame *frame = new FXHorizontalFrame( m_content, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0 );
   FXTextField *field = new FXTextField( frame, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
   FXButton *button = new FXButton( frame, " ... ", NULL, _tgt, _sel, BUTTON_NORMAL );
   button->setUserData( field );

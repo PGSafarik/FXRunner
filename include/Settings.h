@@ -32,7 +32,11 @@ class Settings : public FXScrollWindow {
 FXDECLARE( Settings )
   FXbool m_change;             // indicate change settings state
   FXStringDictionary m_revert; // indicate revert back is available 
-  FXVerticalFrame *content;    // Frame for configurations content
+
+  //FXVerticalFrame *m_content;    // Frame for configurations content
+  FXHorizontalFrame *m_content;    // Frame for configurations content
+  FXList            *m_sections;   // Seznam konfiguracnich sekci  
+  FXSwitcher        *m_switcher;   // Prepinac panelu sekci
 
   /* Terminal emulator */
   FXComboBox   *tecb_enable;     // [enable]       - Enable/on request/disable 
@@ -73,6 +77,7 @@ public :
     SETTINGS_DEFAULT,
     SELECT_DIRECTORY,
     SELECT_FILE,
+    FRAME_SWITCH,
     ID_CHANGE,
     ID_LAST,
   };
@@ -81,6 +86,7 @@ public :
   long onCmd_Settings( FXObject *sender, FXSelector sel, void *data );
   long onUpd_Settings( FXObject *sender, FXSelector sel, void *data );
   long onCmd_Update(   FXObject *sender, FXSelector sel, void *data );
+  long onCmd_Frame(    FXObject *sender, FXSelector sel, void *data ); 
 
 protected:
   Settings( ) { }
