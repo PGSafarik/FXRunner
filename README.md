@@ -10,6 +10,10 @@
   6. [Internet](#6-internet)
   
 <p align="center"><img src="docs/images/screenshot.png?raw=true" />  
+FXRunner main window  
+
+<p align="center"><img src="docs/images/configurator.png?raw=true" />  
+FXRunner settings window  
 
 ## 1. GENERAL INFO:
 This is a GUI launcher application with history. Enables running in the terminal, as root, or entering the working directory of the application. Enables multiple applications to be launched one after the other (the FXRunner window does not close after launching the application).
