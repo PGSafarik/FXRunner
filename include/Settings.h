@@ -28,37 +28,48 @@
 
 
 /* Settings frame class */
-class Settings : public FXScrollWindow {
-FXDECLARE( Settings )
+class Settings : public FXScrollWindow
+{
+  FXDECLARE( Settings )
   FXbool m_change;             // indicate change settings state
-  FXStringDictionary m_revert; // indicate revert back is available 
-  FXVerticalFrame *content;    // Frame for configurations content
+  FXStringDictionary m_revert; // indicate revert back is available
+
+  //FXVerticalFrame *m_content;    // Frame for configurations content
+  FXHorizontalFrame *m_content;    // Frame for configurations content
+  FXList            *m_sections;   // Seznam konfiguracnich sekci
+  FXSwitcher        *m_switcher;   // Prepinac panelu sekci
 
   /* Terminal emulator */
-  FXComboBox   *tecb_enable;     // [enable]       - Enable/on request/disable 
+  FXComboBox   *tecb_enable;     // [enable]       - Enable/on request/disable
   FXTextField  *tetf_command;    // [command]      - Terminal emulator program path
-  FXTextField  *tetf_execprm;    // [prm_exec]     - Argument for executable command with TE 
+  FXTextField  *tetf_execprm;    // [prm_exec]     - Argument for executable command with TE
   FXTextField  *tetf_disclosprm; // [prm_disclose] - Argument for disable closse with exit run command in TE
   FXTextField  *tetf_workdirprm; // [prm_workdir]  - Argument for set workdir for shell in TE
 
   /* Super user access */
   FXCheckButton *such_enable;  // [enable]  - enable / disable
-  FXCheckButton *such_askpass; // [askpass] - Enable using askpass 
-  
+  FXCheckButton *such_askpass; // [askpass] - Enable using askpass
+
   /* UI settings */
   FXComboBox    *uicb_IconsTheme; // [icons_theme] - icons theme name
   FXTextField   *uitf_cache;      // [cache dir]   - slozka pro ukladani pouzitych prikazu a historie
   FXCheckButton *uich_aexit;      // [AutoExit]    - enable / disable auto exit of the FXRunner
-  FXCheckButton *uich_sexit;      // [SilentExit]  - Enable / disable silent exit 
-  
+  FXCheckButton *uich_sexit;      // [SilentExit]  - Enable / disable silent exit
+
 public :
   Settings( FXComposite *p, FXObject *tgt = NULL, FXSelector sel = 0, FXuint opts = FRAME_NONE | LAYOUT_FILL );
   virtual ~Settings( );
 
   /* Access methods */
-  FXbool isChanged( ) { return m_change; }
-  FXbool isBackup( )  { return !m_revert.empty( );  }
-  
+  FXbool isChanged( )
+  {
+    return m_change;
+  }
+  FXbool isBackup( )
+  {
+    return !m_revert.empty( );
+  }
+
 
   /* Operations */
   virtual void create( );
@@ -66,13 +77,14 @@ public :
   void check( );
   void apply( );
 
-  /* GUI messages & handlers */ 
+  /* GUI messages & handlers */
   enum {
     SETTINGS_SAVE = FXScrollWindow::ID_LAST,
     SETTINGS_RESTORE,
     SETTINGS_DEFAULT,
     SELECT_DIRECTORY,
     SELECT_FILE,
+    FRAME_SWITCH,
     ID_CHANGE,
     ID_LAST,
   };
@@ -81,23 +93,37 @@ public :
   long onCmd_Settings( FXObject *sender, FXSelector sel, void *data );
   long onUpd_Settings( FXObject *sender, FXSelector sel, void *data );
   long onCmd_Update(   FXObject *sender, FXSelector sel, void *data );
+  long onCmd_Frame(    FXObject *sender, FXSelector sel, void *data );
 
 protected:
   Settings( ) { }
 
   /* Helper methods */
-  Application* App( ) { return dynamic_cast<Application*>( getApp( ) ); }
-  void Notify( ) { if( target ) { target->tryHandle( this, FXSEL( SEL_CHANGED, message ), NULL ); } }
-  void MakeTitle( const FXString &text, FXIcon *ic = NULL );
-  FXCheckButton* MakeCheckButton( const FXString &label );
-  FXComboBox*    MakeComboBox( const FXString &label );
-  FXTextField*   MakeTextField( const FXString &label );
-  FXTextField*   MakeSelector( const FXString &label, FXObject *_tgt = NULL, FXSelector _sel = 0 );
+  Application* App( )
+  {
+    return dynamic_cast<Application*>( getApp( ) );
+  }
+  void Notify( )
+  {
+    if( target ) {
+      target->tryHandle( this, FXSEL( SEL_CHANGED, message ), NULL );
+    }
+  }
+  void           MakeTitle( FXComposite *p, const FXString &text, FXIcon *ic = NULL );
+  FXCheckButton* MakeCheckButton( FXComposite *p, const FXString &label );
+  FXComboBox*    MakeComboBox( FXComposite *p, const FXString &label );
+  FXTextField*   MakeTextField( FXComposite *p, const FXString &label );
+  FXTextField*   MakeSelector( FXComposite *p, const FXString &label, FXObject *_tgt = NULL, FXSelector _sel = 0 );
+
+  FXVerticalFrame* Section_add( const FXString &title, const FXString &text = FXString::null, FXIcon *ic = NULL );
+  FXbool           Section_exists( const FXString &title );
+
 };
 
 /* Settings dialog window class */
-class SettingsDialog : public FXGDialogBox {
-FXDECLARE( SettingsDialog )
+class SettingsDialog : public FXGDialogBox
+{
+  FXDECLARE( SettingsDialog )
 
 public :
   SettingsDialog( FXApp *a );

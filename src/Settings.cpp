@@ -26,6 +26,7 @@ FXDEFMAP( Settings ) SETTINGS_MAP[ ] = {
   FXMAPFUNC( SEL_UPDATE,  Settings::SETTINGS_RESTORE, Settings::onUpd_Settings ),
   FXMAPFUNC( SEL_COMMAND, Settings::SETTINGS_DEFAULT, Settings::onCmd_Settings ),
   FXMAPFUNCS( SEL_COMMAND, Settings::SELECT_DIRECTORY, Settings::SELECT_FILE, Settings::onCmd_Select ),
+  FXMAPFUNC( SEL_COMMAND, Settings::FRAME_SWITCH,     Settings::onCmd_Frame ),
   FXMAPFUNC( SEL_COMMAND, Settings::ID_CHANGE,        Settings::onCmd_Update   )
 };
 FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) )
@@ -34,33 +35,41 @@ FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) 
 Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
         :FXScrollWindow( p, VSCROLLER_ALWAYS | LAYOUT_FILL, 0, 0, 0, 0 ) 
 {
-  content  = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL ); 
+  FXIconsTheme *icons = App( )->get_iconstheme( ); 
+  m_content  = new FXHorizontalFrame( this, FRAME_NONE | LAYOUT_FILL );
+  FXSplitter *splframe = new FXSplitter( m_content, SPLITTER_HORIZONTAL | LAYOUT_FILL );
+  
+  FXVerticalFrame *listframe = new FXVerticalFrame( splframe, FRAME_LINE | LAYOUT_FILL, 0, 0, 0, 0,  0, 0, 0, 0 );
+  m_sections = new FXList( listframe, this, Settings::FRAME_SWITCH, FRAME_LINE | LIST_NORMAL | LAYOUT_FILL );
+  m_switcher = new FXSwitcher( splframe, FRAME_NONE| LAYOUT_FILL,  0, 0, 0, 0,  0, 0, 0, 0  );
 
-  MakeTitle( "User interface" );
-  uicb_IconsTheme = MakeComboBox( "Icons Theme: " ); 
+  splframe->setSplit( 0, 150 );
+
+  FXVerticalFrame *ui  = Section_add( "UI & system", FXString::null, icons->get_icon( "ui" ) );
+  uicb_IconsTheme = MakeComboBox( ui, "Icons Theme: " ); 
   uicb_IconsTheme->setNumVisible( 5 );
   uicb_IconsTheme->appendItem( "Oxygen" );
   uicb_IconsTheme->appendItem( "Gnome" );
   uicb_IconsTheme->appendItem( "Adwaita" );
   uicb_IconsTheme->appendItem( "Faenza" );
-  uitf_cache = MakeSelector( "Cache directory : ", this, Settings::SELECT_DIRECTORY ); 
-  uich_aexit = MakeCheckButton( "Exit after run application");
-  uich_sexit = MakeCheckButton( "Not to require confirmation of program termination" );
+  uitf_cache = MakeSelector( ui, "Cache directory : ", this, Settings::SELECT_DIRECTORY ); 
+  uich_aexit = MakeCheckButton( ui, "Exit after run application");
+  uich_sexit = MakeCheckButton( ui, "Not to require confirmation of program termination" );
 
-  MakeTitle( "Terminal emulator"  );
-  tecb_enable = MakeComboBox( "Enable: " ); 
+  FXVerticalFrame *te  = Section_add( "Terminal Emulator", FXString::null, icons->get_icon( "terminal" ) );
+  tecb_enable = MakeComboBox( te, "Enable: " ); 
   tecb_enable->appendItem ( "Always" );     // Alway  all commands run in TE
   tecb_enable->appendItem ( "On request" ); // Use TE only on request ( also for sudo when askpass is not available ) 
   tecb_enable->appendItem ( "Disable" );    // Disable TE
   tecb_enable->setNumVisible( 3 );
-  tetf_command    = MakeSelector( "Command: ", this, Settings::SELECT_FILE );
-  tetf_execprm    = MakeTextField( "Argument for exec : " );
-  tetf_disclosprm = MakeTextField(  "Argument for disable close : " );
-  tetf_workdirprm = MakeTextField(  "Argument for set workpath : " );
-  
-  MakeTitle( "Super user access" );
-  such_enable  = MakeCheckButton( "Enable using sudo" ); 
-  such_askpass = MakeCheckButton( "Enable using askpass - must be installed!" ); 
+  tetf_command    = MakeSelector(  te, "Command: ", this, Settings::SELECT_FILE );
+  tetf_execprm    = MakeTextField( te, "Argument for exec : " );
+  tetf_disclosprm = MakeTextField( te, "Argument for disable close : " );
+  tetf_workdirprm = MakeTextField( te, "Argument for set workpath : " );
+
+  FXVerticalFrame *sua = Section_add( "Super user access", FXString::null, icons->get_icon( "user" ) );
+  such_enable  = MakeCheckButton( sua, "Enable using sudo" ); 
+  such_askpass = MakeCheckButton( sua, "Enable using askpass - must be installed!" ); 
 
   target   = tgt;
   message = sel;
@@ -245,35 +254,55 @@ long Settings::onCmd_Update( FXObject *sender, FXSelector sel, void *data )
   return 0;
 }
 
-/**************************************************************************************************/
-void Settings::MakeTitle( const FXString &text, FXIcon *ic )
+long Settings::onCmd_Frame( FXObject *sender, FXSelector sel, void *data )
 {
-  FXLabel *label = new FXLabel( content, text, ic, LABEL_NORMAL | LAYOUT_FILL_X  );
+  long resh = 0;
+  
+  switch( FXSELID( sel ) ) {
+    case Settings::FRAME_SWITCH :
+    {
+      FXint frid = m_sections->getCurrentItem( );
+      if( frid >= 0 ) { 
+        m_switcher->setCurrent( frid ); 
+        resh = 1;
+      } 
+      break;
+    }
+  }
+
+  return resh;
+}
+
+
+/**************************************************************************************************/
+void Settings::MakeTitle( FXComposite *p, const FXString &text, FXIcon *ic )
+{
+  FXLabel *label = new FXLabel( p, text, ic, LABEL_NORMAL | LAYOUT_FILL_X  );
   label->setBackColor( getApp( )->getShadowColor( ) );
 }
 
-FXCheckButton* Settings::MakeCheckButton( const FXString &label )
+FXCheckButton* Settings::MakeCheckButton( FXComposite *p, const FXString &label )
 {
-  return new FXCheckButton( content, label, this, Settings::ID_CHANGE );
+  return new FXCheckButton( p, label, this, Settings::ID_CHANGE );
 }
 
-FXComboBox* Settings::MakeComboBox( const FXString &label )
+FXComboBox* Settings::MakeComboBox( FXComposite *p, const FXString &label )
 {
- new FXLabel( content, label, NULL, LABEL_STYLE );
- FXHorizontalFrame *frame = new FXHorizontalFrame( content, FRAME_SUNKEN | LAYOUT_FILL_X, 0, 0, 0, 0,  1, 1, 1, 1 );
+ new FXLabel( p, label, NULL, LABEL_STYLE );
+ FXHorizontalFrame *frame = new FXHorizontalFrame( p, FRAME_SUNKEN | LAYOUT_FILL_X, 0, 0, 0, 0,  1, 1, 1, 1 );
  return new FXComboBox( frame, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
 }
 
-FXTextField* Settings::MakeTextField( const FXString &label )
+FXTextField* Settings::MakeTextField( FXComposite *p, const FXString &label )
 {
-  new FXLabel( content, label, NULL, LABEL_STYLE);
-  return new FXTextField( content, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
+  new FXLabel( p, label, NULL, LABEL_STYLE);
+  return new FXTextField( p, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
 }
 
-FXTextField* Settings::MakeSelector( const FXString &label, FXObject *_tgt, FXSelector _sel )
+FXTextField* Settings::MakeSelector( FXComposite *p, const FXString &label, FXObject *_tgt, FXSelector _sel )
 {
-  new FXLabel( content, label, NULL, LABEL_STYLE);
-  FXHorizontalFrame *frame = new FXHorizontalFrame( content, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0 );
+  new FXLabel( p, label, NULL, LABEL_STYLE);
+  FXHorizontalFrame *frame = new FXHorizontalFrame( p, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0 );
   FXTextField *field = new FXTextField( frame, 51, this, Settings::ID_CHANGE, TEXTFIELD_NORMAL | LAYOUT_FILL_X ); 
   FXButton *button = new FXButton( frame, " ... ", NULL, _tgt, _sel, BUTTON_NORMAL );
   button->setUserData( field );
@@ -281,12 +310,39 @@ FXTextField* Settings::MakeSelector( const FXString &label, FXObject *_tgt, FXSe
   return field;
 }
 
+FXVerticalFrame* Settings::Section_add( const FXString &title, const FXString &text, FXIcon *ic )
+{
+  FXVerticalFrame *cfg_frame = NULL;
+
+  if( !Section_exists( title ) ) {
+    FXint frid = m_sections->getNumItems( );
+    m_switcher->setCurrent( frid );
+    cfg_frame = new FXVerticalFrame( m_switcher, FRAME_NONE | LAYOUT_FILL );
+    m_sections->insertItem( frid, title, ic );
+
+//    FXLabel *label = new FXLabel( cfg_frame, title, ic, LABEL_NORMAL | LAYOUT_FILL_X  );
+//    label->setBackColor( getApp( )->getShadowColor( ) );    
+  }
+  return cfg_frame;
+}
+
+FXbool Settings::Section_exists( const FXString &title )
+{
+  return !( m_sections->findItem( title ) < 0 );
+}
+/*
+FXVerticalFrame* Settings::Section_switch( FXint id )
+{
+   
+
+}
+*/
 /*** SETTINGS DIALOG ******************************************************************************/
 FXIMPLEMENT( SettingsDialog, FXGDialogBox, NULL, 0 )
 
 /**************************************************************************************************/
 SettingsDialog::SettingsDialog( FXApp *a )
-              : FXGDialogBox( a, "Configure", WINDOW_STATIC, 0, 0, 550, 480 )
+              : FXGDialogBox( a, "Configure", WINDOW_STATIC, 0, 0, 550, 350 )
 {
   
   Application  *app = ( Application * ) this->getApp( );
