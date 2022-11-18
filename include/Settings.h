@@ -56,6 +56,9 @@ class Settings : public FXScrollWindow
   FXCheckButton *uich_aexit;      // [AutoExit]    - enable / disable auto exit of the FXRunner
   FXCheckButton *uich_sexit;      // [SilentExit]  - Enable / disable silent exit
 
+  /* Control Panels */
+  GHI_ControlPanel *cp_ghi;       // Control panel from FXGHIlib
+
 public :
   Settings( FXComposite *p, FXObject *tgt = NULL, FXSelector sel = 0, FXuint opts = FRAME_NONE | LAYOUT_FILL );
   virtual ~Settings( );

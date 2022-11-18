@@ -27,7 +27,8 @@ FXDEFMAP( Settings ) SETTINGS_MAP[ ] = {
   FXMAPFUNC( SEL_COMMAND, Settings::SETTINGS_DEFAULT, Settings::onCmd_Settings ),
   FXMAPFUNCS( SEL_COMMAND, Settings::SELECT_DIRECTORY, Settings::SELECT_FILE, Settings::onCmd_Select ),
   FXMAPFUNC( SEL_COMMAND, Settings::FRAME_SWITCH,     Settings::onCmd_Frame ),
-  FXMAPFUNC( SEL_COMMAND, Settings::ID_CHANGE,        Settings::onCmd_Update   )
+  FXMAPFUNC( SEL_COMMAND, Settings::ID_CHANGE,        Settings::onCmd_Update   ),
+  FXMAPFUNC( SEL_CHANGED, Settings::ID_CHANGE,        Settings::onCmd_Update   )
 };
 FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) )
 
@@ -55,6 +56,9 @@ Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   uitf_cache = MakeSelector( ui, "Cache directory : ", this, Settings::SELECT_DIRECTORY ); 
   uich_aexit = MakeCheckButton( ui, "Exit after run application");
   uich_sexit = MakeCheckButton( ui, "Not to require confirmation of program termination" );
+
+  FXVerticalFrame *wi  = Section_add( "Window", FXString::null, icons->get_icon( "ghi" ) );
+  cp_ghi = new GHI_ControlPanel( wi, this, Settings::ID_CHANGE ); /*this, Config::ID_RECONFIGURE );*/
 
   FXVerticalFrame *te  = Section_add( "Terminal Emulator", FXString::null, icons->get_icon( "terminal" ) );
   tecb_enable = MakeComboBox( te, "Enable: " ); 
@@ -136,7 +140,9 @@ void Settings::apply( )
     app->a_cfg->term_noclose = tetf_disclosprm->getText( ).text( );
     app->a_cfg->term_work    = tetf_workdirprm->getText( ).text( );
 
-    app->a_cfg->change = true; 
+    app->a_cfg->change = true;
+
+    if( cp_ghi->isChange( ) ) { cp_ghi->tryHandle( this, FXSEL( SEL_COMMAND, GHI_ControlPanel::SETTINGS_SAVE ), NULL ); } 
   }
 }
 
@@ -249,8 +255,17 @@ long Settings::onCmd_Select( FXObject *sender, FXSelector sel, void *data )
 
 long Settings::onCmd_Update( FXObject *sender, FXSelector sel, void *data )
 {
-  
-  m_change = true;
+  std::cout << "Settings change" << std::endl;/*
+  if( FXSELTYPE( sel ) == SEL_CHANGED ) {
+    GHI_ControlPanel *cp = static_cast<GHI_ControlPanel*>( sender );
+    if( cp && cp->isChange( ) ) {
+      m_change = true;
+      onUpd_Settings( sender, FXSEL( SEL_UPDATE, Settings::SETTINGS_SAVE ), NULL );
+      Notify( );
+    }
+
+  }*/
+  m_change = true; 
   return 0;
 }
 
@@ -342,7 +357,7 @@ FXIMPLEMENT( SettingsDialog, FXGDialogBox, NULL, 0 )
 
 /**************************************************************************************************/
 SettingsDialog::SettingsDialog( FXApp *a )
-              : FXGDialogBox( a, "Configure", WINDOW_STATIC, 0, 0, 550, 350 )
+              : FXGDialogBox( a, "Configure", WINDOW_STATIC, 0, 0, 750, 350 )
 {
   
   Application  *app = ( Application * ) this->getApp( );
