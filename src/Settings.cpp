@@ -28,7 +28,6 @@ FXDEFMAP( Settings ) SETTINGS_MAP[ ] = {
   FXMAPFUNCS( SEL_COMMAND, Settings::SELECT_DIRECTORY, Settings::SELECT_FILE, Settings::onCmd_Select ),
   FXMAPFUNC( SEL_COMMAND, Settings::FRAME_SWITCH,     Settings::onCmd_Frame ),
   FXMAPFUNC( SEL_COMMAND, Settings::ID_CHANGE,        Settings::onCmd_Update   ),
-  FXMAPFUNC( SEL_CHANGED, Settings::ID_CHANGE,        Settings::onCmd_Update   )
 };
 FXIMPLEMENT( Settings,FXScrollWindow, SETTINGS_MAP, ARRAYNUMBER( SETTINGS_MAP ) )
 
@@ -255,7 +254,7 @@ long Settings::onCmd_Select( FXObject *sender, FXSelector sel, void *data )
 
 long Settings::onCmd_Update( FXObject *sender, FXSelector sel, void *data )
 {
-  std::cout << "Settings change" << std::endl;/*
+  std::cout << "Settings change " << std::endl;/*
   if( FXSELTYPE( sel ) == SEL_CHANGED ) {
     GHI_ControlPanel *cp = static_cast<GHI_ControlPanel*>( sender );
     if( cp && cp->isChange( ) ) {
