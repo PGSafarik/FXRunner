@@ -254,16 +254,6 @@ long Settings::onCmd_Select( FXObject *sender, FXSelector sel, void *data )
 
 long Settings::onCmd_Update( FXObject *sender, FXSelector sel, void *data )
 {
-  std::cout << "Settings change " << std::endl;/*
-  if( FXSELTYPE( sel ) == SEL_CHANGED ) {
-    GHI_ControlPanel *cp = static_cast<GHI_ControlPanel*>( sender );
-    if( cp && cp->isChange( ) ) {
-      m_change = true;
-      onUpd_Settings( sender, FXSEL( SEL_UPDATE, Settings::SETTINGS_SAVE ), NULL );
-      Notify( );
-    }
-
-  }*/
   m_change = true; 
   return 0;
 }
@@ -333,10 +323,8 @@ FXVerticalFrame* Settings::Section_add( const FXString &title, const FXString &t
     m_switcher->setCurrent( frid );
     cfg_frame = new FXVerticalFrame( m_switcher, FRAME_NONE | LAYOUT_FILL );
     m_sections->insertItem( frid, title, ic );
-
-//    FXLabel *label = new FXLabel( cfg_frame, title, ic, LABEL_NORMAL | LAYOUT_FILL_X  );
-//    label->setBackColor( getApp( )->getShadowColor( ) );    
   }
+
   return cfg_frame;
 }
 
@@ -344,13 +332,7 @@ FXbool Settings::Section_exists( const FXString &title )
 {
   return !( m_sections->findItem( title ) < 0 );
 }
-/*
-FXVerticalFrame* Settings::Section_switch( FXint id )
-{
-   
 
-}
-*/
 /*** SETTINGS DIALOG ******************************************************************************/
 FXIMPLEMENT( SettingsDialog, FXGDialogBox, NULL, 0 )
 

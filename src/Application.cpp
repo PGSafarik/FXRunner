@@ -31,7 +31,7 @@ Application::Application( )
   std::cout << "Version    : "<< AutoVersion::MAJOR<< "."<< AutoVersion::MINOR << "." << AutoVersion::REVISION;
   std::cout << " [" << AutoVersion::STATUS << "]" << std::endl;
   std::cout << "lib Fox    : " << FOX_MAJOR << "." << FOX_MINOR << "." << FOX_LEVEL << std::endl;
-  std::cout << "lib FoxGHI : " << 0 << "." << 2 << "." << 1 << std::endl;
+  std::cout << "lib FoxGHI : " << 0 << "." << 3 << "." << 1 << std::endl;
   std::cout << "=== Message =========================================" << std::endl;
 
   a_cfg = new app_config;
