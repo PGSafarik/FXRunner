@@ -15,25 +15,16 @@ typedef FXDictionaryOf<FXint>     FXSizesMap;
 typedef std::map<FXString, FXint> __SizeMap; 
 typedef FXArray<FXString>         FXStringList;
 
-/*
-struct _Theme_data {
-  FXString t_name;		// Jmeno tematu
-  FXString t_prefix;	// Koncova pripona ikonovych souboru
-  FXString t_path;		// Korenova cesta k ikonovemu tematu
-  FXString t_pattern;	// Vzor pro skladani cesty k souborum ikon v tematu
-}
-*/
-
 class FXIconsTheme {
-  FXString t_name;		// Jmeno tematu
-  FXString t_prefix;	// Koncova pripona ikonovych souboru
-  FXString t_path;		// Korenova cesta k ikonovemu tematu
-  FXString t_pattern;	// Vzor pro skladani cesty k souborum ikon v tematu
+  FXString t_name;		// Theme name
+  FXString t_prefix;	// Ikon files exponent
+  FXString t_path;		// Root path to the ikons theme
+  FXString t_pattern;	// Pattern for composing paths to icon files in a theme
 
-  FXStringList        t_list;      // Seznam tematickych slovniku 
-  FXStringDictionary  t_dict;	     // Slovnik
-  FXIconCache        *t_cache;     // cache ikon
-  FXSizesMap          t_sizes;     // sizes map
+  FXStringList        t_list;      // List dictionaries (sections)
+  FXStringDictionary  t_dict;	     // Dictionary (section)
+  FXIconCache        *t_cache;     // Icons cache 
+  FXSizesMap          t_sizes;     // Sizes map
 
   __SizeMap _sizes;
 
@@ -41,20 +32,14 @@ public:
   FXIconsTheme( FXApp *app );
   ~FXIconsTheme( );
 
-  ///////////////////////////////////////////////
-  // Access methods
-  //
+  /* Access methods */
   FXString get_path( )   { return t_path; }
   FXString get_prefix( ) { return t_prefix; }
 
-  ///////////////////////////////////////////////
-  // Operators
-  //
+  /* Operators */
   FXString operator[ ]( const FXString &input );       // FXString iOpen_str = ic_theme[ "Open:16" ];
 
-  ///////////////////////////////////////////////
-  // Actions method
-  //
+  /* Operations method */
   FXString at( const FXString &name, int size );
   FXIcon* get_icon( const FXString &name, FXint size = 16 ) { return t_cache->insert( this->get_path( ) + "/" + this->at( name, size ) ); }
   FXIcon* get_icon( const FXString &name, const FXString &size_alias );
@@ -62,5 +47,5 @@ public:
   void load( const FXString &themefile, const FXString &name );
 };
 
-
 #endif /* __FXICONTHEME_H */
+/*** END ******************************************************************************************/

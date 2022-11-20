@@ -13,7 +13,8 @@
 *                                                                        *
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
-*************************************************************************/#include "FXIconsTheme.h"
+*************************************************************************/
+#include "FXIconsTheme.h"
 #include<iostream>
 
 FXIconsTheme::FXIconsTheme( FXApp *app )
@@ -22,9 +23,7 @@ FXIconsTheme::FXIconsTheme( FXApp *app )
 }
 
 FXIconsTheme::~FXIconsTheme( )
-{
-
-}
+{ }
 
 /*************************************************************************************************/
 FXString FXIconsTheme::operator[ ]( const FXString &input )
@@ -100,3 +99,5 @@ void FXIconsTheme::load( const FXString &themefile, const FXString &name )
 
   std::cout.flush( );
 }
+
+/*** END ******************************************************************************************/
