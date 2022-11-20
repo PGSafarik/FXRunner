@@ -47,6 +47,7 @@ public :
   History_b*    get_History( )    { return a_history; }                // Get cache object, represent the launch history 
   FXbool        autoexit( )       { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
   FXbool        is_silent( )      { return a_cfg->silent_exit; }
+  FXbool        is_changed( )     { return a_cfg->change; }
 
   enum {
     QUIT_NEGATION = FXApp::ID_LAST,

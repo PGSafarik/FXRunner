@@ -86,6 +86,8 @@ void Runner::create( )
 {
   FXGWindow::create( );
   show( PLACEMENT_SCREEN );
+
+  std::cout << "Is subclass for :" << getMetaClass( )->getBaseClass( )->getClassName( ) << std::endl;
 }
 
 
@@ -215,7 +217,7 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
        break;
      }
      case Runner::OPEN_OPTIONS :{
-       SettingsDialog *set = new SettingsDialog( app );
+       SettingsDialog *set = new SettingsDialog( this );
        if( set->execute( ) ) { }
        break; 
      }

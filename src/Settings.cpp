@@ -334,11 +334,18 @@ FXbool Settings::Section_exists( const FXString &title )
 }
 
 /*** SETTINGS DIALOG ******************************************************************************/
-FXIMPLEMENT( SettingsDialog, FXGDialogBox, NULL, 0 )
+FXDEFMAP( SettingsDialog ) SettingsBoxMap[ ] = {
+  FXMAPFUNC( SEL_CLOSE,   0,                         SettingsDialog::onCmdCancel ),
+  FXMAPFUNC( SEL_COMMAND, SettingsDialog::ID_CLOSE,  SettingsDialog::onCmdCancel ),
+  FXMAPFUNC( SEL_CHORE,   SettingsDialog::ID_CANCEL, SettingsDialog::onCmdCancel ),
+  FXMAPFUNC( SEL_TIMEOUT, SettingsDialog::ID_CANCEL, SettingsDialog::onCmdCancel ),
+  FXMAPFUNC( SEL_COMMAND, SettingsDialog::ID_CANCEL, SettingsDialog::onCmdCancel ),
+};
+FXIMPLEMENT( SettingsDialog, FXGDialogBox, SettingsBoxMap, ARRAYNUMBER( SettingsBoxMap ) )
 
 /**************************************************************************************************/
-SettingsDialog::SettingsDialog( FXApp *a )
-              : FXGDialogBox( a, "Configure", WINDOW_STATIC, 0, 0, 750, 350 )
+SettingsDialog::SettingsDialog( FXWindow *own )
+              : FXGDialogBox( own, "Configure", WINDOW_STATIC, 0, 0, 750, 350 )
 {
   
   Application  *app = ( Application * ) this->getApp( );
@@ -364,6 +371,22 @@ void SettingsDialog::create( )
 {
   FXGDialogBox::create( );
   show( PLACEMENT_SCREEN );
+}
+
+long SettingsDialog::onCmdCancel( FXObject *sender, FXSelector sel, void *data )
+{
+   Application *app = static_cast<Application*>( getApp( ) );
+
+   std::cout << "SettingsDialog::onCmdCancel" << std::endl;
+   if( app && app->is_changed( ) ) {
+     FXWindow *win = getOwner( );
+     if( win ) { 
+       std::cout << "Send reconfigure msg for the "  << win->getClassName( ) << std::endl; 
+       win->handle( this, FXSEL( SEL_CHANGED, Runner::ID_RECONFIGURE), NULL ); 
+     }
+   }
+
+   return FXGDialogBox::onCmdCancel( sender, sel, data );
 }
 
 /**************************************************************************************************/

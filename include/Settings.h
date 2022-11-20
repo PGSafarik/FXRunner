@@ -129,10 +129,11 @@ class SettingsDialog : public FXGDialogBox
   FXDECLARE( SettingsDialog )
 
 public :
-  SettingsDialog( FXApp *a );
+  SettingsDialog( FXWindow *own );
   ~SettingsDialog( );
 
   virtual void create( );
+  long onCmdCancel( FXObject *sender, FXSelector sel, void *data );  
 
 protected:
   SettingsDialog( ) { }
