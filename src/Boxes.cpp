@@ -91,8 +91,6 @@ void FXOptionsBox::create( )
 
 FXMenuPane* FXOptionsBox::make_menu( )
 {
-  //Application  *app = ( Application * ) this->getApp( );
-  //FXIconsTheme *icons = app->get_iconstheme( );
   FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
 
   // Structura menu
@@ -113,7 +111,6 @@ FXMenuCommand* FXOptionsBox::makeCommand( FXMenuPane *pane, const FXString &titl
 {
    return new FXMenuCommand( pane, title, (( Application * ) this->getApp( ))->get_iconstheme( )->get_icon( icon, "Menu" ), getBoxFrame( )->getBoxTarget( ), sel );
 }
-
 
 /*** Tool bar *************************************************************************************/
 FXIMPLEMENT( Toolbar, FXGHI_HeaderBox, NULL, 0 )

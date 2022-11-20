@@ -84,8 +84,6 @@ public:
   
 protected:
   Toolbar( ) { }
-
-  /* Helpers methods */
 };
 
 #endif /*__BOXES_H */
