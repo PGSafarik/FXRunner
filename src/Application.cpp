@@ -66,7 +66,6 @@ FXint Application::task_exec( Task *cmd )
   if( !cmd->prm.empty( ) ) { _cmd += cmd->prm; }
   // Parametry
   if( cmd->ow == true ) { _cmd += "&"; }
-  //if( cmd->te == true ) { _cmd = "\"" + _cmd + "\""; }
 
   if( _cmd.empty( ) != true  ) {
     _command = CheckTerminal( cmd ) + CheckPrivilege( cmd ) + _cmd;
@@ -151,8 +150,6 @@ void Application::settings_save( )
   FXString cfg_prefix;
 
   if( a_cfg->change ) {
-    //if( reg( ).existingSection( CFG_RUNNER ) ) { m_revert = getApp( )->reg( ).at( CFG_RUNNER ); }
- 
     cfg_prefix = CFG_UI_PREFIX;
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".IconsTheme", a_cfg->icons_name.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".CacheDir",   a_cfg->cache_dir.text( )  );
