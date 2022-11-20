@@ -73,7 +73,6 @@ public :
     return !m_revert.empty( );
   }
 
-
   /* Operations */
   virtual void create( );
 
