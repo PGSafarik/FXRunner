@@ -29,9 +29,7 @@ Runner::Runner( Application *a )
       : FXGWindow( a, "Fox Runner", NULL, NULL, CONTROLS_STATIC | WINDOW_PRIMARY | WINDOW_STATIC , 0, 0, 570, 110 )
 {
   FXString cmd;
-  app = a;
-
-  //this->load( );
+  r_app = a;
   
   //  Window composite mask
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
@@ -55,13 +53,8 @@ Runner::Runner( Application *a )
 
   /* HEADER BAR */
   FXWindowHeader *whb = this->getHeader( );
-  FXIconsTheme *icons = app->get_iconstheme( );
+  FXIconsTheme *icons = r_app->get_iconstheme( );
   setIcon( icons->get_icon( "run", "Menu" ) );
-  FXString      ver_str = AutoVersion::UBUNTU_VERSION_STYLE;
-  ver_str += " ["; 
-  ver_str += AutoVersion::STATUS;
-  ver_str += "]";
-  //whb->setText( ver_str );
   
   new FXMenuBox( whb, this->getMenuIcon( ) );
   new FXVerticalSeparator( whb );
@@ -69,9 +62,6 @@ Runner::Runner( Application *a )
   new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
   /* Initialize */
-
-  r_SilentQuit = false;
-
   r_acmd = new Task;
 
   this->CheckHistory( );
@@ -86,41 +76,8 @@ void Runner::create( )
 {
   FXGWindow::create( );
   show( PLACEMENT_SCREEN );
-
-  std::cout << "Is subclass for :" << getMetaClass( )->getBaseClass( )->getClassName( ) << std::endl;
 }
 
-
-
-void Runner::load( )
-{
-/*
-  FXApp *a = getApp( );
-
-  // Nacist ulozena configuracni data
-  r_ShareDir = a->reg( ).readStringEntry( "Path",   "Share",   ( FXSystem::getHomeDirectory( ) + "/.local/share/" + a->getAppName( ) ).text( ) );
-//  r_CacheDir = a->reg( ).readStringEntry( "Path",   "Cache",   ( FXSystem::getHomeDirectory( ) + "/.cache/" + a->getAppName( ) ).text( ) );
-  r_WorkDir  = a->reg( ).readStringEntry( "Path",   "Work",    FXSystem::getHomeDirectory( ).text( ) );
-
-  r_NoQuit = a->reg( ).readBoolEntry(     "Runner", "NoQuit",     false );
-  r_SilentQuit = a->reg( ).readBoolEntry( "Runner", "SilentQuit", false );
-
-  r_SuDialog = a->reg( ).readStringEntry( "Utils", "SUCheckDialog",           "/usr/bin/kdesudo" );
-  r_SuDialog = a->reg( ).readStringEntry( "Utils", "SUCheckDialog.execute",   "-c" );
-  r_SuDialog = a->reg( ).readStringEntry( "Utils", "TerminalEmulator",        "/usr/bin/xterm" );
-  r_SuDialog = a->reg( ).readStringEntry( "Utils", "TerminalEmulator.execute", "-e" );
-  r_SuDialog = a->reg( ).readStringEntry( "Utils", "TerminalEmulator.NoClose", FXString::null );
-  // Kontrola adresaru
-  if( FXStat::exists( r_ShareDir ) == false ) { FXDir::create( r_ShareDir, FXIO::OwnerFull ); }
-  if( FXStat::exists( r_CacheDir ) == false ) { FXDir::create( r_CacheDir, FXIO::OwnerFull ); }
-*/
-}
-
-void Runner::save( )
-{
-
-
-}
 
 /**************************************************************************************************/
 long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
@@ -131,7 +88,6 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
 
   switch( FXSELID( sel ) ) {
     case Runner::ID_ACCEPT : {
-      ///FXint id = -1;
       // Get command and working path
       FXString cmd = r_combo->getText( );
       FXString pth = r_tfield->getText( );
@@ -142,7 +98,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
       if( cmd.empty( ) != true ) { r_acmd->cmd = cmd; }
       else {
 		    err_flg = true;
-	      err_str = "Pole pro zadani prikazu nesmi byt prazdne!\nZadejte, prosim, pozadovany prikaz ke spusteni";
+	      err_str = "The field for entering the command must not be empty!\nPlease enter the required command to run";
 	    }
 
 	    // Set command working path
@@ -154,24 +110,16 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
 
       // Compile the command
       if( err_flg != true ) {
-        // Create the gui Link (The desktop file)
-        ///if( r_acmd->cl == true ) { app->command_write( r_acmd, r_WorkDir ); }
-        // Cretae the alias (on .~/profile)
-        ///if( this->OnAlias == true ) { app->command_write( r_acmd, "~/.profile", Compile::ALIAS ); }
-        // Running application
-        app->task_exec( r_acmd );
-        ///if( exec( r_acmd ) == false ) { FXMessageBox::warning( this, MBOX_OK, "Novy proces", " Proces nebyl spusten!" ); }
-        ///app->command_write( r_acmd, r_lpth );
-        // Set command history
-        History( )->insert( r_acmd->cmd );
-        this->CheckHistory( );
-        r_combo->setText( "" );
+        r_app->task_exec( r_acmd );          // Running application
+        History( )->insert( r_acmd->cmd ); // Insert command to history
+        this->CheckHistory( );             // Aktualize history command list in combobox
+        r_combo->setText( "" );            // Clean command text 
 
         // Command reset
-        r_acmd = NULL;
+        r_acmd = NULL;  // I do not like it... :(
       }
       else {
-        FXMessageBox::error( this, MBOX_OK, "Chybne zadani", err_str.text( ) );
+        FXMessageBox::error( this, MBOX_OK, "Incorrect input", err_str.text( ) );
         resh = 0;
       }
 
@@ -179,15 +127,14 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
     }
 
     case Runner::ID_CANCEL : {
-      FXuint answer = FXMessageBox::question( this, MBOX_YES_NO, "Dotaz", "Opravdu chcete ukoncit aplikaci Runner?" );
-      if( answer == MBOX_CLICKED_YES ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
+      FXuint answer = FXMessageBox::question( this, MBOX_YES_NO, "Question", "Really quit?" );
+      if( answer == MBOX_CLICKED_YES ) { r_app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
       else{ err_flg = true; }
       break;
     }
   }
 
-  //if( ( r_NoQuit == false ) && ( err_flg == false ) ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
-  if( App( )->autoexit( ) && !err_flg ) { app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
+  if( r_app->autoexit( ) && !err_flg ) { r_app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
   else { r_acmd = new Task; }
   return resh;
 }
@@ -198,7 +145,7 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
      case Runner::OPEN_FILE :{
        FXString file, pth;
 
-       FXFileDialog filedlg( this, "Vyberte soubor ke spusteni :" );
+       FXFileDialog filedlg( this, "Select executable file:" );
        if( filedlg.execute( ) ) {
          pth  = filedlg.getDirectory( );
          file = filedlg.getFilename( );
@@ -210,7 +157,7 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
        break;
      }
      case Runner::OPEN_DIR :{
-        FXDirDialog *dir = new FXDirDialog ( app, "Vyberte pracovni adresar aplikace :" );
+        FXDirDialog *dir = new FXDirDialog ( r_app, "Select workdir:" );
         if( dir->execute( ) ) {
           r_tfield->setText( dir->getDirectory( ) );
         }
@@ -241,10 +188,10 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
      case Runner::ID_TERMLOCK : { r_acmd->lt  = status; break; }
      case Runner::ID_NOQUIT   : { 
        if( msgtype == SEL_UPDATE ) {
-         FXbool state =  App( )->autoexit( );
+         FXbool state =  r_app->autoexit( );
          check->setCheck( state ); 
        }
-       else { App( )->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATION ), NULL ); }
+       else { r_app->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATION ), NULL ); }
        break; 
      }
      case Runner::HYSTORY_CLEAR : {
@@ -252,7 +199,7 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
        History( )->_clear( );
      }
    }
-   //
+   
    if( r_acmd->te == false ) { r_acmd->lt = false; }
 
    return 1;
@@ -269,7 +216,6 @@ FXint Runner::CheckHistory( )
   if( history->no( ) > 0 ) {
     for( FXint i = ( history->no( ) - 1 ); i >= 0; i-- ) {
       cmd = history->at( i );
-      //std::cout << cmd.text( ) << std::endl;
       if( r_combo->findItem( cmd ) == -1 ) {
         id = r_combo->getNumItems( );
         r_combo->insertItem( id, cmd );

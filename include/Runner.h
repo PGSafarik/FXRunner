@@ -26,11 +26,10 @@
 #include<Boxes.h>
 #include<Settings.h>
 
-
 //class Runner : public FXMainWindow {
 class Runner : public FXGWindow {
 FXDECLARE( Runner )
-  Application *app;
+  Application *r_app;
   FXComboBox  *r_combo;
   FXTextField *r_pfield;
   FXTextField *r_tfield;
@@ -38,25 +37,14 @@ FXDECLARE( Runner )
   Task         *r_acmd;
   FXIconsTheme *r_icons;
 
-
-  /* Configuration data */
-  FXbool r_SilentQuit;   // false - Bude vyzadovat potvrzeni ukonceni programu
-
 public:
   Runner( Application *a );
   virtual ~Runner( );
 
-  ////////////////////////////////////////////////
-  ///
-  ///
+  /* Operations */
   virtual void create( );
-  
-  void load( );
-  void save( );
 
-  ////////////////////////////////////////////////
-  ///
-  ///
+  /* Gui messages & handlers */
   enum {
     ID_ACCEPT = FXGWindow::ID_LAST,
     ID_CANCEL,
@@ -84,9 +72,8 @@ protected:
   Runner( ) { }
   
   /* Help methods */
-  Application* App( )           { return dynamic_cast<Application*>( getApp( ) ); }
-  History_b*   History( )       { return App( )->get_History( ); } 
-  FXint        CheckHistory( );
+  History_b* History( ) { return r_app->get_History( ); } 
+  FXint      CheckHistory( );
 };
 
 #endif /* __RUNNER_H */

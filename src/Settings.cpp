@@ -377,11 +377,9 @@ long SettingsDialog::onCmdCancel( FXObject *sender, FXSelector sel, void *data )
 {
    Application *app = static_cast<Application*>( getApp( ) );
 
-   std::cout << "SettingsDialog::onCmdCancel" << std::endl;
    if( app && app->is_changed( ) ) {
      FXWindow *win = getOwner( );
-     if( win ) { 
-       std::cout << "Send reconfigure msg for the "  << win->getClassName( ) << std::endl; 
+     if( win ) {  
        win->handle( this, FXSEL( SEL_CHANGED, Runner::ID_RECONFIGURE), NULL ); 
      }
    }
