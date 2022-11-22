@@ -341,11 +341,11 @@ FXDEFMAP( SettingsDialog ) SettingsBoxMap[ ] = {
   FXMAPFUNC( SEL_TIMEOUT, SettingsDialog::ID_CANCEL, SettingsDialog::onCmdCancel ),
   FXMAPFUNC( SEL_COMMAND, SettingsDialog::ID_CANCEL, SettingsDialog::onCmdCancel ),
 };
-FXIMPLEMENT( SettingsDialog, FXGDialogBox, SettingsBoxMap, ARRAYNUMBER( SettingsBoxMap ) )
+FXIMPLEMENT( SettingsDialog, FXSecondaryWindow, SettingsBoxMap, ARRAYNUMBER( SettingsBoxMap ) )
 
 /**************************************************************************************************/
 SettingsDialog::SettingsDialog( FXWindow *own )
-              : FXGDialogBox( own, "Configure", WINDOW_STATIC, 0, 0, 750, 350 )
+              : FXSecondaryWindow( own, "Configure", WINDOW_STATIC, 0, 0, 750, 350 )
 {
   
   Application  *app = ( Application * ) this->getApp( );
@@ -369,7 +369,7 @@ SettingsDialog::~SettingsDialog( )
 
 void SettingsDialog::create( )
 {
-  FXGDialogBox::create( );
+  FXSecondaryWindow::create( );
   show( PLACEMENT_SCREEN );
 }
 
@@ -384,7 +384,7 @@ long SettingsDialog::onCmdCancel( FXObject *sender, FXSelector sel, void *data )
      }
    }
 
-   return FXGDialogBox::onCmdCancel( sender, sel, data );
+   return FXSecondaryWindow::onCmdCancel( sender, sel, data );
 }
 
 /**************************************************************************************************/

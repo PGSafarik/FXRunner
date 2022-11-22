@@ -26,7 +26,7 @@
 #include<Runner.h>
 
 /*** Menu aplikace ********************************************************************************/
-class FXMenuBox : public FXGHI_HeaderBox {
+class FXMenuBox : public FXHeaderBox {
 FXDECLARE( FXMenuBox )
   FXMenuButton *m_button;
   
@@ -48,7 +48,7 @@ protected :
 };
 
 /*** Process options menu *************************************************************************/
-class FXOptionsBox : public FXGHI_HeaderBox {
+class FXOptionsBox : public FXHeaderBox {
 FXDECLARE( FXOptionsBox )
   FXMenuButton *m_button;
   
@@ -70,7 +70,7 @@ protected :
 };
 
 /*** ToolBox **************************************************************************************/
-class Toolbar : public FXGHI_HeaderBox {
+class Toolbar : public FXHeaderBox {
 FXDECLARE( Toolbar )
   
 public:

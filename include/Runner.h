@@ -27,7 +27,7 @@
 #include<Settings.h>
 
 //class Runner : public FXMainWindow {
-class Runner : public FXGWindow {
+class Runner : public FXPrimaryWindow {
 FXDECLARE( Runner )
   Application *r_app;
   FXComboBox  *r_combo;
@@ -46,7 +46,7 @@ public:
 
   /* Gui messages & handlers */
   enum {
-    ID_ACCEPT = FXGWindow::ID_LAST,
+    ID_ACCEPT = FXPrimaryWindow::ID_LAST,
     ID_CANCEL,
 
     OPEN_DIR,

@@ -23,10 +23,10 @@ FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
   FXMAPFUNC(  SEL_UPDATE,  Runner::ID_NOQUIT, Runner::onCmd_Tools )
 };
 
-FXIMPLEMENT( Runner, FXGWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
+FXIMPLEMENT( Runner, FXPrimaryWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
 
 Runner::Runner( Application *a )
-      : FXGWindow( a, "Fox Runner", NULL, NULL, CONTROLS_STATIC | WINDOW_PRIMARY | WINDOW_STATIC , 0, 0, 570, 110 )
+      : FXPrimaryWindow( a, "Fox Runner", NULL, NULL, CONTROLS_STATIC | WINDOW_MAIN | WINDOW_STATIC , 0, 0, 570, 110 )
 {
   FXString cmd;
   r_app = a;
@@ -74,7 +74,7 @@ Runner::~Runner( )
 
 void Runner::create( )
 {
-  FXGWindow::create( );
+  FXPrimaryWindow::create( );
   show( PLACEMENT_SCREEN );
 }
 

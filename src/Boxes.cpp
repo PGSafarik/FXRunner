@@ -17,16 +17,16 @@
 #include<Boxes.h>
 
 /*** APPLICATION MENU ****************************************************************************/
-FXIMPLEMENT( FXMenuBox, FXGHI_HeaderBox, NULL, 0 )
+FXIMPLEMENT( FXMenuBox, FXHeaderBox, NULL, 0 )
 
-FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXGHI_HeaderBox( p, NULL, 0, LAYOUT_CENTER_Y, 0, 0, 0 )
+FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, NULL, 0, LAYOUT_CENTER_Y, 0, 0, 0 )
 {
   m_button = new FXMenuButton( this, "\t\t Menu aplikace", ic, make_menu( ), BUTTON_TOOLBAR|ICON_ABOVE_TEXT|LAYOUT_FILL_Y );
 }
 
 void FXMenuBox::create( )
 {
-  FXGHI_HeaderBox::create( );
+  FXHeaderBox::create( );
   m_button->create( );
 }
 
@@ -76,16 +76,16 @@ FXMenuCommand* FXMenuBox::makeCommand( FXMenuPane *pane, const FXString &title, 
 }
 
 /*** OPTIONS MENU ****************************************************************************/
-FXIMPLEMENT( FXOptionsBox, FXGHI_HeaderBox, NULL, 0 )
+FXIMPLEMENT( FXOptionsBox, FXHeaderBox, NULL, 0 )
 
-FXOptionsBox::FXOptionsBox( FXWindowHeader *p, FXIcon *ic ) : FXGHI_HeaderBox( p, NULL, 0, LAYOUT_CENTER_Y | LAYOUT_RIGHT, 0, 0, 0 )
+FXOptionsBox::FXOptionsBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, NULL, 0, LAYOUT_CENTER_Y | LAYOUT_RIGHT, 0, 0, 0 )
 {
   m_button = new FXMenuButton( this, "\t\tMoznosti spusteni", ic, make_menu( ), BUTTON_TOOLBAR|ICON_ABOVE_TEXT|LAYOUT_FILL_Y );
 }
 
 void FXOptionsBox::create( )
 {
-  FXGHI_HeaderBox::create( );
+  FXHeaderBox::create( );
   m_button->create( );
 }
 
@@ -113,9 +113,9 @@ FXMenuCommand* FXOptionsBox::makeCommand( FXMenuPane *pane, const FXString &titl
 }
 
 /*** Tool bar *************************************************************************************/
-FXIMPLEMENT( Toolbar, FXGHI_HeaderBox, NULL, 0 )
+FXIMPLEMENT( Toolbar, FXHeaderBox, NULL, 0 )
 
-Toolbar::Toolbar( FXWindowHeader *p ) : FXGHI_HeaderBox( p, NULL, 0, FRAME_SUNKEN | LAYOUT_LEFT, 0, 0, 0 )
+Toolbar::Toolbar( FXWindowHeader *p ) : FXHeaderBox( p, NULL, 0, FRAME_SUNKEN | LAYOUT_LEFT, 0, 0, 0 )
 {
   Application  *app = ( Application * ) this->getApp( );
   FXIconsTheme *icons = app->get_iconstheme( );
@@ -129,7 +129,7 @@ Toolbar::Toolbar( FXWindowHeader *p ) : FXGHI_HeaderBox( p, NULL, 0, FRAME_SUNKE
 
 void Toolbar::create( )
 {
-  FXGHI_HeaderBox::create( );
+  FXHeaderBox::create( );
 }
 
 /*** END ******************************************************************************************/

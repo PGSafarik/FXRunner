@@ -123,7 +123,7 @@ protected:
 };
 
 /* Settings dialog window class */
-class SettingsDialog : public FXGDialogBox
+class SettingsDialog : public FXSecondaryWindow
 {
   FXDECLARE( SettingsDialog )
 
