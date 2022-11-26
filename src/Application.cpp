@@ -60,11 +60,9 @@ FXint Application::task_exec( Task *cmd )
   FXString _term = "";     // prikaz terminalu
   FXString _paccess = "";  // prikaz pro privilegovany pristup
 
-  // Prikaz
+  // Prikaz, parametry, neblokujici spusteni
   if( !cmd->cmd.empty( ) ) { _cmd += cmd->cmd; }
-  // Parametry
   if( !cmd->prm.empty( ) ) { _cmd += cmd->prm; }
-  // Parametry
   if( cmd->ow == true ) { _cmd += "&"; }
 
   if( _cmd.empty( ) != true  ) {

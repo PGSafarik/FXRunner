@@ -29,25 +29,8 @@
 #include<Task.h>
 #include<FXIconsTheme.h>
 
+/* Declaration new types */
 typedef FXArray<FXString> FXString_List;
-
-struct app_config {       // konfiguracni data tridy Application
-  FXbool sudo;            // [Sudo.Enable]  - Povolit spusteni s pravy superuzivatele (s pomoci sudo )
-  FXbool askpass;         // [Sudo.Askpass] - Povolit pouziti parametru askpass ( sudo -A ... )
-  FXString term_enable;   // 
-  FXString term;          // aplikace emulatoru terminalu
-  FXString term_noclose;  // parametr terminalu, nezavirat terminal
-  FXString term_run;      // parametr terminalu, spustit prikaz
-  FXString term_work;     // parametr terminalu, nastavit pracovni adresar 
-  FXString icon_path;     // cesta k ikonam aplikace
-  FXString icons_name;    // Nazev ikonoveho tematu
-  FXString cache_dir;     // Cache Adresas 
-  FXbool   auto_exit;     // Automaticaly exit FXRunner after launch application
-  FXbool   silent_exit;   // Require confirmation of program termination
-
-  FXbool  change;         // Indicate changes
-};
-
 
 /* Runner configure sections */
 #define CFG_RUNNER      "Runner"
