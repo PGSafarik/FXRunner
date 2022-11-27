@@ -31,7 +31,7 @@ Application::Application( )
   std::cout << "Version    : "<< AutoVersion::MAJOR<< "."<< AutoVersion::MINOR << "." << AutoVersion::REVISION;
   std::cout << " [" << AutoVersion::STATUS << "]" << std::endl;
   std::cout << "lib Fox    : " << FOX_MAJOR << "." << FOX_MINOR << "." << FOX_LEVEL << std::endl;
-  std::cout << "lib FoxGHI : " << 0 << "." << 3 << "." << 1 << std::endl;
+  std::cout << "lib FoxGHI : " << 0 << "." << 4 << "." << 1 << std::endl;
   std::cout << "=== Message =========================================" << std::endl;
 
   a_cfg = new app_config;
@@ -67,11 +67,13 @@ FXint Application::task_exec( Task *cmd )
 
   if( _cmd.empty( ) != true  ) {
     _command = CheckTerminal( cmd ) + CheckPrivilege( cmd ) + _cmd;
-    std::cout << "Running: " << _command.text( ) << std::endl;
+    //std::cout << "Running: " << _command.text( ) << std::endl;
+    DEBUG_OUT( "Running: " << _command.text( ) )
     resh = system( _command.text( ) );
   }
   
-  std::cout<< "Execute resulth " << resh << std::endl;
+  //std::cout<< "Execute resulth " << resh << std::endl;
+  DEBUG_OUT( "Execute resulth " << resh )
 
   return resh;
 }
@@ -80,8 +82,8 @@ void Application::task_write( Task *cmd, const FXString &pth )
 {
   if( ( pth.empty( ) == true ) || ( cmd == NULL )  ) { return; }
 
-  std::cout << "writing " << pth.text( ) << std::endl;
-
+  //std::cout << "writing " << pth.text( ) << std::endl;
+  DEBUG_OUT( "writing " << pth.text( ) )
   FXSettings desk_file;
   FXString   desk_head = "Desktop Entry";
   FXString   command, name = FXPath::name( cmd->cmd );

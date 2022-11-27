@@ -60,4 +60,12 @@ void Task::save( FXStream &store )
   store << cl;
 }
 
+Task& Task::operator <<( FXSettings &desk )
+{
+   
+
+
+  return *this;
+}
+
 /*** END ******************************************************************************************/

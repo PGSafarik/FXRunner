@@ -41,6 +41,8 @@ public :
 
   virtual void load( FXStream &store );
   virtual void save( FXStream &store );
+  Task& operator <<( FXSettings &desk );  
+
 };
 
 

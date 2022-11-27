@@ -40,5 +40,14 @@ typedef FXArray<FXString> FXString_List;
 
 #define ICON_THEME_MAP  "/usr/share/FXRunner/data/icons.map"
 
+/* Print debug log */
+#ifdef DEBUG
+#define DEBUG_OUT(text) std::cout << "[DEBUG " << __FILE__ << " " << __LINE__ << "]: " << text << std::endl; 
+#else
+#define DEBUG_OUT(text)
+#endif
+
+
+
 #endif /* __MAIN_H */
 /*** END ****************************************************************/

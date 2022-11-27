@@ -8,6 +8,8 @@
 #include<fox-1.7/fx.h>
 #include<map>
 
+#include<main.h>
+
 #ifndef __FXICONTHEME_H
 #define __FXICONTHEME_H
 
