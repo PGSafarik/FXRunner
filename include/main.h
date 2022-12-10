@@ -26,7 +26,6 @@
 #include<fxghi.h>
 
 #include<../version.h>
-#include<Task.h>
 #include<FXIconsTheme.h>
 
 /* Declaration new types */
