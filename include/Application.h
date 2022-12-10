@@ -22,6 +22,7 @@
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
+#include<Task.h>
 #include<History.h> 
 
 /*** Konfiguracni struktura aplikace ***/
