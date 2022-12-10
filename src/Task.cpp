@@ -60,12 +60,44 @@ void Task::save( FXStream &store )
   store << cl;
 }
 
-Task& Task::operator <<( FXSettings &desk )
+/**************************************************************************************************/
+FXString Task::ConvOnText( const FXString &str )
 {
-   
-
-
-  return *this;
+  FXString text = "\"";
+  if( !str.empty( ) ) { text += str }
+  text += "\"";
+  
+  return text;
 }
+
+/**************************************************************************************************/
+Storage& operator <<( Storage &s, Task &task )
+{
+  if( s.isOpen( ) ) { 
+    FXString_List list;
+    list[ 0 ] = task.cmd;
+    list[ 1 ] = task.prm;
+    list[ 2 ] = task.wpth; 
+
+    s.readEntry( list );
+  }
+
+  return s;
+}
+
+Storage& operator >>( Storage &s, Task &task )
+{
+  if( s.isOpen( ) ) {
+    FXString_List list;
+    s.writeEntry( list );
+
+    task.cmd  = list[ 0 ];
+    task.prm  = list[ 1 ];
+    task.wpth = list[ 2 ]; 
+  }
+
+  return s;
+}
+
 
 /*** END ******************************************************************************************/

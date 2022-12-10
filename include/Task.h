@@ -22,6 +22,7 @@
 * Copyright (c) 23/11/2015 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
+#include<Storage.h>
 
 class Task : public FXObject {  /// data prikazu ke spusteni
 FXDECLARE( Task )
@@ -38,11 +39,14 @@ public :
 
   Task( );
   virtual ~Task( );
+  virtual void load( FXStream &store );  // Binary straem
+  virtual void save( FXStream &store );  // Binary stream
 
-  virtual void load( FXStream &store );
-  virtual void save( FXStream &store );
-  Task& operator <<( FXSettings &desk );  
+  friend Storage& operator <<( Storage &s, Task &task );
+  friend Storage& operator >>( Storage &s, Task &task );
 
+protected:
+  FXString ConvOnText( const FXString &str );   
 };
 
 
