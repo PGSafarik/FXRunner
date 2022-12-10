@@ -19,7 +19,7 @@
 /*** GENERAL STORAGE INTERFACE ********************************************************************/
 Storage::Storage( const FXString &type )
 {
-
+   m_type = type;
 }
 
 Storage::~Storage( )
@@ -31,7 +31,7 @@ Storage::~Storage( )
 FXbool Storage::open( const FXString &name )
 {
 
-
+  return false;
 }
 
 

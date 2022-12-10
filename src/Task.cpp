@@ -64,7 +64,7 @@ void Task::save( FXStream &store )
 FXString Task::ConvOnText( const FXString &str )
 {
   FXString text = "\"";
-  if( !str.empty( ) ) { text += str }
+  if( !str.empty( ) ) { text += str; }
   text += "\"";
   
   return text;

@@ -25,9 +25,9 @@
 
 /*** GENERAL STORAGE INTERFACE ********************************************************************/
 class Storage : public FXIODevice {
-  FXString      m_type;
-  FXString      m_name;
-  FXString_List m_entries;
+  FXString          m_type;
+  FXString          m_name;
+  FXArray<FXString> m_entries;
 
 public :
   Storage( const FXString &type );
@@ -37,8 +37,8 @@ public :
   FXbool open( const FXString &name );
 
   /* Operations */
-  virtual FXival readEntry( FXString_List &buff ) = 0;
-  virtual FXival writeEntry( const FXString_List &buff ) = 0; 
+  virtual FXival readEntry( FXArray<FXString> &buff ) = 0;
+  virtual FXival writeEntry( const FXArray<FXString> &buff ) = 0; 
 
 protected:
 
