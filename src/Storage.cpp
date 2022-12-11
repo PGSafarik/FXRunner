@@ -16,9 +16,18 @@
 *************************************************************************/
 #include<Storage.h>
 
+// Bad handle value
+#ifdef  WIN32
+#define BadHandle INVALID_HANDLE_VALUE
+#else
+#define BadHandle -1
+#endif
+
+
 /*** GENERAL STORAGE INTERFACE ********************************************************************/
 Storage::Storage( const FXString &type )
-{
+{  
+   FXIODevice::device = BadHandle;
    m_type = type;
 }
 
@@ -28,10 +37,18 @@ Storage::~Storage( )
 
 }
 
-FXbool Storage::open( const FXString &name )
+FXbool Storage::open( const FXString &name, FXuint m )
 {
+  FXbool res = false;
+ 
+  if( !m_name.empty( ) ) {
+    m_name = name;
+    FXIO::access = m; 
+    FXIO::pointer = 0L;
+    res = true;
+  }
 
-  return false;
+  return res;
 }
 
 

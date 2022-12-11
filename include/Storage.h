@@ -23,20 +23,23 @@
 *************************************************************************/
 #include<main.h>
 
-/*** GENERAL STORAGE INTERFACE ********************************************************************/
+/*** ABSTRACT STORAGE INTERFACE ********************************************************************/
 class Storage : public FXIODevice {
   FXString          m_type;
   FXString          m_name;
-  FXArray<FXString> m_entries;
+  //FXArray<FXString> m_entries;
 
 public :
   Storage( const FXString &type );
   virtual ~Storage( );
 
   /* Access methods */
-  FXbool open( const FXString &name );
+  FXString getType( ) const             { return m_type; }
+  void setName( const FXString &value ) { m_name = value; }
+  FXString getName( ) const             { return m_name; }
 
   /* Operations */
+  virtual FXbool open( const FXString &name, FXuint m = FXIO::Reading );
   virtual FXival readEntry( FXArray<FXString> &buff ) = 0;
   virtual FXival writeEntry( const FXArray<FXString> &buff ) = 0; 
 
