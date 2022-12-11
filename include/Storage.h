@@ -27,7 +27,6 @@
 class Storage : public FXIODevice {
   FXString          m_type;
   FXString          m_name;
-  //FXArray<FXString> m_entries;
 
 public :
   Storage( const FXString &type );
@@ -47,6 +46,34 @@ protected:
 
 
 };
+
+/*** SIMPLE FILE STORAGE **************************************************************************/
+class SimpleFileStorage : public Storage {
+  FXArray<FXString> m_entries;   // Entries (file lines) list 
+  FXString          m_path;      // Path of file storage
+  FXbool            m_ready;     // Storage is ready (opened)
+
+public :
+  SimpleFileStorage( const FXString &path );
+  ~SimpleFileStorage( );
+
+  /* Access methods */
+  FXString getPath( ) const   { return m_path; } 
+  virtual  FXbool isOpen( )   { return m_ready; }
+  virtual  FXlong size( )     { return m_entries.no( ); }
+  virtual  FXbool eof( );
+
+  /* Operations */
+  virtual FXbool open( const FXString &name, FXuint m = FXIO::Reading );
+  virtual FXuint position( FXlong offset,FXuint from = FXIO::Begin );
+  virtual FXival readEntry( FXArray<FXString> &buff ) = 0;
+  virtual FXival writeEntry( const FXArray<FXString> &buff ) = 0; 
+
+protected:
+
+
+};
+
 
 
 #endif /* __STORAGE_H */

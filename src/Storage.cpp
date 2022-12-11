@@ -24,7 +24,7 @@
 #endif
 
 
-/*** GENERAL STORAGE INTERFACE ********************************************************************/
+/*** Storage **************************************************************************************/
 Storage::Storage( const FXString &type )
 {  
    FXIODevice::device = BadHandle;
@@ -52,4 +52,48 @@ FXbool Storage::open( const FXString &name, FXuint m )
 }
 
 
+/*** SimpleFileStorage ****************************************************************************
+  FXArray<FXString> m_entries;   // Entries (file lines) list 
+  FXString          m_path;      // Path of file storage
+  FXbool            m_ready;     // Storage is ready (opened)
+*/
+
+
+SimpleFileStorage::SimpleFileStorage( const FXString &path )
+                 : Storage( "SimpleFileStorage" ), m_path( path ), m_ready( false )
+{ }
+
+SimpleFileStorage::~SimpleFileStorage( )
+{ }
+
+FXbool SimpleFileStorage::open( const FXString &name, FXuint m )
+{
+
+
+}
+
+FXuint SimpleFileStorage::position( FXlong offset,FXuint from )
+{
+
+}
+
+FXival SimpleFileStorage::readEntry( FXArray<FXString> &buff )
+{
+
+}
+
+FXival SimpleFileStorage::writeEntry( const FXArray<FXString> &buff )
+{
+
+
+} 
+
+FXint SimpleFileStorage::eof( )
+{
+  FXint res = FXIO::Error;
+
+  if( m_ready ) { resh = ( FXIO::pointer < m_entries.no( ) ); }  
+
+  return resh;
+}
 /*** END ******************************************************************************************/
