@@ -61,13 +61,15 @@ public :
   FXString getPath( ) const   { return m_path; } 
   virtual  FXbool isOpen( )   { return m_ready; }
   virtual  FXlong size( )     { return m_entries.no( ); }
-  virtual  FXbool eof( );
+  virtual  FXint eof( );
 
   /* Operations */
   virtual FXbool open( const FXString &name, FXuint m = FXIO::Reading );
-  virtual FXuint position( FXlong offset,FXuint from = FXIO::Begin );
-  virtual FXival readEntry( FXArray<FXString> &buff ) = 0;
-  virtual FXival writeEntry( const FXArray<FXString> &buff ) = 0; 
+  virtual FXlong position( FXlong offset,FXuint from = FXIO::Begin );
+  virtual FXival readEntry( FXArray<FXString> &buff );
+  virtual FXival writeEntry( const FXArray<FXString> &buff );
+  virtual FXbool flush( );
+  virtual FXbool close( );  
 
 protected:
 
