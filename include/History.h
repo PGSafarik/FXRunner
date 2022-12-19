@@ -22,15 +22,25 @@
 * Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
+#include<Storage.h>
+#include<Task.h>
 
+/*
+enum HistoryFormat = {
+  HF_BINARY = 0x00000010,
+  HF_TEXT   = 0x00000020
+};
+*/
 class History_b : public FXArray<FXString> {
   FXString h_name;
   FXint    h_num;
   FXuint   h_hash;
   FXbool   h_change;
 
+  SimpleFileStorage *h_storage;
+
 public :
-  History_b( FXint num = 0, const FXString name = "History" );
+  History_b( FXint num = 0, FXuint opts = 0, const FXString &cache_dir = FXString::null, const FXString &name = "History" );
   virtual ~History_b( );
 
   void dump( );
@@ -38,8 +48,9 @@ public :
   void insert( const FXString &data );
   void _clear( );
 
-  FXbool write( const FXString &cache_dir, FXbool mk = false );
-  FXbool read( const FXString &cache_dir );
+  FXbool write( );
+  FXbool read( );
+
 };
 
 #endif /* __HISTORY_H */

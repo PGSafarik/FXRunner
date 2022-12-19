@@ -60,6 +60,35 @@ void Task::save( FXStream &store )
   store << cl;
 }
 
+void Task::load( Storage &store )
+{
+  //std::cout << "Task Entry Load: " << store.getName( ).text( ) ;
+
+  FXArray<FXString> list;
+  FXlong r = 0;
+
+  if( ( r = store.readEntry( list ) ) >= 1 ) { 
+    cmd  = list[ 0 ]; 
+    prm  = list[ 1 ];
+    wpth = list[ 2 ]; 
+    su   = list[ 3 ].toInt( );
+    ow   = list[ 4 ].toInt( );
+    te   = list[ 5 ].toInt( );
+    lt   = list[ 6 ].toInt( );
+    cl   = list[ 7 ].toInt( );
+    
+  }  
+  else { std::cerr << "[ERROR] Task entry is not read!" << std::endl; } 
+   
+  //std::cout << "( " << r << " ) \n";
+}
+
+void Task::save( Storage &store ) 
+{
+
+
+}
+
 /**************************************************************************************************/
 FXString Task::ConvOnText( const FXString &str )
 {
@@ -68,35 +97,6 @@ FXString Task::ConvOnText( const FXString &str )
   text += "\"";
   
   return text;
-}
-
-/**************************************************************************************************/
-Storage& operator <<( Storage &s, Task &task )
-{
-  if( s.isOpen( ) ) { 
-    FXString_List list;
-    list[ 0 ] = task.cmd;
-    list[ 1 ] = task.prm;
-    list[ 2 ] = task.wpth; 
-
-    s.readEntry( list );
-  }
-
-  return s;
-}
-
-Storage& operator >>( Storage &s, Task &task )
-{
-  if( s.isOpen( ) ) {
-    FXString_List list;
-    s.writeEntry( list );
-
-    task.cmd  = list[ 0 ];
-    task.prm  = list[ 1 ];
-    task.wpth = list[ 2 ]; 
-  }
-
-  return s;
 }
 
 

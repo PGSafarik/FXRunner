@@ -16,8 +16,11 @@
 *************************************************************************/
 #include<History.h>
 
-History_b::History_b( FXint num, const FXString name ) : h_name( name ), h_num( num ), h_hash( 0 ), h_change( false )
-{ }
+History_b::History_b( FXint num, FXuint opts, const FXString &cache_dir, const FXString &name ) : h_name( name ), h_num( num ), h_hash( 0 ), h_change( false )
+{ 
+  h_storage = new SimpleFileStorage( cache_dir );
+  if( !h_storage->open( name, ";", "", 1 ) ) { std::cerr << "[ERROR] Unable to open a storage " << name.text( ) << std::endl; } 
+}
 
 History_b::~History_b( )
 { clear( ); }
@@ -37,7 +40,7 @@ void History_b::insert( const FXString &data )
 
   push( data );
   h_change = true;
-
+ 
 }
 
 void History_b::_clear( )
@@ -46,75 +49,29 @@ void History_b::_clear( )
   this->clear( );
 }
 
-FXbool History_b::write( const FXString &cache_dir, FXbool mk )
+FXbool History_b::write( )
 {
-  FXString tmp = "";
+  FXArray<FXString> buff; 
 
-  if( h_change == false ) { return true; }
-  if( !cache_dir.empty( ) ) {
-    FXString store = cache_dir + "/" + h_name; 
-    if( FXStat::exists( store ) == false ) {
-      if( mk ) { FXFile::create ( store ); }
-      else {
-        std::cout << "Cache store file " << store.text( ) << " not found!" << std::endl;
-        return false;
-      }
-    }
-
-    for( FXint i = 0; i != no( ); i++ ) { tmp += at( i ) + "\n"; }
-
-    FXFile fd;
-    if( tmp.empty( ) ) { std::cout << "Cache is empty!" << std::endl; }
-    if( fd.open( store, FXIO::Writing ) == true ) {
-     // std::cout << "save cache " << h_name.text( ) << ": " << store.text( ) << std::endl;
-      DEBUG_OUT( "SAVE cache " << h_name.text( ) << ": " << store.text( ) )
-      FXint n = fd.writeBlock( tmp.text( ), tmp.length( ) );
-      //std::cout << "write data of size: " << n << std::endl;
-      DEBUG_OUT( "write data of size: " << n )
-      fd.close( );
-    }
-    else {
-      std::cout << "Cache store file " << store.text( ) << " not open!" << std::endl;
-      return false;
-    }
-  }
+  if( h_storage->isOpen( ) ) {
+    for( FXint i = 0; i != this->no( ); i++ ) {
+      buff.clear( );
+      buff.push( this->at( i ) );  
+      h_storage->writeEntry( buff );
+    } 
+    h_storage->flush( );
+  }    
 
   h_change = false;
   return true;
 }
 
-FXbool History_b::read( const FXString &cache_dir )
+FXbool History_b::read( )
 {
-  
-  if( !cache_dir.empty( ) ) {
-    FXString store = cache_dir + "/" + h_name;
-    FXint    i;
-    FXString tmp, data;
-    FXFile   fd;
-
-    if( no( ) > 0 ) {
-      clear( );
-      h_hash = 0;
-    }
-
-    if( FXStat::exists( store ) == true ) { 
-      if( fd.open( store ) != true ) { std::cout << "History store file is not open!" << std::endl; return false; }
-      //std::cout << "READ cache \'" << h_name.text( ) << "\': " << store.text( ) << std::endl;
-      DEBUG_OUT( "READ cache \'" << h_name.text( ) << "\': " << store.text( ) )
-      tmp.length( fd.size( ) );
-      if( fd.readBlock( tmp.text( ), fd.size( ) ) > 0 ) {
-        for( i = 0; i != tmp.length( ); i++ ) {
-          char c = tmp[ i ];
-          if( c == '\n' ) { FXArray<FXString>::push( data ); data = ""; }
-          else { data.insert( data.length( ), c ); }
-        }
-        if( !data.empty( ) ) { FXArray<FXString>::push( data ); }
-      }
-      else { std::cout << "History store file is not read!" << std::endl; return false; }
-      fd.close( );
-    }
-    else { std::cout << "History store file not exist!" << std::endl; return false; }
+  if( h_storage->isOpen( ) ) {
+   while( h_storage->eof( ) > 0 ) { h_storage->readEntry( *this ); } 
   }
+
   return true;
 }
 

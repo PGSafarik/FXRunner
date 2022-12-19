@@ -42,8 +42,12 @@ public :
   virtual void load( FXStream &store );  // Binary straem
   virtual void save( FXStream &store );  // Binary stream
 
+  void load( Storage &store );
+  void save( Storage &store ); 
+/*
   friend Storage& operator <<( Storage &s, Task &task );
-  friend Storage& operator >>( Storage &s, Task &task );
+  friend Storage* operator >>( Storage *s, Task *task );
+*/
 
 protected:
   FXString ConvOnText( const FXString &str );   

@@ -37,10 +37,9 @@ Application::Application( )
   a_cfg = new app_config;
   
   a_iconsth = new FXIconsTheme( this );
-  a_history = new History_b( );
+  //a_history = new History_b( );
 
   settings_load( );
-
   a_nquit_flg = false;
   std::cout.flush( );
 }
@@ -140,7 +139,9 @@ void Application::settings_load( )
   a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
 
   // Read a launch history 
-  a_history->read( a_cfg->cache_dir + "/" +  getAppName( ) );
+  a_history = new History_b( 0, 0, a_cfg->cache_dir + "/" +  getAppName( ) );
+  a_history->read( );
+  
 
   a_cfg->change = false;
 }
@@ -173,7 +174,7 @@ void Application::settings_save( )
     }
   }
 
-  a_history->write( a_cfg->cache_dir + "/" +  getAppName( ), true );
+  a_history->write( );
 }
 
 FXString Application::CheckPrivilege( Task *t )
