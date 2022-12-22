@@ -46,7 +46,11 @@ typedef FXArray<FXString> FXString_List;
 #define DEBUG_OUT(text)
 #endif
 
-
+/* Special core functions */
+extern FX::FXString& operator <<( FX::FXString &dest, const std::string &source );
+extern std::string& operator <<( std::string &dest, const FX::FXString &source );
+extern std::ostream& operator <<( std::ostream &store, const FX::FXString &str );
+extern std::istream& operator >>( std::istream &store, FX::FXString &str );
 
 #endif /* __MAIN_H */
 /*** END ****************************************************************/
