@@ -25,32 +25,22 @@
 #include<Storage.h>
 #include<Task.h>
 
-/*
-enum HistoryFormat = {
-  HF_BINARY = 0x00000010,
-  HF_TEXT   = 0x00000020
-};
-*/
 class History_b : public FXArray<FXString> {
-  FXString h_name;
-  FXint    h_num;
-  FXuint   h_hash;
-  FXbool   h_change;
-
-  SimpleFileStorage *h_storage;
+  FXint  h_limit;  // Limit of num entries in history
+  FXbool h_change; // Changed state indicator
 
 public :
-  History_b( FXint num = 0, FXuint opts = 0, const FXString &cache_dir = FXString::null, const FXString &name = "History" );
+  History_b( FXint num = 0, FXuint opts = 0 );
   virtual ~History_b( );
 
-  void dump( );
+  /* Operations methods */
+  void   insert( const FXString &data );
+  void   _clear( );
+  FXbool save( Storage &storage );
+  FXbool load( Storage &storage );
 
-  void insert( const FXString &data );
-  void _clear( );
-
-  FXbool write( );
-  FXbool read( );
-
+  /* Debug & tests */
+  void dump( ); 
 };
 
 #endif /* __HISTORY_H */

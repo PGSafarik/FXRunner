@@ -16,21 +16,17 @@
 *************************************************************************/
 #include<History.h>
 
-History_b::History_b( FXint num, FXuint opts, const FXString &cache_dir, const FXString &name ) : h_name( name ), h_num( num ), h_hash( 0 ), h_change( false )
-{ 
-  h_storage = new SimpleFileStorage( cache_dir );
-  if( !h_storage->open( name, ";", "", 1 ) ) { std::cerr << "[ERROR] Unable to open a storage " << name.text( ) << std::endl; } 
-}
+History_b::History_b( FXint num, FXuint opts ) : h_limit( num ), h_change( false )
+{ }
 
 History_b::~History_b( )
 { clear( ); }
 
 /**************************************************************************************************/
-
 void History_b::dump( )
 {
-  std::cout << "Dumping array: " << h_name.text( ) << " with " << no( ) << " items" << std::endl;
-  for( FXint i = 0; i != no( ); i++ ) { std::cout << at( i ).text( ) << std::endl; }
+  std::cout << "Dumping history array: " << " with " << no( ) << " items" << std::endl;
+  for( FXint i = 0; i != no( ); i++ ) { std::cout << at( i ) << std::endl; }
 }
 
 void History_b::insert( const FXString &data )
@@ -40,7 +36,6 @@ void History_b::insert( const FXString &data )
 
   push( data );
   h_change = true;
- 
 }
 
 void History_b::_clear( )
@@ -49,28 +44,34 @@ void History_b::_clear( )
   this->clear( );
 }
 
-FXbool History_b::write( )
+FXbool History_b::save( Storage &storage )
 {
   FXArray<FXString> buff; 
-
-  if( h_storage->isOpen( ) ) {
+  
+  if( storage.isOpen( ) ) {
     for( FXint i = 0; i != this->no( ); i++ ) {
       buff.clear( );
       buff.push( this->at( i ) );  
-      h_storage->writeEntry( buff );
+      storage.writeEntry( buff );
     } 
-    h_storage->flush( );
-  }    
+    storage.flush( );
+    h_change = false;
+  }
+  else { std::cerr << "[ERROR] Unable to open a history storage " << ( storage.getUri( ) + "/" + storage.getName( ) ) << std::endl; }    
 
-  h_change = false;
   return true;
 }
 
-FXbool History_b::read( )
+FXbool History_b::load( Storage &storage )
 {
-  if( h_storage->isOpen( ) ) {
-   while( h_storage->eof( ) > 0 ) { h_storage->readEntry( *this ); } 
+  std::cout << storage.isOpen( ) << std::endl;
+  if( storage.isOpen( ) ) {
+    while( storage.eof( ) > 0 ) { 
+     storage.readEntry( *this ); 
+    }
+    h_change = false;
   }
+  else { std::cerr << "[ERROR] Unable to open a history storage " << ( storage.getUri( ) + "/" + storage.getName( ) ) << std::endl; }
 
   return true;
 }
