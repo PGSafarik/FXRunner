@@ -78,9 +78,17 @@ FXbool Storage::close( )
   return res;
 }
 
+void Storage::dump( )
+{
+  std::cout << "Dumping state of storage : " << ( getUri( ) + "/" + getName( ) ) <<  std::endl;
+  std::cout << "Status: " << ( isOpen( ) ? "READY" : "CLOSED" ) << std::endl;
+  std::cout << "Size: "   << size( ) << std::endl;
+  std::cout << "End file: " << ( eof( ) == 1 ? "NO" : "YES OR ERROR" )  << std::endl;
+  std::cout << std::endl;
+}
+
 
 /*** SimpleFileStorage ****************************************************************************/
-
 SimpleFileStorage::SimpleFileStorage( const FXString &path )
                  : Storage( "SimpleFileStorage" ), m_ready( false )
 { 
@@ -248,7 +256,7 @@ FXbool SimpleFileStorage::flush( )
 
       store.close( );    
     }
-    else { std::cout << "[ ERROR ] Unable to open store file " << fn_str.text( ) << " for writing." << std::endl; }   
+    else { std::cout << "[ ERROR ] Unable to open store file " << fn_str << " for writing." << std::endl; }   
   }
   
 
@@ -278,6 +286,15 @@ const FXString SimpleFileStorage::filename( )
     fn += Storage::getName( );
   }
   return fn;
+}
+
+void SimpleFileStorage::dump( )
+{
+  Storage::dump( );
+  for( FXint i = 0; i != size( ); i++ ) { std::cout << m_entries[ i ] << std::endl; }
+  std::cout << std::endl;
+
+  std::cout.flush( );
 }
 
 /*** END ******************************************************************************************/
