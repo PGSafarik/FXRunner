@@ -64,7 +64,6 @@ FXbool History_b::save( Storage &storage )
 
 FXbool History_b::load( Storage &storage )
 {
-  std::cout << storage.isOpen( ) << std::endl;
   if( storage.isOpen( ) ) {
     while( storage.eof( ) > 0 ) { 
      storage.readEntry( *this ); 
