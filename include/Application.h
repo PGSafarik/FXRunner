@@ -48,11 +48,13 @@ class Application : public FXApp {
 FXDECLARE( Application )
   friend class Settings;
 
-  app_config   *a_cfg;       // The application Configuration struct
-  FXIconsTheme *a_iconsth;   // Icons theme manager
-  History_b    *a_history;   // Manager of history of commands
+  app_config        *a_cfg;    // The application Configuration struct
+  SimpleFileStorage  a_hstore; // An history store 
 
-  FXbool a_nquit_flg;        // Flag about temporary negation of autoexit settings
+  FXIconsTheme *a_iconsth; // Icons theme manager
+  History_b    *a_history; // Manager of history of commands
+
+  FXbool a_nquit_flg; // Flag about temporary negation of autoexit settings
 
 public :
   Application( );
@@ -61,6 +63,8 @@ public :
   /* Operations */
   int task_exec( Task *cmd );                                          // Run a command
   void task_write( Task *cmd, const FXString &pth = FXString::null );  // Write a command on a desktop file
+  void load( );                                                        // Complete load
+  void save( );                                                        // Complete application save
 
   /* Access methods */
   FXIconsTheme* get_iconstheme( ) { return a_iconsth; }                // Get a icons theme instance
@@ -83,6 +87,8 @@ protected :
 
   FXString CheckPrivilege( Task *t );  // Check to using sudo
   FXString CheckTerminal( Task *t );   // Check to using terminal emulator 
+
+  void Welcome( );
 };
 
 #endif /* __APPLICATION_H */

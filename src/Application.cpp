@@ -26,37 +26,31 @@ FXIMPLEMENT( Application, FXApp, APPLICATION_MAP, ARRAYNUMBER( APPLICATION_MAP )
 Application::Application( )
            : FXApp( "Runner", "FOX-DESKTOP" )
 {
-  std::cout << "=== FXRunner ========================================" << std::endl;
-  std::cout << "Copyright " << AutoVersion::DATE << "/" << AutoVersion::MONTH << "/" << AutoVersion::YEAR << "  D.A.Tiger <drakarax@seznam.cz>, GNU GPL 3" << std::endl;
-  std::cout << "Version    : "<< AutoVersion::MAJOR<< "."<< AutoVersion::MINOR << "." << AutoVersion::REVISION;
-  std::cout << " [" << AutoVersion::STATUS << "]" << std::endl;
-  std::cout << "lib Fox    : " << FOX_MAJOR << "." << FOX_MINOR << "." << FOX_LEVEL << std::endl;
-  std::cout << "lib FoxGHI : " << 0 << "." << 4 << "." << 1 << std::endl;
-  std::cout << "=== Message =========================================" << std::endl;
+  Welcome( );
 
-  a_cfg = new app_config;
-  
+  a_cfg     = new app_config;
   a_iconsth = new FXIconsTheme( this );
-  //a_history = new History_b( );
+  a_history = new History_b( 0, 0 );
+  
+  load( );
 
-  settings_load( );
-  a_nquit_flg = false;
   std::cout.flush( );
 }
 
 Application::~Application( )
 {
-  settings_save( );
+  save( );
+
   std::cout << "=== End =============================================" << std::endl;
 }
 
 /*************************************************************************************************/
 FXint Application::task_exec( Task *cmd )
 {
-  FXint resh = -1;
+  FXint resh        = -1;
   FXString _command = "";  // Kompletni prikaz ke spusteni
-  FXString _cmd = "";      // zadany prikaz  
-  FXString _term = "";     // prikaz terminalu
+  FXString _cmd     = "";  // zadany prikaz  
+  FXString _term    = "";  // prikaz terminalu
   FXString _paccess = "";  // prikaz pro privilegovany pristup
 
   // Prikaz, parametry, neblokujici spusteni
@@ -66,14 +60,11 @@ FXint Application::task_exec( Task *cmd )
 
   if( _cmd.empty( ) != true  ) {
     _command = CheckTerminal( cmd ) + CheckPrivilege( cmd ) + _cmd;
-    //std::cout << "Running: " << _command.text( ) << std::endl;
-    DEBUG_OUT( "Running: " << _command.text( ) )
+    DEBUG_OUT( "Running: " << _command )
     resh = system( _command.text( ) );
   }
-  
-  //std::cout<< "Execute resulth " << resh << std::endl;
-  DEBUG_OUT( "Execute resulth " << resh )
 
+  DEBUG_OUT( "Execute resulth " << resh )
   return resh;
 }
 
@@ -81,8 +72,7 @@ void Application::task_write( Task *cmd, const FXString &pth )
 {
   if( ( pth.empty( ) == true ) || ( cmd == NULL )  ) { return; }
 
-  //std::cout << "writing " << pth.text( ) << std::endl;
-  DEBUG_OUT( "writing " << pth.text( ) )
+  DEBUG_OUT( "writing " << pth )
   FXSettings desk_file;
   FXString   desk_head = "Desktop Entry";
   FXString   command, name = FXPath::name( cmd->cmd );
@@ -105,6 +95,22 @@ void Application::task_write( Task *cmd, const FXString &pth )
 
   desk_file.unparseFile( pth + "/" + name + ".desktop" );
 }
+
+void Application::load( )
+{
+  settings_load( );
+  a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
+  a_hstore.changeUri( a_cfg->cache_dir + "/" +  getAppName( ) );
+  a_hstore.open( "History", ";", "", 1 );
+  a_history->load( a_hstore );
+}
+
+void Application::save( )
+{
+  a_history->save( a_hstore );
+  settings_save( );
+}
+
 
 /**************************************************************************************************/
 long Application::OnCmd_QuitNegation( FXObject *tgt, FXSelector sel, void *data )
@@ -134,14 +140,7 @@ void Application::settings_load( )
   a_cfg->term_noclose = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", "+hold" );
   a_cfg->term_run     = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec", "-e" );
 
-
-  // GUI Icons theme
-  a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
-
-  // Read a launch history 
-  a_history = new History_b( 0, 0, a_cfg->cache_dir + "/" +  getAppName( ) );
-  a_history->read( );
-  
+  a_nquit_flg = false;
 
   a_cfg->change = false;
 }
@@ -167,14 +166,12 @@ void Application::settings_save( )
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec",     a_cfg->term_run.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", a_cfg->term_noclose.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_workdir",  a_cfg->term_work.text( ) );
+    a_cfg->change = false;
+  } 
 
-    if( reg( ).isModified( ) == true ) { 
-      reg( ).write( ); 
-      a_cfg->change = true;
-    }
+  if( reg( ).isModified( ) == true ) { 
+    reg( ).write( ); 
   }
-
-  a_history->write( );
 }
 
 FXString Application::CheckPrivilege( Task *t )
@@ -200,7 +197,6 @@ FXString Application::CheckTerminal( Task *t )
     if( a_cfg->term_enable == "Always" )  { use = true; }
     else if( t->te || pa_term )           { use = true; }
   }
-  //else { std::cout << "TE is disable" << std::endl; }
   
   if( use ) {
     // Zakldni prikaz - binarka
@@ -221,5 +217,17 @@ FXString Application::CheckTerminal( Task *t )
 
   return resh;
 }
-/*************************************************************************************************/
-/* END */
+
+void Application::Welcome( )
+{
+  std::cout << "=== " << getAppName( ) << " ========================================" << std::endl;
+  std::cout << "Copyright " << AutoVersion::DATE << "/" << AutoVersion::MONTH << "/" << AutoVersion::YEAR << "  D.A.Tiger <drakarax@seznam.cz>, GNU GPL 3" << std::endl;
+  std::cout << "Version    : "<< AutoVersion::MAJOR<< "."<< AutoVersion::MINOR << "." << AutoVersion::REVISION;
+  std::cout << " [" << AutoVersion::STATUS << "]" << std::endl;
+  std::cout << "lib Fox    : " << FOX_MAJOR << "." << FOX_MINOR << "." << FOX_LEVEL << std::endl;
+  std::cout << "lib FoxGHI : " << 0 << "." << 4 << "." << 1 << std::endl;
+  std::cout << "=== Message =========================================" << std::endl;
+}
+
+/*** END ******************************************************************************************/
+
