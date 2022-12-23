@@ -210,7 +210,7 @@ FXint Runner::CheckHistory( )
 {
   FXint id, num = 0;
   FXString cmd;
-  History_b *history = dynamic_cast<Application*>( getApp( ) )->get_History( );
+  History_b *history = r_app->get_History( );
 
   r_combo->clearItems( );
   if( history->no( ) > 0 ) {

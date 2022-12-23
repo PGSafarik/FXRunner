@@ -60,18 +60,19 @@ public :
   Application( );
   virtual ~Application( );
 
-  /* Operations */
-  int task_exec( Task *cmd );                                          // Run a command
-  void task_write( Task *cmd, const FXString &pth = FXString::null );  // Write a command on a desktop file
-  void load( );                                                        // Complete load
-  void save( );                                                        // Complete application save
-
   /* Access methods */
   FXIconsTheme* get_iconstheme( ) { return a_iconsth; }                // Get a icons theme instance
   History_b*    get_History( )    { return a_history; }                // Get cache object, represent the launch history 
   FXbool        autoexit( )       { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
   FXbool        is_silent( )      { return a_cfg->silent_exit; }       // if true, the application will not ask for confirmation of termination
   FXbool        is_changed( )     { return a_cfg->change; }            // Idicate configration is changed
+
+
+  /* Operations */
+  int task_exec( Task *cmd );                                          // Run a command
+  void task_write( Task *cmd, const FXString &pth = FXString::null );  // Write a command on a desktop file
+  void load( );                                                        // Complete load
+  void save( );                                                        // Complete application save
 
   /* messages & handlers */
   enum {
