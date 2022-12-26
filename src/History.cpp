@@ -25,11 +25,10 @@ Task* History::at( FXint index, FXbool noup )
 
 FXbool History::add( const FXString &cmd_str )
 {
+  /// FIXME HISTORY_002 : Remove m_add_empty flag 
   if( !cmd_str.empty( ) || m_add_empty ) { 
    
-    Task *task = new Task;
-    task->cmd = cmd_str; /// FIXME HISTORY_002 : Move to Task construktor
-   
+    Task *task = new Task( cmd_str );
     if( task && __add( task ) ) { return true; } else { delete task; } 
   }
 
@@ -38,6 +37,7 @@ FXbool History::add( const FXString &cmd_str )
 
 FXbool History::insert( Task *task )
 {
+  /// FIXME HISTORY_002 : Remove m_add_empty flag
   if( task == NULL || ( task->cmd.empty( ) && !m_add_empty ) ) { return false; } 
   return __add( task ); 
 }
@@ -68,13 +68,15 @@ FXint History::load( Storage &store )
 {
   if( store.isOpen( ) ) {
     clear( );  
-    m_add_empty = true;  
     
     while( store.eof( ) > 0 ) { 
-      if( this->add( ) ) { m_buffer[ 0 ]->load( store ); }
+      Task *entry = new Task;
+      if( entry ) { 
+        entry->load( store ); 
+        m_buffer.push( entry );
+      }
     }
     
-    m_add_empty = false;
     m_change    = false;
   }
   else { std::cerr << "[ERROR] Unable to open a history storage " << ( store.getUri( ) + "/" + store.getName( ) ) << std::endl; }
@@ -84,9 +86,10 @@ FXint History::load( Storage &store )
 
 FXint History::save( Storage &store )
 {
-  if( m_change && store.isOpen( ) ) {
+  if( !m_change ) { return true; }
+  if( store.isOpen( ) ) {
     FXint num = m_buffer.no( );
-    
+
     for( FXint i = 0; i != num; i++ ) {
       Task *entry = m_buffer[ i ];
       if( entry ) { entry->save( store ); }
@@ -95,7 +98,7 @@ FXint History::save( Storage &store )
     store.flush( );
     m_change = false;
   }
-  else { std::cerr << "[ERROR] Unable to load a history storage " << ( store.getUri( ) + "/" + store.getName( ) ) << std::endl; }    
+  else { std::cerr << "[ERROR] Unable to save a history storage " << ( store.getUri( ) + "/" + store.getName( ) ) << std::endl; }    
 
   return true;   
     
@@ -132,7 +135,6 @@ void History::Dump( )
 FXbool History::__add( Task *entry, FXbool dedupl )
 {
   FXint num = 0;
-
   if( m_buffer.insert( 0, entry ) ) {
     if( dedupl && !entry->cmd.empty( ) ) {  
       

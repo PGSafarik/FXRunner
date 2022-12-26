@@ -115,7 +115,7 @@ FXbool SimpleFileStorage::open( const FXString &name, const FXString &delim, con
           FXString line = buff.section( '\n', i );
           line.trim( );
           if( !line.empty( ) ) { 
-            m_entries.push( line ); 
+            m_entries.append( line ); 
           }           
         }
         res = m_ready = true;
@@ -174,7 +174,7 @@ FXival SimpleFileStorage::readEntry( FXArray<FXString> &buff )
       if( num > 0 ) {
         FXint i; 
         for( i = 0; i != num; i++ ) {
-          buff[ i ] = data.section( m_delimiter, i );   
+          buff.insert( i, data.section( m_delimiter, i ) );   
           buff[ i ].trim( );
         }
         res = i;

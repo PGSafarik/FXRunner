@@ -18,16 +18,15 @@
 FXIMPLEMENT( Task, FXObject, NULL, 0 );
 
 /**************************************************************************************************/
-Task::Task( )
+Task::Task( const FXString &cmd_str )
 {
-  cmd  = FXString::null;
+  cmd  = cmd_str;
   prm  = FXString::null;
   wpth = FXString::null;
   su   = false;
   ow   = true;
   te   = false;
   lt   = false;
-  cl   = false;
 }
 
 Task::~Task( )
@@ -43,7 +42,6 @@ void Task::load( FXStream &store )
   store >> ow;
   store >> te;
   store >> lt;
-  store >> cl;
 }
 
 void Task::save( FXStream &store )
@@ -57,36 +55,37 @@ void Task::save( FXStream &store )
   store << ow;
   store << te;
   store << lt;
-  store << cl;
 }
 
 void Task::load( Storage &store )
 {
-  //std::cout << "Task Entry Load: " << store.getName( ).text( ) ;
-
   FXArray<FXString> list;
-  FXlong r = 0;
 
-  if( ( r = store.readEntry( list ) ) >= 1 ) { 
+  if( store.readEntry( list ) > 0 ) { 
     cmd  = list[ 0 ]; 
     prm  = list[ 1 ];
     wpth = list[ 2 ]; 
     su   = list[ 3 ].toInt( );
     ow   = list[ 4 ].toInt( );
     te   = list[ 5 ].toInt( );
-    lt   = list[ 6 ].toInt( );
-    cl   = list[ 7 ].toInt( );
-    
+    lt   = list[ 6 ].toInt( );    
   }  
   else { std::cerr << "[ERROR] Task entry is not read!" << std::endl; } 
-   
-  //std::cout << "( " << r << " ) \n";
 }
 
 void Task::save( Storage &store ) 
 {
+  FXArray<FXString> list;
 
+  list.insert( 0, cmd );
+  list.insert( 1, prm );
+  list.insert( 2, wpth );
+  list.insert( 3, FXString::value( su ) );
+  list.insert( 4, FXString::value( ow ) );
+  list.insert( 5, FXString::value( te ) );
+  list.insert( 6, FXString::value( lt ) );
 
+  if( store.writeEntry( list ) <= 0 ) { std::cerr << "[ERROR] Task entry is not write!" << std::endl; }
 }
 
 /**************************************************************************************************/

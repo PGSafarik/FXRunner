@@ -35,9 +35,8 @@ public :
   FXbool   ow;    /// & - na pozadi
   FXbool   te;    /// terminal - v terminalu
   FXbool   lt;    /// lock term - po skonceni nezvirat terminal
-  FXbool   cl;    /// create link
 
-  Task( );
+  Task( const FXString &cmd_str = FXString::null );
   virtual ~Task( );
   virtual void load( FXStream &store );  // Binary straem
   virtual void save( FXStream &store );  // Binary stream

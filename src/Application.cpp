@@ -101,9 +101,8 @@ void Application::load( )
   settings_load( );
   a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
   a_hstore.changeUri( a_cfg->cache_dir + "/" +  getAppName( ) );
-  a_hstore.open( "History", ";", FXString::null, 8 );
+  a_hstore.open( "History", ";", FXString::null, TASKENTRIESNUM );
   a_history->load( a_hstore );
-  a_history->Dump( );
 }
 
 void Application::save( )

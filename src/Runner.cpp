@@ -214,18 +214,10 @@ FXint Runner::CheckHistory( )
   FXString cmd;
   
   r_combo->clearItems( );
-  if( num > 0 ) {
-    std::cout << "Check history num: " << num << std::endl;
-    for( FXint i = 0; i != num; i++ ) {
-      std::cout << i << ". ";
-      std::cout.flush( );
-      Task *entry = history->at( i, false );
-      std::cout << "Task entry " << entry->cmd << std::endl;
-      if( r_combo->findItem( entry->cmd ) == -1 ) {
-        //id = r_combo->getNumItems( );
-        r_combo->insertItem( i, entry->cmd );
-        //num++;
-      }
+  for( FXint i = 0; i != num; i++ ) {
+    Task *entry = history->at( i, false );
+    if( r_combo->findItem( entry->cmd ) == -1 ) {
+      r_combo->insertItem( i, entry->cmd );
     }
   }
 
