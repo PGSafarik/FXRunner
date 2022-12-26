@@ -26,6 +26,23 @@
 #include<Boxes.h>
 #include<Settings.h>
 
+// Auxiliary structure for storing the state of properties 
+struct Properties {
+  FXbool suaccess;    // Run with super user access
+  FXbool unblock;     // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
+  FXbool term;        // Run the command in terminal
+  FXbool nocloseterm; // Try to prevent automatic termination of the terminal when the command is finished running.
+    
+  Properties( )
+  {
+    // initialize 
+    this->suaccess    = false;
+    this->unblock     = true;
+    this->term        = false;
+    this->nocloseterm = false;
+  }
+};
+
 //class Runner : public FXMainWindow {
 class Runner : public FXPrimaryWindow {
 FXDECLARE( Runner )
@@ -35,6 +52,7 @@ FXDECLARE( Runner )
   FXTextField *r_tfield;
 
   Task         *r_acmd;
+  Properties    r_prop;
   FXIconsTheme *r_icons;
 
 public:
@@ -74,6 +92,7 @@ protected:
   /* Help methods */
   History_b* History( ) { return r_app->get_History( ); } 
   FXint      CheckHistory( );
+  void       Check_property( Task *task );
 };
 
 #endif /* __RUNNER_H */
