@@ -22,7 +22,7 @@
 *************************************************************************/
 #include<main.h>
 #include<Application.h>
-#include<History_b.h>
+#include<History.h>
 #include<Boxes.h>
 #include<Settings.h>
 
@@ -89,7 +89,7 @@ protected:
   Runner( ) { }
   
   /* Help methods */
-  History_b* History( ) { return r_app->get_History( ); } 
+  History*   GetHistory( ) { return r_app->get_History( ); } 
   FXint      CheckHistory( );
   void       Check_property( Task *task );
 };

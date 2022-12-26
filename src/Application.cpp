@@ -30,7 +30,7 @@ Application::Application( )
 
   a_cfg     = new app_config;
   a_iconsth = new FXIconsTheme( this );
-  a_history = new History_b( 0, 0 );
+  a_history = new History;
   
   load( );
 
@@ -101,8 +101,9 @@ void Application::load( )
   settings_load( );
   a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
   a_hstore.changeUri( a_cfg->cache_dir + "/" +  getAppName( ) );
-  a_hstore.open( "History", ";", "", 1 );
+  a_hstore.open( "History", ";", FXString::null, 8 );
   a_history->load( a_hstore );
+  a_history->Dump( );
 }
 
 void Application::save( )

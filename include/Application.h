@@ -23,7 +23,7 @@
 *************************************************************************/
 #include<main.h>
 #include<Task.h>
-#include<History_b.h> 
+#include<History.h> 
 
 /*** Terminal emulator Profile struct ***/
 struct app_teprofile {
@@ -62,7 +62,7 @@ FXDECLARE( Application )
   SimpleFileStorage  a_hstore; // An history store 
 
   FXIconsTheme *a_iconsth;     // Icons theme manager
-  History_b    *a_history;     // Manager of history of commands
+  History      *a_history;     // Manager of history of commands
 
   FXbool a_nquit_flg;          // Flag about temporary negation of autoexit settings
 
@@ -72,7 +72,7 @@ public :
 
   /* Access methods */
   FXIconsTheme* get_iconstheme( ) { return a_iconsth; }                // Get a icons theme instance
-  History_b*    get_History( )    { return a_history; }                // Get cache object, represent the launch history 
+  History*      get_History( )    { return a_history; }                // Get cache object, represent the launch history 
   FXbool        autoexit( )       { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
   FXbool        is_silent( )      { return a_cfg->silent_exit; }       // if true, the application will not ask for confirmation of termination
   FXbool        is_changed( )     { return a_cfg->change; }            // Idicate configration is changed

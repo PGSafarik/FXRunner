@@ -108,12 +108,12 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
         // Compile the command
         if( err_flg != true ) {
           r_app->task_exec( task );         // Running application
-          History( )->insert( task->cmd );  // Insert command to history
+          GetHistory( )->insert( task );  // Insert command to history
           this->CheckHistory( );            // Aktualize history command list in combobox
           r_combo->setText( "" );           // Clean command text 
 
           // Command reset
-          delete task;  // I do not like it... :( if will completed task history, ok )
+          //delete task;  // I do not like it... :( if will completed task history, ok )
         }
         else {
           FXMessageBox::error( this, MBOX_OK, "Incorrect input", err_str.text( ) );
@@ -197,7 +197,7 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
     }
     case Runner::HYSTORY_CLEAR : {
       r_combo->clearItems( );
-      History( )->_clear( );
+      GetHistory( )->clear( );
     }
   }
    
@@ -211,8 +211,8 @@ FXint Runner::CheckHistory( )
 {
   FXint id, num = 0;
   FXString cmd;
-  History_b *history = r_app->get_History( );
-
+  History *history = r_app->get_History( );
+/*
   r_combo->clearItems( );
   if( history->no( ) > 0 ) {
     for( FXint i = ( history->no( ) - 1 ); i >= 0; i-- ) {
@@ -224,7 +224,7 @@ FXint Runner::CheckHistory( )
       }
     }
   }
-
+*/
   return num;
 }
 
