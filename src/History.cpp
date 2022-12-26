@@ -11,9 +11,16 @@ History::~History( )
 { }
 
 /*************************************************************************************************/
-Task* History::at( FXint index )
+Task* History::at( FXint index, FXbool noup )
 { 
-  return ( ( this->Index( index ) && __top( index ) ) ? m_buffer[ 0 ] : NULL );
+  Task *entry = NULL;
+
+  if( this->Index( index ) ) {
+    if( noup && __top( index ) ) { entry = m_buffer[ 0 ]; } else { entry = m_buffer[ index ]; }
+  }
+  
+
+  return entry;
 }
 
 FXbool History::add( const FXString &cmd_str )

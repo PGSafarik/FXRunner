@@ -45,7 +45,7 @@ public :
   FXbool isChange( ) { return m_change; }
   
   /* operations methods */
-  Task*  at( FXint index );
+  Task*  at( FXint index, FXbool noup = false );
   FXbool add( const FXString &cmd_str = FXString::null ); // Create new Task instance and insert on list
   FXbool insert( Task *task );                            // Insert existing task on list
   Task*  remove( FXint index );                           // Remove existing index

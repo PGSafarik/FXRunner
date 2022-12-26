@@ -209,22 +209,26 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
 /**************************************************************************************************/
 FXint Runner::CheckHistory( )
 {
-  FXint id, num = 0;
-  FXString cmd;
   History *history = r_app->get_History( );
-/*
+  FXint num = history->no( );
+  FXString cmd;
+  
   r_combo->clearItems( );
-  if( history->no( ) > 0 ) {
-    for( FXint i = ( history->no( ) - 1 ); i >= 0; i-- ) {
-      cmd = history->at( i );
-      if( r_combo->findItem( cmd ) == -1 ) {
-        id = r_combo->getNumItems( );
-        r_combo->insertItem( id, cmd );
-        num++;
+  if( num > 0 ) {
+    std::cout << "Check history num: " << num << std::endl;
+    for( FXint i = 0; i != num; i++ ) {
+      std::cout << i << ". ";
+      std::cout.flush( );
+      Task *entry = history->at( i, false );
+      std::cout << "Task entry " << entry->cmd << std::endl;
+      if( r_combo->findItem( entry->cmd ) == -1 ) {
+        //id = r_combo->getNumItems( );
+        r_combo->insertItem( i, entry->cmd );
+        //num++;
       }
     }
   }
-*/
+
   return num;
 }
 
