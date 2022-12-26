@@ -26,18 +26,18 @@
 #include<Task.h>
 
 class History : public FXObject {
+FXDECLARE( History )
   FXArray<Task*> m_buffer;      // Tasks list
   FXint          m_limit;       // Max number limit of entries in the list   
   FXbool         m_change;      // flag for changes in tasks list
   FXbool         m_add_empty;   // flaeg enabled add empty task
-  
-  Task*  __create( const FXString &cmd );            
+              
   FXbool __add( Task *entry, FXbool dedupl = true ); // Add Task instance on tasks list
   FXbool __rem( FXint pos, FXbool destroy = false ); // Remove tesk from list
   FXbool __top( FXint index );                       // Move task from index on position 0
   
 public :
-  History( FXint limit = 0; FXuint opts );
+  History( FXint limit = 0, FXuint opts = 0 );
   virtual ~History( );
   
   /* Access methods */
@@ -46,17 +46,19 @@ public :
   
   /* operations methods */
   Task*  at( FXint index );
-  FXbool add( const FXString &cmd_str ); // Create new Task instance and insert on list
-  FXbool insert( Task *task );           // Insert existing task on list
-  Task*  remove( FXint index );          // Remove existing index
-  void   clear( );                       // Clear all items 
+  FXbool add( const FXString &cmd_str = FXString::null ); // Create new Task instance and insert on list
+  FXbool insert( Task *task );                            // Insert existing task on list
+  Task*  remove( FXint index );                           // Remove existing index
+  void   clear( );                                        // Clear all items 
   
-  FXint load( Storage &store );
-  FXint save( Storage &store );
+  FXint load( Storage &store );                           // Load history etries from storage
+  FXint save( Storage &store );                           // Save history entries on storage
   
   /* Debug & tests */
-  void Dump( );
+  void Dump( );                                           // Dumping actual history state on std::cout
   
 protected :
-  FXbool ValidPosition( FXint index );  
+  FXbool Index( FXint value );                            // Check is index value is valid
 };
+
+#endif /*__HISTORY_H */

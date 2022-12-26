@@ -23,7 +23,16 @@
 *************************************************************************/
 #include<main.h>
 #include<Task.h>
-#include<History.h> 
+#include<History_b.h> 
+
+/*** Terminal emulator Profile struct ***/
+struct app_teprofile {
+  FXString name;      // Nazev emulatoru terminalu
+  FXString cmd;       // Prikaz spoustejici terminal
+  FXString p_run;     // (param), retezec ulohy ke spusteni 
+  FXString p_noclose; // (param), nezavirat terminal po skonceni ulohy
+  FXString p_Workdir; // (param), nastavit pracovni adresar  
+};  
 
 /*** Konfiguracni struktura aplikace ***/
 struct app_config {       // konfiguracni data tridy Application
@@ -39,7 +48,8 @@ struct app_config {       // konfiguracni data tridy Application
   FXString cache_dir;     // Cache Adresas 
   FXbool   auto_exit;     // Automaticaly exit FXRunner after launch application
   FXbool   silent_exit;   // Require confirmation of program termination
-
+  FXStringDictionary term_profiles; // List of terminal emulators
+   
   FXbool  change;         // Indicate changes
 };
 
@@ -51,10 +61,10 @@ FXDECLARE( Application )
   app_config        *a_cfg;    // The application Configuration struct
   SimpleFileStorage  a_hstore; // An history store 
 
-  FXIconsTheme *a_iconsth; // Icons theme manager
-  History_b    *a_history; // Manager of history of commands
+  FXIconsTheme *a_iconsth;     // Icons theme manager
+  History_b    *a_history;     // Manager of history of commands
 
-  FXbool a_nquit_flg; // Flag about temporary negation of autoexit settings
+  FXbool a_nquit_flg;          // Flag about temporary negation of autoexit settings
 
 public :
   Application( );

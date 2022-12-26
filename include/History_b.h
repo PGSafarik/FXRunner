@@ -13,8 +13,8 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
 
-#ifndef __HISTORY_H
-#define __HISTORY_H
+#ifndef __HISTORYB_H
+#define __HISTORYB_H
 /*************************************************************************
 * History.h                                                              *
 *                                                                        *
@@ -43,5 +43,5 @@ public :
   void dump( ); 
 };
 
-#endif /* __HISTORY_H */
+#endif /* __HISTORYB_H */
 /*** END ****************************************************************/

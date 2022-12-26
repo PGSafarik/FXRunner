@@ -1,13 +1,13 @@
 #include<History.h>
 
-FXMAPDEF( History ) HISTMAP[ ] = { };
+FXDEFMAP( History ) HISTMAP[ ] = { };
 FXIMPLEMENT( History, FXObject, NULL, 0 )
 
 /*************************************************************************************************/
-History::History( FXint lim = 0, FXuint opts = 0 ) : m_limit( lim ), m_change( false )
+History::History( FXint limit, FXuint opts ) : m_limit( limit ), m_change( false )
 {  }
 
-History::~History_b( )
+History::~History( )
 { }
 
 /*************************************************************************************************/
@@ -38,7 +38,7 @@ FXbool History::insert( Task *task )
 Task* History::remove( FXint index )
 {
   if( this->Index( index ) ) {
-    Task *t = buffer[ index ];  
+    Task *t = m_buffer[ index ];  
     if( __rem( index ) ) { return t; }
   }
   
@@ -59,18 +59,18 @@ void History::clear( )
   
 FXint History::load( Storage &store )
 {
-  if( storage.isOpen( ) ) {
+  if( store.isOpen( ) ) {
     clear( );  
     m_add_empty = true;  
     
-    while( storage.eof( ) > 0 ) { 
+    while( store.eof( ) > 0 ) { 
       if( this->add( ) ) { m_buffer[ 0 ]->load( store ); }
     }
     
     m_add_empty = false;
     m_change    = false;
   }
-  else { std::cerr << "[ERROR] Unable to open a history storage " << ( storage.getUri( ) + "/" + storage.getName( ) ) << std::endl; }
+  else { std::cerr << "[ERROR] Unable to open a history storage " << ( store.getUri( ) + "/" + store.getName( ) ) << std::endl; }
 
  return true;
 }
@@ -101,7 +101,7 @@ void History::Dump( )
   std::cout << "[DUMP History] count: " << num << "; limit: " << m_limit << std::endl;
 
   if( num > 0 ) {
-    for( i = 0; i != num; i++ ) {
+    for( FXint i = 0; i != num; i++ ) {
       std::cout << i << ". ";
 
       Task *task = m_buffer[ i ];
@@ -116,7 +116,7 @@ void History::Dump( )
       std::cout << std::endl;     
     }
   }
-  else {  std::cout << "  - History is empty -  " << std::endl;
+  else {  std::cout << "  - History is empty -  " << std::endl; }
   std::cout << "--- End History object dump ---" << std::endl;
 
 }
@@ -124,25 +124,27 @@ void History::Dump( )
 /**************************************************************************************************/
 FXbool History::__add( Task *entry, FXbool dedupl )
 {
-  if( m_buffer.insert( 0, task ) ) {
-    if( dedupl && !task->cmd.empty( ) ) {  
-      FXint num = m_buffer.no( );
+  FXint num = 0;
+
+  if( m_buffer.insert( 0, entry ) ) {
+    if( dedupl && !entry->cmd.empty( ) ) {  
+      
+      // Check entries num limit
+      if( m_limit > 0 ) {
+        num = m_buffer.no( );
+        while( num < m_limit ) { num--; __rem( num, true ); }
+      }
 
       // Deduplication
+      num = m_buffer.no( );
       for( FXint i = 1; i != num; i++ ) {
         Task *tmp = m_buffer[ i ];
-        if( tmp && tmp != task && tmp->cmd == task->cmd ) { /// FIXME HISTORY_001 : Add copmpare operator for Task 
+        if( tmp && tmp != entry && tmp->cmd == entry->cmd ) { /// FIXME HISTORY_001 : Add copmpare operator for Task 
           if( m_buffer.erase( i ) ) { delete tmp; }  
         }
       }     
     }
     
-    // Check entries num limit
-    if( m_limit > 0 ) {
-      num = m_buffer.no( );
-      while( num < m_limits ) { num--; __rem( num, true ); }
-    }
-
     m_change = true;       
     return true;
   }
@@ -152,7 +154,7 @@ FXbool History::__add( Task *entry, FXbool dedupl )
 
 FXbool History::__rem( FXint pos, FXbool destroy )
 {
-   Task *elem = ( destroy ? m_buffer[ pos ] : NULL );
+   Task *entry = ( destroy ? m_buffer[ pos ] : NULL );
    
    if( m_buffer.erase( pos ) ) {
      m_change = true;
@@ -163,7 +165,7 @@ FXbool History::__rem( FXint pos, FXbool destroy )
    return false;
 }
 
-void History::__top( FXint index )
+FXbool History::__top( FXint index )
 {
   if( index == 0 ) { return true; }  
   if( index > 0 ) {  
@@ -177,9 +179,9 @@ void History::__top( FXint index )
 }
 
 /*************************************************************************************************/
-FXbool History::Index( FXint index )
+FXbool History::Index( FXint value )
 {
-  return ( index >= 0 && index < m_buffer.no( ) );   
+  return ( value >= 0 && value < m_buffer.no( ) );   
 }
 
 

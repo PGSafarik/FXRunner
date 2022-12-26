@@ -22,7 +22,7 @@
 *************************************************************************/
 #include<main.h>
 #include<Application.h>
-#include<History.h>
+#include<History_b.h>
 #include<Boxes.h>
 #include<Settings.h>
 
