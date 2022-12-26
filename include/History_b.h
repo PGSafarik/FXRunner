@@ -25,38 +25,23 @@
 #include<Storage.h>
 #include<Task.h>
 
-class History : public FXObject {
-  FXArray<Task*> m_buffer;      // Tasks list
-  FXint          m_limit;       // Max number limit of entries in the list   
-  FXbool         m_change;      // flag for changes in tasks list
-  FXbool         m_add_empty;   // flaeg enabled add empty task
-  
-  Task*  __create( const FXString &cmd );            
-  FXbool __add( Task *entry, FXbool dedupl = true ); // Add Task instance on tasks list
-  FXbool __rem( FXint pos, FXbool destroy = false ); // Remove tesk from list
-  FXbool __top( FXint index );                       // Move task from index on position 0
-  
+class History_b : public FXArray<FXString> {
+  FXint  h_limit;  // Limit of num entries in history
+  FXbool h_change; // Changed state indicator
+
 public :
-  History( FXint limit = 0; FXuint opts );
-  virtual ~History( );
-  
-  /* Access methods */
-  FXint no( )        { return m_buffer.no( ); } 
-  FXbool isChange( ) { return m_change; }
-  
-  /* operations methods */
-  Task*  at( FXint index );
-  FXbool add( const FXString &cmd_str ); // Create new Task instance and insert on list
-  FXbool insert( Task *task );           // Insert existing task on list
-  Task*  remove( FXint index );          // Remove existing index
-  void   clear( );                       // Clear all items 
-  
-  FXint load( Storage &store );
-  FXint save( Storage &store );
-  
+  History_b( FXint num = 0, FXuint opts = 0 );
+  virtual ~History_b( );
+
+  /* Operations methods */
+  void   insert( const FXString &data );
+  void   _clear( );
+  FXbool save( Storage &storage );
+  FXbool load( Storage &storage );
+
   /* Debug & tests */
-  void Dump( );
-  
-protected :
-  FXbool ValidPosition( FXint index );  
+  void dump( ); 
 };
+
+#endif /* __HISTORY_H */
+/*** END ****************************************************************/
