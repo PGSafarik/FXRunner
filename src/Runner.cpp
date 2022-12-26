@@ -62,8 +62,6 @@ Runner::Runner( Application *a )
   new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
   /* Initialize */
-  r_acmd = new Task;
-
   this->CheckHistory( );
   r_combo->setText( "" );
 }
@@ -91,37 +89,41 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
       // Get command and working path
       FXString cmd = r_combo->getText( );
       FXString pth = r_tfield->getText( );
-
-      if( r_acmd == NULL ) { r_acmd = new Task; }
       
       // Set command
-      if( cmd.empty( ) != true ) { r_acmd->cmd = cmd; }
+      if( cmd.empty( ) != true ) { 
+        Task *task = new Task;
+        task->cmd = cmd; 
+
+	      // Set command working path
+        task->prm = FXString::null;
+        if( pth.empty( ) != true ) {
+          task->wpth = pth;
+          if( task->wpth[ task->wpth.length( ) - 1 ] != '/' ) { task->wpth += "/"; }
+        }
+
+        // Set properties
+        Check_property( task );
+
+        // Compile the command
+        if( err_flg != true ) {
+          r_app->task_exec( task );         // Running application
+          History( )->insert( task->cmd );  // Insert command to history
+          this->CheckHistory( );            // Aktualize history command list in combobox
+          r_combo->setText( "" );           // Clean command text 
+
+          // Command reset
+          delete task;  // I do not like it... :( if will completed task history, ok )
+        }
+        else {
+          FXMessageBox::error( this, MBOX_OK, "Incorrect input", err_str.text( ) );
+          resh = 0;
+        } 
+      }
       else {
 		    err_flg = true;
 	      err_str = "The field for entering the command must not be empty!\nPlease enter the required command to run";
 	    }
-
-	    // Set command working path
-      r_acmd->prm = FXString::null;
-      if( pth.empty( ) != true ) {
-        r_acmd->wpth = pth;
-        if( r_acmd->wpth[ r_acmd->wpth.length( ) - 1 ] != '/' ) { r_acmd->wpth += "/"; }
-      }
-
-      // Compile the command
-      if( err_flg != true ) {
-        r_app->task_exec( r_acmd );          // Running application
-        History( )->insert( r_acmd->cmd ); // Insert command to history
-        this->CheckHistory( );             // Aktualize history command list in combobox
-        r_combo->setText( "" );            // Clean command text 
-
-        // Command reset
-        r_acmd = NULL;  // I do not like it... :(
-      }
-      else {
-        FXMessageBox::error( this, MBOX_OK, "Incorrect input", err_str.text( ) );
-        resh = 0;
-      }
 
       break;
     }
@@ -135,7 +137,6 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
   }
 
   if( r_app->autoexit( ) && !err_flg ) { r_app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
-  else { r_acmd = new Task; }
   return resh;
 }
 
@@ -175,34 +176,34 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
 
 long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
 {
-   FXMenuCheck *check = ( FXMenuCheck* ) tgt;
-   FXbool status  = check->getCheck( );
-   FXuint msgtype = FXSELTYPE( sel );
-   FXuint msgid   = FXSELID( sel );
+  FXMenuCheck *check = ( FXMenuCheck* ) tgt;
+  FXbool status  = check->getCheck( );
+  FXuint msgtype = FXSELTYPE( sel );
+  FXuint msgid   = FXSELID( sel );
 
-   switch( msgid ) {
-     case Runner::ID_USER     : { r_acmd->su  = status; break; }
-     case Runner::ID_ANNOUNCE : { r_acmd->ow  = status; break; }
-     case Runner::ID_LINK     : { r_acmd->cl  = status; break; }
-     case Runner::ID_TERMINAL : { r_acmd->te  = status; break; }
-     case Runner::ID_TERMLOCK : { r_acmd->lt  = status; break; }
-     case Runner::ID_NOQUIT   : { 
-       if( msgtype == SEL_UPDATE ) {
-         FXbool state =  r_app->autoexit( );
-         check->setCheck( state ); 
-       }
-       else { r_app->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATION ), NULL ); }
-       break; 
-     }
-     case Runner::HYSTORY_CLEAR : {
-       r_combo->clearItems( );
-       History( )->_clear( );
-     }
-   }
+  switch( msgid ) {
+    case Runner::ID_USER     : { /*r_acmd->su*/ r_prop.suaccess    = status; break; }
+    case Runner::ID_ANNOUNCE : { /*r_acmd->ow*/ r_prop.unblock     = status; break; }
+    case Runner::ID_TERMINAL : { /*r_acmd->te*/ r_prop.term        = status; break; }
+    case Runner::ID_TERMLOCK : { /*r_acmd->lt*/ r_prop.nocloseterm = status; break; }
+    //case Runner::ID_LINK     : { r_acmd->cl  = status; break; }
+    case Runner::ID_NOQUIT   : { 
+      if( msgtype == SEL_UPDATE ) {
+        FXbool state =  r_app->autoexit( );
+        check->setCheck( state ); 
+      }
+      else { r_app->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATION ), NULL ); }
+      break; 
+    }
+    case Runner::HYSTORY_CLEAR : {
+      r_combo->clearItems( );
+      History( )->_clear( );
+    }
+  }
    
-   if( r_acmd->te == false ) { r_acmd->lt = false; }
+  if( r_prop.term == false ) { r_prop.nocloseterm = false; }
 
-   return 1;
+  return 1;
 }
 
 /**************************************************************************************************/
@@ -225,6 +226,16 @@ FXint Runner::CheckHistory( )
   }
 
   return num;
+}
+
+void Runner::Check_property( Task *task )
+{
+  if( task ) {
+    task->su = r_prop.suaccess;
+    task->ow = r_prop.unblock;
+    task->te = r_prop.term;
+    task->lt = r_prop.nocloseterm;
+  }
 }
 
 /*** END ******************************************************************************************/

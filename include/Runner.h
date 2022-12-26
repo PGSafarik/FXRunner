@@ -51,7 +51,6 @@ FXDECLARE( Runner )
   FXTextField *r_pfield;
   FXTextField *r_tfield;
 
-  Task         *r_acmd;
   Properties    r_prop;
   FXIconsTheme *r_icons;
 
