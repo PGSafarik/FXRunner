@@ -347,12 +347,12 @@ FXIMPLEMENT( SettingsDialog, FXSecondaryWindow, SettingsBoxMap, ARRAYNUMBER( Set
 SettingsDialog::SettingsDialog( FXWindow *own )
               : FXSecondaryWindow( own, "Configure", WINDOW_STATIC, 0, 0, 750, 350 )
 {
+  setWMDecorations( WM_DECOR_SECONDARY );
   
   Application  *app = ( Application * ) this->getApp( );
   FXIconsTheme *icons = app->get_iconstheme( );
+  setIcon( icons->get_icon( "settings" ) );  
 
-  setIcon( icons->get_icon( "settings" ) );
-  
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
   Settings *config = new Settings( content, this, SettingsDialog::ID_RECONFIGURE );
   FXHorizontalSeparator( content, FRAME_GROOVE | LAYOUT_FILL_X );

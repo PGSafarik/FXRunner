@@ -31,6 +31,10 @@
 /* Declaration new types */
 typedef FXArray<FXString> FXString_List;
 
+/* Alternative WM decorations */
+#define WM_DECOR_PRIMARY    DECOR_TITLE | DECOR_MINIMIZE | DECOR_CLOSE | DECOR_BORDER| DECOR_MENU
+#define WM_DECOR_SECONDARY  DECOR_TITLE | DECOR_CLOSE | DECOR_BORDER  
+
 /* Runner configure sections */
 #define CFG_RUNNER      "Runner"
 #define CFG_TERM_PREFIX "Term"

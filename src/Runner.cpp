@@ -32,6 +32,7 @@ Runner::Runner( Application *a )
   r_app = a;
   
   //  Window composite mask
+  setWMDecorations( WM_DECOR_PRIMARY );
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
   
   /* Aplication layout */
