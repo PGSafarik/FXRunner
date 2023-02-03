@@ -4,7 +4,7 @@ PROJECT( FXRunner VERSION 0.1 DESCRIPTION "GUI application launcher for Linux wi
 # The project settings
 SET( BIN_NAME "fxrunner" )                   # Executable binnary filename
 SET( CMAKE_INSTALL_PREFIX "/usr" )  # Install target directory
-SET( LIB_FOX   "/opt/foxlib/1.7/64" )       # Fox toolkit path
+SET( LIB_FOX   "/opt/foxlib/1.7/81" )       # Fox toolkit path
 SET( LIB_FXGHI "/opt/foxghi/0.4/1"  )       # Fox GHI path
 SET( CMAKE_CXX_STANDARD 11 )                # C++ Standard
 SET( CMAKE_CXX_STANDARD_REQUIRED ON )       # C++ Standard

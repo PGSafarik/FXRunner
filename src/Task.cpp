@@ -32,6 +32,7 @@ Task::Task( const FXString &cmd_str )
 Task::~Task( )
 { }
 
+
 /**************************************************************************************************/
 void Task::load( FXStream &store )
 {

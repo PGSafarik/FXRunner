@@ -38,6 +38,7 @@ public :
 
   Task( const FXString &cmd_str = FXString::null );
   virtual ~Task( );
+
   virtual void load( FXStream &store );  // Binary straem
   virtual void save( FXStream &store );  // Binary stream
 
