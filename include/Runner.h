@@ -90,7 +90,7 @@ protected:
   
   /* Help methods */
   History*   GetHistory( ) { return r_app->get_History( ); } 
-  FXint      CheckHistory( );
+  void       LoadHistory( );
   void       Check_property( Task *task );
 };
 

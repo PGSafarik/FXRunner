@@ -55,14 +55,14 @@ Runner::Runner( Application *a )
   FXWindowHeader *whb = this->getHeader( );
   FXIconsTheme *icons = r_app->get_iconstheme( );
   setIcon( icons->get_icon( "run", "Menu" ) );
-  
+
   new FXMenuBox( whb, this->getMenuIcon( ) );
   new FXVerticalSeparator( whb );
   new Toolbar( whb );
   new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
   /* Initialize */
-  this->CheckHistory( );
+  this->LoadHistory( );
   r_combo->setText( "" );
 }
 
@@ -109,7 +109,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
         if( err_flg != true ) {
           r_app->task_exec( task );         // Running application
           GetHistory( )->insert( task );  // Insert command to history
-          this->CheckHistory( );            // Aktualize history command list in combobox
+          this->LoadHistory( );            // Aktualize history command list in combobox
           r_combo->setText( "" );           // Clean command text 
 
           // Command reset
@@ -207,21 +207,28 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
 }
 
 /**************************************************************************************************/
-FXint Runner::CheckHistory( )
+void Runner::LoadHistory( )
 {
-  History *history = r_app->get_History( );
+  History *history = GetHistory( );
   FXint num = history->no( );
   FXString cmd;
   
   r_combo->clearItems( );
   for( FXint i = 0; i != num; i++ ) {
     Task *entry = history->at( i, false );
-    if( r_combo->findItem( entry->cmd ) == -1 ) {
-      r_combo->insertItem( i, entry->cmd );
-    }
+    /*
+    FXString str = entry->cmd + "; ";
+    str += entry->prm + "; ";
+    str += entry->wpth + "; ";
+    str += " [";
+    str += FXString::value( entry->su ) + ":";
+    str += FXString::value( entry->ow ) + ":";
+    str += FXString::value( entry->te ) + ":";
+    str += FXString::value( entry->lt ) + ":";
+    str += "]";
+    */
+    r_combo->insertItem( i, entry->cmd );
   }
-
-  return num;
 }
 
 void Runner::Check_property( Task *task )
