@@ -32,9 +32,7 @@ Application::Application( )
   a_iconsth = new FXIconsTheme( this );
   a_history = new History;
   
-  load( );
-
-  std::cout.flush( );
+  //load( );  
 }
 
 Application::~Application( )
@@ -42,9 +40,16 @@ Application::~Application( )
   save( );
 
   std::cout << "=== End =============================================" << std::endl;
+  std::cout.flush( );
 }
 
 /*************************************************************************************************/
+void Application::init( int& argc, char** argv, FXbool connect )
+{
+  FXApp::init( argc, argv, connect );
+  load( );
+}
+
 FXint Application::task_exec( Task *cmd )
 {
   FXint resh        = -1;
@@ -98,7 +103,7 @@ void Application::task_write( Task *cmd, const FXString &pth )
 
 void Application::load( )
 {
-  settings_load( );
+  settings_read( );
   a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
   a_hstore.changeUri( a_cfg->cache_dir + "/" +  getAppName( ) );
   a_hstore.open( "History", ";", FXString::null, TASKENTRIESNUM );
@@ -108,7 +113,7 @@ void Application::load( )
 void Application::save( )
 {
   a_history->save( a_hstore );
-  settings_save( );
+  settings_write( );
 }
 
 
@@ -120,7 +125,7 @@ long Application::OnCmd_QuitNegation( FXObject *tgt, FXSelector sel, void *data 
 }
 
 /**************************************************************************************************/
-void Application::settings_load( )
+void Application::settings_read( )
 {
   reg( ).read( );
   
@@ -145,7 +150,7 @@ void Application::settings_load( )
   a_cfg->change = false;
 }
 
-void Application::settings_save( )
+void Application::settings_write( )
 {
   FXString cfg_prefix;
 
