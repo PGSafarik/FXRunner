@@ -65,6 +65,9 @@ Settings::Settings( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   tecb_enable->appendItem ( "On request" ); // Use TE only on request ( also for sudo when askpass is not available ) 
   tecb_enable->appendItem ( "Disable" );    // Disable TE
   tecb_enable->setNumVisible( 3 );
+  tecb_profile = MakeOptionBox( te, "Terminal emulator profile:" );
+  tecb_profile->appendItem( "Default" );
+  tecb_profile->setNumVisible( 5 );
   tetf_command    = MakeSelector(  te, "Command: ", this, Settings::SELECT_FILE );
   tetf_execprm    = MakeTextField( te, "Argument for exec : " );
   tetf_disclosprm = MakeTextField( te, "Argument for disable close : " );
@@ -296,6 +299,18 @@ FXComboBox* Settings::MakeComboBox( FXComposite *p, const FXString &label )
  FXHorizontalFrame *frame = new FXHorizontalFrame( p, FRAME_SUNKEN | LAYOUT_FILL_X, 0, 0, 0, 0,  1, 1, 1, 1 );
  return new FXComboBox( frame, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X );
 }
+
+FXComboBox* Settings::MakeOptionBox( FXComposite *p, const FXString &label, FXObject *_tgt, FXSelector _sel )
+{
+ new FXLabel( p, label, NULL, LABEL_STYLE );
+ FXHorizontalFrame *frame = new FXHorizontalFrame( p, FRAME_SUNKEN | LAYOUT_FILL_X | PACK_UNIFORM_HEIGHT, 0, 0, 0, 0,  1, 1, 1, 1 );
+ FXComboBox *combobox     = new FXComboBox( frame, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X ); 
+ FXButton *button_add     = new FXButton( frame, " + ", NULL, _tgt, _sel, BUTTON_NORMAL ); 
+ FXButton *button_remove  = new FXButton( frame, " - ", NULL, _tgt, _sel, BUTTON_NORMAL );
+
+ return combobox;
+}
+
 
 FXTextField* Settings::MakeTextField( FXComposite *p, const FXString &label )
 {

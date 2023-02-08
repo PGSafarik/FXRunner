@@ -41,6 +41,7 @@ class Settings : public FXScrollWindow
 
   /* Terminal emulator */
   FXComboBox   *tecb_enable;     // [enable]       - Enable/on request/disable
+  FXComboBox   *tecb_profile;    // [name]         - Name of terminal profile  
   FXTextField  *tetf_command;    // [command]      - Terminal emulator program path
   FXTextField  *tetf_execprm;    // [prm_exec]     - Argument for executable command with TE
   FXTextField  *tetf_disclosprm; // [prm_disclose] - Argument for disable closse with exit run command in TE
@@ -57,7 +58,7 @@ class Settings : public FXScrollWindow
   FXCheckButton *uich_sexit;      // [SilentExit]  - Enable / disable silent exit
 
   /* Control Panels */
-  GHI_ControlPanel *cp_ghi;       // Control panel from FXGHIlib
+  GHI_ControlPanel *cp_ghi;       // Control panel from FoxGHI lib
 
 public :
   Settings( FXComposite *p, FXObject *tgt = NULL, FXSelector sel = 0, FXuint opts = FRAME_NONE | LAYOUT_FILL );
@@ -114,6 +115,7 @@ protected:
   void           MakeTitle( FXComposite *p, const FXString &text, FXIcon *ic = NULL );
   FXCheckButton* MakeCheckButton( FXComposite *p, const FXString &label );
   FXComboBox*    MakeComboBox( FXComposite *p, const FXString &label );
+  FXComboBox*    MakeOptionBox( FXComposite *p, const FXString &label, FXObject *_tgt = NULL, FXSelector _sel = 0 );
   FXTextField*   MakeTextField( FXComposite *p, const FXString &label );
   FXTextField*   MakeSelector( FXComposite *p, const FXString &label, FXObject *_tgt = NULL, FXSelector _sel = 0 );
 
