@@ -35,11 +35,17 @@ FXbool History::add( const FXString &cmd_str )
   return false;    
 }
 
-FXbool History::insert( Task *task )
+FXbool History::push( Task *task, FXbool ch_state )
+{
+  if( task == NULL || ( task->cmd.empty( ) && !m_add_empty ) ) { return false; } 
+  return __add( task, ch_state ); 	
+}
+
+FXbool History::insert( Task *task, FXint pos )
 {
   /// FIXME HISTORY_002 : Remove m_add_empty flag
   if( task == NULL || ( task->cmd.empty( ) && !m_add_empty ) ) { return false; } 
-  return __add( task ); 
+  return __insert( task, pos ); 
 }
 
 Task* History::remove( FXint index )
@@ -63,46 +69,7 @@ void History::clear( )
 
   m_buffer.clear( );
 }
-  
-FXint History::load( Storage &store )
-{
-  if( store.isOpen( ) ) {
-    clear( );  
-    
-    while( store.eof( ) > 0 ) { 
-      Task *entry = new Task;
-      if( entry ) { 
-        entry->load( store ); 
-        m_buffer.push( entry );
-      }
-    }
-    
-    m_change    = false;
-  }
-  else { std::cerr << "[ERROR] Unable to open a history storage " << ( store.getUri( ) + "/" + store.getName( ) ) << std::endl; }
 
- return true;
-}
-
-FXint History::save( Storage &store )
-{
-  if( !m_change ) { return true; }
-  if( store.isOpen( ) ) {
-    FXint num = m_buffer.no( );
-
-    for( FXint i = 0; i != num; i++ ) {
-      Task *entry = m_buffer[ i ];
-      if( entry ) { entry->save( store ); }
-    } 
-    
-    store.flush( );
-    m_change = false;
-  }
-  else { std::cerr << "[ERROR] Unable to save a history storage " << ( store.getUri( ) + "/" + store.getName( ) ) << std::endl; }    
-
-  return true;   
-    
-}
 
 /**************************************************************************************************/
 void History::Dump( )
@@ -132,30 +99,29 @@ void History::Dump( )
 }
 
 /**************************************************************************************************/
-FXbool History::__add( Task *entry, FXbool dedupl )
+FXbool History::__add( Task *entry, FXbool ch )
 {
-  FXint num = 0;
-  if( m_buffer.insert( 0, entry ) ) {
-    if( dedupl && !entry->cmd.empty( ) ) {  
-      
-      // Check entries num limit
-      if( m_limit > 0 ) {
-        num = m_buffer.no( );
-        while( num < m_limit ) { num--; __rem( num, true ); }
-      }
+	if( !entry->cmd.empty( ) ) {
+		__dedupl( entry );
+    if( m_buffer.push( entry ) ) {
+			__limit( );        
+      if( ch ) { m_change = true; }  /// FIXME HISTORY_002 : Add optional flag for disable change the value of the m_change 
+      return true;
+		}
+  }
+  
+  return false;
+}
 
-      // Deduplication
-      num = m_buffer.no( );
-      for( FXint i = 1; i != num; i++ ) {
-        Task *tmp = m_buffer[ i ];
-        if( tmp && tmp != entry && tmp->cmd == entry->cmd ) { /// FIXME HISTORY_001 : Add copmpare operator for Task 
-          if( m_buffer.erase( i ) ) { delete tmp; }  
-        }
-      }     
-    }
-    
-    m_change = true;       
-    return true;
+FXbool History::__insert( Task *entry, FXint pos, FXbool ch )
+{
+	if( !entry->cmd.empty( ) ) {
+		__dedupl( entry );
+    if( m_buffer.insert( pos, entry ) ) {
+			__limit( );        
+      if( ch ) { m_change = true; } 
+      return true;
+		}
   }
   
   return false;
@@ -179,12 +145,31 @@ FXbool History::__top( FXint index )
   if( index == 0 ) { return true; }  
   if( index > 0 ) {  
     Task *tmp = m_buffer[ index ];
-    if( m_buffer.erase( index ) && __add( tmp, false ) ) { 
+    if( __rem( index ) && __add( tmp, false ) ) { 
       return true; 
     }
   }
   
   return false;
+}
+
+void History::__dedupl( Task *entry, FXint start )
+{
+	// Deduplication
+  FXint num = m_buffer.no( );
+  for( FXint index = start; index != num; index++ ) {
+    Task *tmp = m_buffer[ index ];
+		/// FIXME HISTORY_001 : Add copmpare operator for Task
+    if( tmp && tmp != entry && tmp->cmd == entry->cmd ) { __rem( index, true ); }
+  }  
+}
+
+void History::__limit( )
+{
+  if( m_limit > 0 ) {
+    FXint num = m_buffer.no( );
+    while( num < m_limit ) { num--; __rem( num, true ); }
+  }
 }
 
 /*************************************************************************************************/
