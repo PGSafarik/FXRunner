@@ -80,14 +80,11 @@ public :
 
 
   /* Operations */
-<<<<<<< HEAD
-  virtual void init( int& argc, char** argv, FXbool connect = true );
-
-=======
 	virtual void init( int& argc, char** argv, FXbool connect = true ); 
->>>>>>> devel
   int task_exec( Task *cmd );                                          // Run a command
   void task_write( Task *cmd, const FXString &pth = FXString::null );  // Write a command on a desktop file
+  void load( );                                                        // Complete load
+  void save( );                                                        // Complete application save
 
   /* messages & handlers */
   enum {
@@ -98,10 +95,8 @@ public :
 
 protected :
   /* Helpful methods */
-  void settings_read( );
-  void settings_write( );
-  void load( );                                                        // Complete load
-  void save( );                                                        // Complete application save
+  void settings_load( );
+  void settings_save( );
 
   FXString CheckPrivilege( Task *t );  // Check to using sudo
   FXString CheckTerminal( Task *t );   // Check to using terminal emulator 
