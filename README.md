@@ -1,5 +1,5 @@
 # FXRunner - Simple, universal GUI desktop launcher
--22.11.2022-
+-06.04.2024-
 
 *Content:*
   1. [General info](#1-general-info)
@@ -18,9 +18,11 @@ FXRunner settings window
 ## 1. GENERAL INFO:
 This is a GUI launcher application with history. Enables running in the terminal, as root, or entering the working directory of the application. Enables multiple applications to be launched one after the other (the FXRunner window does not close after launching the application).
 
+Actual version: 0.3.0.0 - 24.04 Alpha
+
 ## 2. COMPILATION AND INSTALLATION:
 *Dependecies:*
-  * [Foxtoolkit 1.7.76](http://fox-toolkit.org/ftp/fox-1.7.76.tar.gz)
+  * [Foxtoolkit 1.7.84](http://fox-toolkit.org/ftp/fox-1.7.84.tar.gz)
   * [FoxGHI 0.4 ](https://github.com/PGSafarik/FoxGHI)
   * Ikons scheme support: Oxygen (base), Gnome, Faenza, Adwaita
   
@@ -52,6 +54,7 @@ These lines are commented out by default, so remove the leading '#' characters a
 * 10/10/2020 - Checking multiple run options together will cancel each other out - OPEN
 * 27/08/2022 - The program does not load local user settings - FIXED  
   Bad checking of data preload in FXRegistry. Removed, preloading now happens immediately, without checking
+* 06/04/2024 - The project cannot be compiled with foxlib version 1.7.84 - FIXED  
 
 ## 4. PROJECT STATE AND PLANS FOR THE FUTHURE
 
