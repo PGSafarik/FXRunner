@@ -12,14 +12,13 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-
 #ifndef __HISTORYFILE_H
 #define __HISTORYFILE_H
 /*************************************************************************
 * HistoryFile.h                                                          *
 *                                                                        *
-* Trida, reprezentujici soubor pro zaznam historie prikazu               *
-* Copyright (c) 23/11/2015 D.A.Tiger <drakarax@seznam.cz>                *
+* The class, represent a file for recording the commands history         *
+* Copyright (c) 05/04/2024 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
 #include<History.h>
