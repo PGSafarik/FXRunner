@@ -22,7 +22,7 @@ HistoryFile::HistoryFile( const FXString &filename, FXuint m, FXuint perm ) : FX
 FXint HistoryFile::readHistory( History *history )
 {
 	if( !isOpen( ) ) { return -1; }
-	std::cout << "Read history list" << std::endl; 
+	DEBUG_OUT( "Read history list" ) 
   
 	FXlong fsize = size( );
   if( fsize == 0 ) { return -2; }
@@ -69,7 +69,7 @@ FXint HistoryFile::writeHistory( History *history )
 	}
 		
 	if( ( size = buffer.length( ) ) > 0 ) {
-		std::cout << "Write history list" << std::endl;
+		DEBUG_OUT( "Write history list" )
 		truncate( 0 );
 		if( writeBlock( buffer.text( ), size ) != size ) { return -5; }
 		flush( );
