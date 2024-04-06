@@ -58,35 +58,32 @@ void Task::save( FXStream &store )
   store << lt;
 }
 
-void Task::load( Storage &store )
+void Task::load( const FXString &store )
 {
-  FXArray<FXString> list;
-
-  if( store.readEntry( list ) > 0 ) { 
-    cmd  = list[ 0 ]; 
-    prm  = list[ 1 ];
-    wpth = list[ 2 ]; 
-    su   = list[ 3 ].toInt( );
-    ow   = list[ 4 ].toInt( );
-    te   = list[ 5 ].toInt( );
-    lt   = list[ 6 ].toInt( );    
-  }  
-  else { std::cerr << "[ERROR] Task entry is not read!" << std::endl; } 
+  if( !store.empty( ) ) {
+		SubstrStream sit( store, ";" );
+		sit >> cmd;
+		sit >> prm;
+		sit >> wpth;
+		sit >> su;
+		sit >> ow;
+		sit >> te;
+		sit >> lt;
+  } 
 }
 
-void Task::save( Storage &store ) 
+void Task::save( FXString &store )
 {
-  FXArray<FXString> list;
-
-  list.insert( 0, cmd );
-  list.insert( 1, prm );
-  list.insert( 2, wpth );
-  list.insert( 3, FXString::value( su ) );
-  list.insert( 4, FXString::value( ow ) );
-  list.insert( 5, FXString::value( te ) );
-  list.insert( 6, FXString::value( lt ) );
-
-  if( store.writeEntry( list ) <= 0 ) { std::cerr << "[ERROR] Task entry is not write!" << std::endl; }
+		SubstrStream sit( ";" );
+		sit << cmd;
+		sit << prm;
+		sit << wpth;
+		sit << su;
+		sit << ow;
+		sit << te;
+		sit << lt;
+		
+		store = sit.get_str( );
 }
 
 /**************************************************************************************************/
