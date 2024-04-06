@@ -23,7 +23,6 @@
 #include<main.h>
 #include<Application.h>
 #include<FXIconsTheme.h>
-#include<History_b.h>
 #include<Boxes.h>
 
 

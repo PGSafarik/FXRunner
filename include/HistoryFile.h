@@ -12,36 +12,22 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-
-#ifndef __HISTORYB_H
-#define __HISTORYB_H
+#ifndef __HISTORYFILE_H
+#define __HISTORYFILE_H
 /*************************************************************************
-* History.h                                                              *
+* HistoryFile.h                                                          *
 *                                                                        *
-* Zaznam a sprava historie prikazu                                       *
-* Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
+* The class, represent a file for recording the commands history         *
+* Copyright (c) 05/04/2024 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
-#include<Storage.h>
-#include<Task.h>
+#include<History.h>
 
-class History_b : public FXArray<FXString> {
-  FXint  h_limit;  // Limit of num entries in history
-  FXbool h_change; // Changed state indicator
-
-public :
-  History_b( FXint num = 0, FXuint opts = 0 );
-  virtual ~History_b( );
-
-  /* Operations methods */
-  void   insert( const FXString &data );
-  void   _clear( );
-  FXbool save( Storage &storage );
-  FXbool load( Storage &storage );
-
-  /* Debug & tests */
-  void dump( ); 
+class HistoryFile : public FXFile {	
+public:
+  HistoryFile(const FXString &filename, FXuint m = FXIO::Reading, FXuint perm = FXIO::AllReadWrite );
+  FXint readHistory( History *history );
+  FXint writeHistory( History *history );
 };
 
-#endif /* __HISTORYB_H */
-/*** END ****************************************************************/
+#endif /* __HISTORYFILE_H */
