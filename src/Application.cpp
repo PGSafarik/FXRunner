@@ -26,15 +26,9 @@ FXIMPLEMENT( Application, FXApp, APPLICATION_MAP, ARRAYNUMBER( APPLICATION_MAP )
 Application::Application( )
            : FXApp( "Runner", "FOX-DESKTOP" )
 {
-  Welcome( );
-
   a_cfg     = new app_config;
   a_iconsth = new FXIconsTheme( this );
   a_history = new History;
-  
-  load( );
-
-  std::cout.flush( );
 }
 
 Application::~Application( )
@@ -44,7 +38,17 @@ Application::~Application( )
   std::cout << "=== End =============================================" << std::endl;
 }
 
-/*************************************************************************************************/
+/**************************************************************************************************/
+void Application::init( int &argc, char** argv, FXbool connect )
+{
+	Welcome( );
+	
+  FXApp::init( argc, argv, connect );
+	
+	load( );
+	std::cout.flush( );	
+}
+
 FXint Application::task_exec( Task *cmd )
 {
   FXint resh        = -1;
@@ -99,15 +103,23 @@ void Application::task_write( Task *cmd, const FXString &pth )
 void Application::load( )
 {
   settings_load( );
-  a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
-  a_hstore.changeUri( a_cfg->cache_dir + "/" +  getAppName( ) );
-  a_hstore.open( "History", ";", FXString::null, TASKENTRIESNUM );
-  a_history->load( a_hstore );
+  
+	a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
+	
+	a_history_filename = a_cfg->cache_dir + "/" +  getAppName( ) + "/History";
+	DEBUG_OUT( "Loading the history file: " << a_history_filename )
+	
+	HistoryFile hfd( a_history_filename );
+	if( hfd.isOpen( ) ) { hfd.readHistory( a_history ); }
+	hfd.close( );
 }
 
 void Application::save( )
 {
-  a_history->save( a_hstore );
+	HistoryFile hfd( a_history_filename, FXIO::WriteOnly | FXIO::Create );
+	hfd.writeHistory( a_history );
+	hfd.close( );
+	
   settings_save( );
 }
 

@@ -24,6 +24,7 @@
 #include<main.h>
 #include<Task.h>
 #include<History.h> 
+#include<HistoryFile.h>
 
 /*** Terminal emulator Profile struct ***/
 struct app_teprofile {
@@ -59,10 +60,10 @@ FXDECLARE( Application )
   friend class Settings;
 
   app_config        *a_cfg;    // The application Configuration struct
-  SimpleFileStorage  a_hstore; // An history store 
 
-  FXIconsTheme *a_iconsth;     // Icons theme manager
-  History      *a_history;     // Manager of history of commands
+  FXIconsTheme *a_iconsth;     			// Icons theme manager
+  History      *a_history;     			// Manager of history of commands
+	FXString      a_history_filename; //
 
   FXbool a_nquit_flg;          // Flag about temporary negation of autoexit settings
 
@@ -79,6 +80,7 @@ public :
 
 
   /* Operations */
+	virtual void init( int& argc, char** argv, FXbool connect = true ); 
   int task_exec( Task *cmd );                                          // Run a command
   void task_write( Task *cmd, const FXString &pth = FXString::null );  // Write a command on a desktop file
   void load( );                                                        // Complete load
