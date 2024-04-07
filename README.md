@@ -1,5 +1,5 @@
 # FXRunner - Simple, universal GUI desktop launcher
--06.04.2024-
+-07.04.2024-
 
 *Content:*
   1. [General info](#1-general-info)
@@ -18,7 +18,7 @@ FXRunner settings window
 ## 1. GENERAL INFO:
 This is a GUI launcher application with history. Enables running in the terminal, as root, or entering the working directory of the application. Enables multiple applications to be launched one after the other (the FXRunner window does not close after launching the application).
 
-Actual version: 0.3.0.0 - 24.04 Alpha
+Actual version: 0.3.1.0 - 24.04 Alpha
 
 ## 2. COMPILATION AND INSTALLATION:
 *Dependecies:*
