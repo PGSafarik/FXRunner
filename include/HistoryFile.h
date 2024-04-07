@@ -23,6 +23,30 @@
 #include<main.h>
 #include<History.h>
 
+class SubstrStream  {
+	FXString m_str;      // Retezec
+	FXString m_delim;    // Oddelovac
+	FXint    m_num;      // Pocet subretezcu
+	FXint    m_index;    // Aktualni pozice
+	
+	FXString GetSection( );
+	
+public:
+  SubstrStream( const FXString &delimiter );  
+  SubstrStream( const FXString &str, const FXString &delimiter );
+	~SubstrStream( ); 
+
+  /* Access methods */	
+	FXString get_str( ) { return m_str; }
+	
+	/* operators */
+	SubstrStream& operator >> ( FXString &str );
+	SubstrStream& operator >> (  FXbool &value );
+	SubstrStream& operator << ( const FXString &str );
+	SubstrStream& operator << ( FXbool value ); 
+};
+
+
 class HistoryFile : public FXFile {	
 public:
   HistoryFile(const FXString &filename, FXuint m = FXIO::Reading, FXuint perm = FXIO::AllReadWrite );

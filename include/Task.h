@@ -22,71 +22,6 @@
 * Copyright (c) 23/11/2015 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
-//#include<Storage.h>
-
-class SubstrStream  {
-	FXString m_str;      // Retezec
-	FXString m_delim;    // Oddelovac
-	FXint    m_num;      // Pocet subretezcu
-	FXint    m_index;    // Aktualni pozice
-	
-	FXString GetSection( )
-	{
-		FXString substr;
-		substr = m_str.section( m_delim, m_index );
-		m_index++;
-		
-		return substr;
-	}
-	
-public:
-  SubstrStream( const FXString &delimiter ) : m_delim( delimiter )  
-	{ 
-	  m_index = 0;
-    m_num   = 0;  	
-	}	
-	
-  SubstrStream( const FXString &str, const FXString &delimiter ) : m_str( str ), m_delim( delimiter )
-	{ 
-		m_index = 0;
-		m_num   = str.contains( m_delim );
-	}
-	
-	~SubstrStream( ) 
-	{ }
-	
-	FXString get_str( ) { return m_str; }
-	
-	SubstrStream& operator >> ( FXString &str ) 
-	{
-		str = GetSection( );
-		return *this;
-	}
-	
-	SubstrStream& operator >> (  FXbool &value ) 
-	{
-		FXString str = GetSection( );
-		value = ( ( str == "1" || str == "true" ) ? true : false );
-		return *this;
-	}
-	
-	SubstrStream& operator << ( const FXString &str ) 
-	{
-		if( !m_str.empty( ) ) { m_str += m_delim; }
-		m_str += str;
-		return *this;
-	}
-	
-	SubstrStream& operator << ( FXbool value ) 
-	{
-		if( !m_str.empty( ) ) { m_str += m_delim; }
-		m_str += ( ( value ) ?  "true": "false" );
-		return *this;
-	}
-	
-};
-
-
 
 class Task : public FXObject {  /// data prikazu ke spusteni
 FXDECLARE( Task )
@@ -103,14 +38,31 @@ public :
   Task( const FXString &cmd_str = FXString::null );
   virtual ~Task( );
 
-  virtual void load( FXStream &store );  // Binary straem
-  virtual void save( FXStream &store );  // Binary stream
+  template<class STREAM> void load_data( STREAM &store )
+	{
+    store.operator >> ( this->cmd );
+    store >> prm;
+    store >> wpth;
+    store >> su;
+    store >> ow;
+    store >> te;
+    store >> lt;
+		
+    DEBUG_OUT( "Load command data from the data store: " << this->cmd.text( ) )
+	}
 
-  void load( const FXString &store );
-  void save( FXString &store );
-
-protected:
-  FXString ConvOnText( const FXString &str ); 
+  template<class STREAM> void save_data( STREAM &store )
+	{
+    store << cmd;
+    store << prm;
+    store << wpth;
+    store << su;
+    store << ow;
+    store << te;
+    store << lt;		
+		
+		DEBUG_OUT( "Saving command data from the data store: " << this->cmd.text( ) )
+	}
 
 };
 
