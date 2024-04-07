@@ -129,9 +129,6 @@ public :
 		DEBUG_OUT( "Saving command data from the data store: " << this->cmd.text( ) )
 	}
 
-protected:
-  FXString ConvOnText( const FXString &str ); 
-
 };
 
 

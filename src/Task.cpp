@@ -32,15 +32,4 @@ Task::Task( const FXString &cmd_str )
 Task::~Task( )
 { }
 
-**************************************************************************************************/
-FXString Task::ConvOnText( const FXString &str )
-{
-  FXString text = "\"";
-  if( !str.empty( ) ) { text += str; }
-  text += "\"";
-  
-  return text;
-}
-
-
 /*** END ******************************************************************************************/
