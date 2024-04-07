@@ -32,49 +32,18 @@ class SubstrStream  {
 	FXString GetSection( );
 	
 public:
-  SubstrStream( const FXString &delimiter ) : m_delim( delimiter )  
-	{ 
-	  m_index = 0;
-    m_num   = 0;  	
-	}	
-	
-  SubstrStream( const FXString &str, const FXString &delimiter ) : m_str( str ), m_delim( delimiter )
-	{ 
-		m_index = 0;
-		m_num   = str.contains( m_delim );
-	}
-	
-	~SubstrStream( ) 
-	{ }
-	
+  SubstrStream( const FXString &delimiter );  
+  SubstrStream( const FXString &str, const FXString &delimiter );
+	~SubstrStream( ); 
+
+  /* Access methods */	
 	FXString get_str( ) { return m_str; }
 	
-	SubstrStream& operator >> ( FXString &str ) 
-	{
-		str = GetSection( );
-		return *this;
-	}
-	
-	SubstrStream& operator >> (  FXbool &value ) 
-	{
-		FXString str = GetSection( );
-		value = ( ( str == "1" || str == "true" ) ? true : false );
-		return *this;
-	}
-	
-	SubstrStream& operator << ( const FXString &str ) 
-	{
-		if( !m_str.empty( ) ) { m_str += m_delim; }
-		m_str += str;
-		return *this;
-	}
-	
-	SubstrStream& operator << ( FXbool value ) 
-	{
-		if( !m_str.empty( ) ) { m_str += m_delim; }
-		m_str += ( ( value ) ?  "true": "false" );
-		return *this;
-	}	
+	/* operators */
+	SubstrStream& operator >> ( FXString &str );
+	SubstrStream& operator >> (  FXbool &value );
+	SubstrStream& operator << ( const FXString &str );
+	SubstrStream& operator << ( FXbool value ); 
 };
 
 
