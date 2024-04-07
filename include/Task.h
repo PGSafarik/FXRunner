@@ -102,12 +102,38 @@ public :
 
   Task( const FXString &cmd_str = FXString::null );
   virtual ~Task( );
-
+/*
   virtual void load( FXStream &store );  // Binary straem
   virtual void save( FXStream &store );  // Binary stream
 
   void load( const FXString &store );
   void save( FXString &store );
+*/
+  template<class STREAM> void load_data( STREAM &store )
+	{
+    store.operator >> ( this->cmd );
+    store >> prm;
+    store >> wpth;
+    store >> su;
+    store >> ow;
+    store >> te;
+    store >> lt;
+		
+    DEBUG_OUT( "Load command data from the data store: " << this->cmd.text( ) )
+	}
+
+  template<class STREAM> void save_data( STREAM &store )
+	{
+    store << cmd;
+    store << prm;
+    store << wpth;
+    store << su;
+    store << ow;
+    store << te;
+    store << lt;		
+		
+		DEBUG_OUT( "Saving command data from the data store: " << this->cmd.text( ) )
+	}
 
 protected:
   FXString ConvOnText( const FXString &str ); 
