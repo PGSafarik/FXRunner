@@ -22,9 +22,11 @@
 * Copyright (c) 23/11/2015 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
+#include<loki/SmallObj.h>
+ 
 
 
-struct Properties {   // Auxiliary structure for storing the state of properties 
+struct Properties : public Loki::SmallObject<> {   // Auxiliary structure for storing the state of properties 
   FXbool suaccess;    // Run with super user access
   FXbool unblock;     // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
   FXbool term;        // Run the command in terminal
@@ -40,7 +42,7 @@ struct Properties {   // Auxiliary structure for storing the state of properties
   }
 };
 
-struct Task {    
+struct Task : public Loki::SmallObject<> {    
   FXString cmd;   // Command
   FXString prm;   // Params
   FXString wpth;  // Work dir
@@ -48,8 +50,6 @@ struct Task {
   FXbool   ow;    // Run o background 
   FXbool   te;    // Run this task in terminal
   FXbool   lt;    // lock term - no exit terminal automaticaly after exit this task
-  
-  
   
   Task( const FXString &cmd_str = FXString::null );
   virtual ~Task( );
