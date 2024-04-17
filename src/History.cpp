@@ -85,8 +85,8 @@ void History::Dump( )
       if( task ) {
         std::cout << task->cmd  << "; ";
         std::cout << task->wpth << "; ";
-        std::cout << task->su   << "; ";
-        std::cout << task->te;
+        std::cout << task->prop->suaccess   << "; ";
+        std::cout << task->prop->term;
       }
       else { std::cout << "- This entry is EMPTY! -"; }
 

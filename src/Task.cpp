@@ -21,15 +21,13 @@ Task::Task( const FXString &cmd_str )
   cmd  = cmd_str;
   prm  = FXString::null;
   wpth = FXString::null;
-  su   = false;
-  ow   = true;
-  te   = false;
-  lt   = false;
+  
+  prop = new Properties;
 }
 
 Task::~Task( )
 { 
-  
+  delete prop;
 }
 
 /*** END ******************************************************************************************/

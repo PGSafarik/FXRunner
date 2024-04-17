@@ -31,25 +31,18 @@ struct Properties : public Loki::SmallObject<> {   // Auxiliary structure for st
   FXbool unblock     = true;  // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
   FXbool term        = false; // Run the command in terminal
   FXbool nocloseterm = false; // Try to prevent automatic termination of the terminal when the command is finished running.
-  /*  
-  Properties( )
-  {
-    // initialize 
-    this->suaccess    = false;
-    this->unblock     = true;
-    this->term        = false;
-    this->nocloseterm = false;
-  }*/
 };
 
 struct Task : public Loki::SmallObject<> {    
   FXString cmd;   // Command
   FXString prm;   // Params
   FXString wpth;  // Work dir
-  FXbool   su;    // Run this task with sudo
-  FXbool   ow;    // Run o background 
-  FXbool   te;    // Run this task in terminal
-  FXbool   lt;    // lock term - no exit terminal automaticaly after exit this task
+  //FXbool   su;    // Run this task with sudo
+  //FXbool   ow;    // Run o background 
+  //FXbool   te;    // Run this task in terminal
+  //FXbool   lt;    // lock term - no exit terminal automaticaly after exit this task
+  
+  Properties *prop;
   
   Task( const FXString &cmd_str = FXString::null );
   virtual ~Task( );
@@ -59,13 +52,16 @@ struct Task : public Loki::SmallObject<> {
     store >> cmd;
     store >> prm;
     store >> wpth;
-    store >> su;
-    store >> ow;
-    store >> te;
-    store >> lt;
     
+    store >> prop->suaccess;
+    store >> prop->unblock;
+    store >> prop->term;
+    store >> prop->nocloseterm; 
     
-
+//    store >> su;
+//    store >> ow;
+//    store >> te;
+//    store >> lt;
     DEBUG_OUT( "Load task data from the data store: " << this->cmd.text( ) )
   }
 
@@ -74,11 +70,17 @@ struct Task : public Loki::SmallObject<> {
     store << cmd;
     store << prm;
     store << wpth;
-    store << su;
-    store << ow;
-    store << te;
-    store << lt;		
-		
+    
+   
+    store << prop->suaccess;
+    store << prop->unblock;
+    store << prop->term;
+    store << prop->nocloseterm; 
+     
+//    store << su;
+//    store << ow;
+//    store << te;
+//    store << lt;				
     DEBUG_OUT( "Saving task data from the data store: " << this->cmd.text( ) )
   }
 

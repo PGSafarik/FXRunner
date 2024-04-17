@@ -224,10 +224,10 @@ void Runner::LoadHistory( )
 void Runner::Check_property( Task *task )
 {
   if( task ) {
-    task->su = r_prop.suaccess;
-    task->ow = r_prop.unblock;
-    task->te = r_prop.term;
-    task->lt = r_prop.nocloseterm;
+    task->prop->suaccess = r_prop.suaccess;
+    task->prop->unblock = r_prop.unblock;
+    task->prop->term = r_prop.term;
+    task->prop->nocloseterm = r_prop.nocloseterm;
   }
 }
 
