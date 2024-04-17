@@ -17,7 +17,7 @@
 /*************************************************************************
 * Runner.h                                                               *
 *                                                                        *
-* Deklarace tridy hlavniho okna aplikace                                 *
+* Main window                                                            *
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
@@ -25,23 +25,7 @@
 #include<History.h>
 #include<Boxes.h>
 #include<Settings.h>
-
-// Auxiliary structure for storing the state of properties 
-struct Properties {
-  FXbool suaccess;    // Run with super user access
-  FXbool unblock;     // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
-  FXbool term;        // Run the command in terminal
-  FXbool nocloseterm; // Try to prevent automatic termination of the terminal when the command is finished running.
-    
-  Properties( )
-  {
-    // initialize 
-    this->suaccess    = false;
-    this->unblock     = true;
-    this->term        = false;
-    this->nocloseterm = false;
-  }
-};
+#include<Task.h>
 
 //class Runner : public FXMainWindow {
 class Runner : public FXPrimaryWindow {
