@@ -27,11 +27,11 @@
 
 
 struct Properties : public Loki::SmallObject<> {   // Auxiliary structure for storing the state of properties 
-  FXbool suaccess;    // Run with super user access
-  FXbool unblock;     // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
-  FXbool term;        // Run the command in terminal
-  FXbool nocloseterm; // Try to prevent automatic termination of the terminal when the command is finished running.
-    
+  FXbool suaccess    = false; // Run with super user access
+  FXbool unblock     = true;  // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
+  FXbool term        = false; // Run the command in terminal
+  FXbool nocloseterm = false; // Try to prevent automatic termination of the terminal when the command is finished running.
+  /*  
   Properties( )
   {
     // initialize 
@@ -39,7 +39,7 @@ struct Properties : public Loki::SmallObject<> {   // Auxiliary structure for st
     this->unblock     = true;
     this->term        = false;
     this->nocloseterm = false;
-  }
+  }*/
 };
 
 struct Task : public Loki::SmallObject<> {    
