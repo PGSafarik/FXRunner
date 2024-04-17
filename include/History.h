@@ -22,7 +22,6 @@
 * Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include<main.h>
-//#include<Storage.h>
 #include<Task.h>
 
 class History : public FXObject {
@@ -34,10 +33,10 @@ FXDECLARE( History )
               
   FXbool __add( Task *entry, FXbool ch = true ); 										// Add Task instance on the tasklist
 	FXbool __insert( Task *entry, FXint pos = 0, FXbool ch = true );	// Insert task to specific position in the tasklist 
-  FXbool __rem( FXint pos, FXbool destroy = false ); 										// Remove tesk from list
-  FXbool __top( FXint index );                       										// Move task from index on position 0
-	void   __dedupl( Task *entry, FXint start = 0 );   										// Find and remove all duplication with this task; 
-	void   __limit( );                                 										// Check history max size - if its set 
+  FXbool __rem( FXint pos, FXbool destroy = false ); 								// Remove tesk from list
+  FXbool __top( FXint index );                       								// Move task from index on position 0
+	void   __dedupl( Task *entry, FXint start = 0 );   								// Find and remove all duplication with this task; 
+	void   __limit( );                                 								// Check history max size - if its set 
   
 public :
   History( FXint limit = 0, FXuint opts = 0 );

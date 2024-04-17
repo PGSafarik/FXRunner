@@ -24,10 +24,10 @@
 #include<History.h>
 
 class SubstrStream  {
-	FXString m_str;      // Retezec
-	FXString m_delim;    // Oddelovac
-	FXint    m_num;      // Pocet subretezcu
-	FXint    m_index;    // Aktualni pozice
+	FXString m_str;      // CSV line String 
+	FXString m_delim;    // Delimiter
+	FXint    m_num;      // Number of substrings (only for reading?)
+	FXint    m_index;    // Index of actual substring (only for reading?)
 	
 	FXString GetSection( );
 	
@@ -41,7 +41,7 @@ public:
 	
 	/* operators */
 	SubstrStream& operator >> ( FXString &str );
-	SubstrStream& operator >> (  FXbool &value );
+	SubstrStream& operator >> ( FXbool &value );
 	SubstrStream& operator << ( const FXString &str );
 	SubstrStream& operator << ( FXbool value ); 
 };

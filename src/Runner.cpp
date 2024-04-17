@@ -217,17 +217,6 @@ void Runner::LoadHistory( )
   r_combo->clearItems( );
   for( FXint i = 0; i != num; i++ ) {
     Task *entry = history->at( i, false );
-    /*
-    FXString str = entry->cmd + "; ";
-    str += entry->prm + "; ";
-    str += entry->wpth + "; ";
-    str += " [";
-    str += FXString::value( entry->su ) + ":";
-    str += FXString::value( entry->ow ) + ":";
-    str += FXString::value( entry->te ) + ":";
-    str += FXString::value( entry->lt ) + ":";
-    str += "]";
-    */
     r_combo->insertItem( i, entry->cmd );
   }
 }

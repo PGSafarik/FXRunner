@@ -15,9 +15,7 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
 #include<Task.h>
-FXIMPLEMENT( Task, FXObject, NULL, 0 );
-
-/**************************************************************************************************/
+ 
 Task::Task( const FXString &cmd_str )
 {
   cmd  = cmd_str;
@@ -30,6 +28,8 @@ Task::Task( const FXString &cmd_str )
 }
 
 Task::~Task( )
-{ }
+{ 
+  
+}
 
 /*** END ******************************************************************************************/

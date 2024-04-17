@@ -305,8 +305,8 @@ FXComboBox* Settings::MakeOptionBox( FXComposite *p, const FXString &label, FXOb
  new FXLabel( p, label, NULL, LABEL_STYLE );
  FXHorizontalFrame *frame = new FXHorizontalFrame( p, FRAME_SUNKEN | LAYOUT_FILL_X | PACK_UNIFORM_HEIGHT, 0, 0, 0, 0,  1, 1, 1, 1 );
  FXComboBox *combobox     = new FXComboBox( frame, 51, this, Settings::ID_CHANGE, COMBOBOX_NORMAL | LAYOUT_FILL_X ); 
- FXButton *button_add     = new FXButton( frame, " + ", NULL, _tgt, _sel, BUTTON_NORMAL ); 
- FXButton *button_remove  = new FXButton( frame, " - ", NULL, _tgt, _sel, BUTTON_NORMAL );
+ /*FXButton *button_add     =*/ new FXButton( frame, " + ", NULL, _tgt, _sel, BUTTON_NORMAL ); 
+ /*FXButton *button_remove  =*/ new FXButton( frame, " - ", NULL, _tgt, _sel, BUTTON_NORMAL );
 
  return combobox;
 }
