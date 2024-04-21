@@ -24,8 +24,6 @@
 #include<main.h>
 #include<loki/SmallObj.h>
  
-
-
 struct Properties : public Loki::SmallObject<> {   // Auxiliary structure for storing the state of properties 
   FXbool suaccess    = false; // Run with super user access
   FXbool unblock     = true;  // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
@@ -37,10 +35,6 @@ struct Task : public Loki::SmallObject<> {
   FXString cmd;   // Command
   FXString prm;   // Params
   FXString wpth;  // Work dir
-  //FXbool   su;    // Run this task with sudo
-  //FXbool   ow;    // Run o background 
-  //FXbool   te;    // Run this task in terminal
-  //FXbool   lt;    // lock term - no exit terminal automaticaly after exit this task
   
   Properties *prop;
   
@@ -51,17 +45,12 @@ struct Task : public Loki::SmallObject<> {
   {
     store >> cmd;
     store >> prm;
-    store >> wpth;
-    
+    store >> wpth;    
     store >> prop->suaccess;
     store >> prop->unblock;
-    store >> prop->term;
+    store >> prop->term;   
     store >> prop->nocloseterm; 
-    
-//    store >> su;
-//    store >> ow;
-//    store >> te;
-//    store >> lt;
+
     DEBUG_OUT( "Load task data from the data store: " << this->cmd.text( ) )
   }
 
@@ -70,17 +59,11 @@ struct Task : public Loki::SmallObject<> {
     store << cmd;
     store << prm;
     store << wpth;
-    
-   
     store << prop->suaccess;
     store << prop->unblock;
     store << prop->term;
     store << prop->nocloseterm; 
-     
-//    store << su;
-//    store << ow;
-//    store << te;
-//    store << lt;				
+
     DEBUG_OUT( "Saving task data from the data store: " << this->cmd.text( ) )
   }
 
