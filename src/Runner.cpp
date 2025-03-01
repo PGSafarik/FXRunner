@@ -66,6 +66,8 @@ Runner::Runner( Application *a )
   this->LoadHistory( );
   r_combo->setText( "" );
 
+  ShortCuts( );
+
 }
 
 
@@ -238,6 +240,17 @@ void Runner::Check_property( Task *task )
 void Runner::DefaultFocus( )
 {
    if( !r_combo->hasFocus( ) ) { r_combo->setFocus( ); }
+}
+
+void Runner::ShortCuts( )
+{
+  FXAccelTable *act = getShell( )->getAccelTable( );
+  if( act ) {
+    act->addAccel( "Esc",    this, FXSEL( SEL_COMMAND, ID_CANCEL ) );
+    act->addAccel( "alt+r",  this, FXSEL( SEL_COMMAND, ID_ACCEPT ) );
+    act->addAccel( "alt+s",  this, FXSEL( SEL_COMMAND, OPEN_FILE ) );
+    act->addAccel( "alt+d",  this, FXSEL( SEL_COMMAND, OPEN_DIR ) );
+  }
 }
 
 /*** END ******************************************************************************************/

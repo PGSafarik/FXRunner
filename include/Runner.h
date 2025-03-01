@@ -77,6 +77,7 @@ protected:
   void       LoadHistory( );
   void       Check_property( Task *task );
   void       DefaultFocus( );
+  void       ShortCuts( );
 };
 
 #endif /* __RUNNER_H */
