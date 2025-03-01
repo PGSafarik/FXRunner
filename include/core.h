@@ -29,6 +29,7 @@
 #include "core/FXIconsTheme.h"
 #include "core/History.h"
 #include "core/HistoryFile.h"
+#include "core/Application.h"
 
 #include "../version.h"
 #endif /* FXRUNNER_CORE_H */

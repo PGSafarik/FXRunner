@@ -21,7 +21,6 @@
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include "core.h"
-#include <Application.h>
 #include <Boxes.h>
 
 /* Settings frame class */

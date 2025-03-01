@@ -15,7 +15,6 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
 #include "core.h"
-#include<Application.h>
 #include<Runner.h>
 
 int main( int argc, char **argv )

@@ -22,7 +22,6 @@
 * Copyright (c) 01/11/2017 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include "core.h"
-#include<Application.h>
 #include<Runner.h>
 
 /*** Menu aplikace ********************************************************************************/

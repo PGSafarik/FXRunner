@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include<Application.h>
+#include "core/Application.h"
 
 FXDEFMAP( Application ) APPLICATION_MAP[ ] = { 
   FXMAPFUNC( SEL_COMMAND, Application::QUIT_NEGATION, Application::OnCmd_QuitNegation )
