@@ -250,6 +250,7 @@ void Runner::ShortCuts( )
     act->addAccel( "alt+r",  this, FXSEL( SEL_COMMAND, ID_ACCEPT ) );
     act->addAccel( "alt+s",  this, FXSEL( SEL_COMMAND, OPEN_FILE ) );
     act->addAccel( "alt+d",  this, FXSEL( SEL_COMMAND, OPEN_DIR ) );
+    act->addAccel( "alt+c",  this, FXSEL( SEL_COMMAND, OPEN_OPTIONS ) );
   }
 }
 

@@ -360,13 +360,14 @@ FXIMPLEMENT( SettingsDialog, FXSecondaryWindow, SettingsBoxMap, ARRAYNUMBER( Set
 
 /**************************************************************************************************/
 SettingsDialog::SettingsDialog( FXWindow *own )
-              : FXSecondaryWindow( own, "Configure", WINDOW_STATIC, 0, 0, 750, 350 )
+              : FXSecondaryWindow( own, "Fox Runner", WINDOW_STATIC, 0, 0, 800, 350 )
 {
   setWMDecorations( WM_DECOR_SECONDARY );
   
   Application  *app = ( Application * ) this->getApp( );
   FXIconsTheme *icons = app->get_iconstheme( );
   setIcon( icons->get_icon( "settings" ) );  
+  getHeader( )->setText( "Settings" );
 
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
   Settings *config = new Settings( content, this, SettingsDialog::ID_RECONFIGURE );
