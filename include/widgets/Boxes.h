@@ -22,7 +22,7 @@
 * Copyright (c) 01/11/2017 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include "core.h"
-#include<Runner.h>
+#include "windows.h"
 
 /*** Menu aplikace ********************************************************************************/
 class FXMenuBox : public FXHeaderBox {

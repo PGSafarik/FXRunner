@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include<Runner.h>
+#include "windows/Runner.h"
 
 FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
   FXMAPFUNCS( SEL_COMMAND, Runner::ID_ACCEPT, Runner::ID_CANCEL, Runner::onCmd_Run ),
@@ -67,9 +67,7 @@ Runner::Runner( Application *a )
   r_combo->setText( "" );
 
   ShortCuts( );
-
 }
-
 
 Runner::~Runner( )
 {  }

@@ -1,6 +1,4 @@
 /*************************************************************************
-* main.cpp Copyright (c) 2012 - 2022 by  D.A.Tiger                     *
-*                                                                        *
 * This program is free software: you can redistribute it and/or modify   *
 * it under the terms of the GNU General Public License as published by   *
 * the Free Software Foundation, either version 3 of the License, or      *
@@ -14,17 +12,16 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include "core.h"
-#include "windows.h"
+#ifndef FXRUNNER_WINDOWS_H
+#define FXRUNNER_WINDOWS_H
 
-int main( int argc, char **argv )
-{
-  Application app;
-  app.init( argc, argv );
-  new Runner( &app );
-  app.create( );
-  return app.run( );
+/*************************************************************************
+* File:      windows.h                                                   *
+* Project:   FXRunner                                                    *
+* Copyright: Copyriright (C) 2017 - 2025 by D.A.Tiger GNU GPL v3         *
+* Author(s): D.A.Tiger ( drakarax@seznam.cz )                            *
+* Note:                                                                  *
+*************************************************************************/
+#include "windows/Runner.h"
 
-}
-
-/*** END ******************************************************************************************/
+#endif /* FXRUNNER_WINDOWS_H */

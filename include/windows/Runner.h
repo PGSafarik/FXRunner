@@ -12,8 +12,9 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#ifndef __RUNNER_H
-#define __RUNNER_H
+#ifndef FXRUNNER_RUNNER_H
+#define FXRUNNER_RUNNER_H
+
 /*************************************************************************
 * Runner.h                                                               *
 *                                                                        *
@@ -75,5 +76,5 @@ protected:
   void       ShortCuts( );
 };
 
-#endif /* __RUNNER_H */
+#endif /* FXRUNNER_RUNNER_H */
 /*** END ****************************************************************/
