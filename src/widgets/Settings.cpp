@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include<Settings.h>
+#include "widgets/Settings.h"
 
 /*** SETTINGS FRAME *******************************************************************************/
 #define LABEL_STYLE JUSTIFY_LEFT | ICON_BEFORE_TEXT | LAYOUT_FILL_X

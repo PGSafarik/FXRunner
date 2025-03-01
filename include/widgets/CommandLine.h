@@ -12,9 +12,9 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
+#ifndef FXRUNNER_COMMANDLINE_H
+#define FXRUNNER_COMMANDLINE_H
 
-#ifndef __COMMANDLINE_H
-#define __COMMANDLINE_H
 /*************************************************************************
 * CommandLine.h                                                          *
 *                                                                        *
@@ -38,7 +38,7 @@ public :
 
     if( size > 0 ) {
       for( FXint i = 0; i != size; i++ ) {
-        cmd_list[ i ]->save( store );  // alt: store << ( *cmd_list[ i ] );
+        cmd_list[ i ].save_data( store );  // alt: store << ( *cmd_list[ i ] );
       }
     }
   }
@@ -50,14 +50,14 @@ public :
 
     if( size < 0 ) {
       cmd_list.clear( );
-      for( i = 0; i != size; i++ ) {
+      for( FXint i = 0; i != size; i++ ) {
         Task *cmd = new Task;
-        cmd->load( store );   // alt: store >> ( *cmd );
-        cmd_list.append( cmd );
+        cmd->load_data( store );   // alt: store >> ( *cmd );
+        //cmd_list.append( cmd );
       }
     }
   }
 };
 
-#endif /* __COMMANDLINE_H */
+#endif /* FXRUNNER_COMMANDLINE_H */
 /*** END ****************************************************************/

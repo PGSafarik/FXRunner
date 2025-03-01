@@ -21,10 +21,8 @@
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include "core.h"
-#include<Boxes.h>
-#include<Settings.h>
+#include "widgets.h"
 
-//class Runner : public FXMainWindow {
 class Runner : public FXPrimaryWindow {
 FXDECLARE( Runner )
   Application *r_app;

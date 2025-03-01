@@ -12,24 +12,18 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#ifndef FXRUNNER_CORE_H
-#define FXRUNNER_CORE_H
+#ifndef FXRUNNER_WIDGETS_H
+#define FXRUNNER_WIDGETS_H
 
 /*************************************************************************
-* File:      core.h                                                      *
+* File:      widgets.h                                                   *
 * Project:   FXRunner                                                    *
 * Copyright: Copyriright (C) 2017 - 2025 by D.A.Tiger GNU GPL v3         *
 * Author(s): D.A.Tiger ( drakarax@seznam.cz )                            *
 * Note:                                                                  *
 *************************************************************************/
-//#include "core/version.h"
-#include "core/defs.h"
-#include "core/Utils.h"
-#include "core/Task.h"
-#include "core/FXIconsTheme.h"
-#include "core/History.h"
-#include "core/HistoryFile.h"
-#include "core/Application.h"
+#include "widgets/Boxes.h"
+#include "widgets/Settings.h"
+#include "widgets/CommandLine.h"
 
-#include "../version.h"
-#endif /* FXRUNNER_CORE_H */
+#endif /* FXRUNNER_WIDGETS_H */

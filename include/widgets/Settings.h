@@ -12,8 +12,8 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#ifndef __SETTINGS_H
-#define __SETTINGS_H
+#ifndef FXRUNNER_SETTINGS_H
+#define FXRUNNER_SETTINGS_H
 /*************************************************************************
 * Runner.h                                                               *
 *                                                                        *
@@ -21,7 +21,7 @@
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include "core.h"
-#include <Boxes.h>
+#include "Boxes.h"
 
 /* Settings frame class */
 class Settings : public FXScrollWindow
@@ -136,5 +136,5 @@ protected:
   SettingsDialog( ) { }
 };
 
-#endif /* __SETTINGS_H */
+#endif /* FXRUNNER_SETTINGS_H */
 /*** END ****************************************************************/

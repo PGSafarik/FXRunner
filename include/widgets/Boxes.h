@@ -12,9 +12,9 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
+#ifndef FXRUNNER_BOXES_H
+#define FXRUNNER_BOXES_H
 
-#ifndef __BOXES_H
-#define __BOXES_H
 /*************************************************************************
 * Boxes.cpp                                                              *
 * EXPERIMENTAL                                                           *
@@ -85,6 +85,6 @@ protected:
   Toolbar( ) { }
 };
 
-#endif /*__BOXES_H */
+#endif /* FXRUNNER_BOXES_H */
 
 /*** END ****************************************************************/
