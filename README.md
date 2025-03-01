@@ -1,5 +1,5 @@
 # FXRunner - Simple, universal GUI desktop launcher
--01.03.2025-
+-02.03.2025-
 
 *Content:*
   1. [General info](#1-general-info)
@@ -18,7 +18,7 @@ FXRunner settings window
 ## 1. GENERAL INFO:
 This is a GUI launcher application with history. Enables running in the terminal, as root, or entering the working directory of the application. Enables multiple applications to be launched one after the other (the FXRunner window does not close after launching the application).
 
-Actual version: 25.03 0.4.0.0 Alpha
+Actual version: 25.03 0.5.0.0 Alpha
 
 ## 2. COMPILATION AND INSTALLATION:
 *Dependecies:*
@@ -59,7 +59,7 @@ These lines are commented out by default, so remove the leading '#' characters a
 ## 4. PROJECT STATE AND PLANS FOR THE FUTHURE
 
 ## 5. AUTHOR AND PROJECT LICENCION:
-Copyright (C) 2015 - 2022 Pavel Šafařík <drakarax@seznam.cz>
+Copyright (C) 2015 - 2025 Pavel Šafařík <drakarax@seznam.cz>
 All rights reseved.
 
 This file is part of FXRunner.
