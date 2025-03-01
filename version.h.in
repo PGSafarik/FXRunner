@@ -1,13 +1,12 @@
 #ifndef FXRUNNER_VERSION_H
 #define FXRUNNER_VERSION_H
 
-namespace FXRUNNER {
+namespace FXRunner {
 /*
  This file is generation automatically. Do not edit, please
  Project Initial full version :
 */
-
-namespace Version{
+  namespace Version {
 	/* Application */
 	static const char PROJECT_ID[ ]        = "fxrunner";
 	static const char PROJECT_NAME[ ]      = "Fox Runner";
@@ -39,9 +38,8 @@ namespace Version{
 	static const char FULLVERSION_STRING[] = "${PROJECT_VERSION_FULL}";
 
 	//These values are to keep track of your versioning and testing state.
-  static const long TEST_COUNT    = 0;
-  static const long TEST_HISTORY  = 0;
-}       /* version */
-}       /* FXGHI */
-
+    static const long TEST_COUNT    = 0;
+    static const long TEST_HISTORY  = 0;
+  }     /* version */
+}       /* FXRUNNER */
 #endif  /* FXRUNNER_VERSION_H */

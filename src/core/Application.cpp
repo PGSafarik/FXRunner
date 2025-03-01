@@ -234,9 +234,9 @@ FXString Application::CheckTerminal( Task *t )
 void Application::Welcome( )
 {
   std::cout << "=== " << getAppName( ) << " ========================================" << std::endl;
-  std::cout << "Copyright " << AutoVersion::DATE << "/" << AutoVersion::MONTH << "/" << AutoVersion::YEAR << "  D.A.Tiger <drakarax@seznam.cz>, GNU GPL 3" << std::endl;
-  std::cout << "Version    : "<< AutoVersion::MAJOR<< "."<< AutoVersion::MINOR << "." << AutoVersion::REVISION;
-  std::cout << " [" << AutoVersion::STATUS << "]" << std::endl;
+  std::cout << "Copyright " << FXRunner::Version::DATE << "/" << FXRunner::Version::MONTH << "/" << FXRunner::Version::YEAR << "  D.A.Tiger <drakarax@seznam.cz>, GNU GPL 3" << std::endl;
+  std::cout << "Version    : "<< FXRunner::Version::MAJOR<< "."<< FXRunner::Version::MINOR << "." << FXRunner::Version::REVISION;
+  std::cout << " [" << FXRunner::Version::STATUS << "]" << std::endl;
   std::cout << "lib Fox    : " << FOX_MAJOR << "." << FOX_MINOR << "." << FOX_LEVEL << std::endl;
   std::cout << "lib FoxGHI : " << /*0 << "." << 4 << "." << 1*/ FXGHI::Version::FULLVERSION_STRING << std::endl;
   std::cout << "=== Message =========================================" << std::endl;

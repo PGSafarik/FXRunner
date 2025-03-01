@@ -22,7 +22,7 @@
 * Author(s): D.A.Tiger ( drakarax@seznam.cz )                            *
 * Note:                                                                  *
 *************************************************************************/
-//#include "core/version.h"
+#include "core/version.h"
 #include "core/defs.h"
 #include "core/Utils.h"
 #include "core/Task.h"
@@ -31,5 +31,5 @@
 #include "core/HistoryFile.h"
 #include "core/Application.h"
 
-#include "../version.h"
+//#include "../version.h"
 #endif /* FXRUNNER_CORE_H */

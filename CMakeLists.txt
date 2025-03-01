@@ -1,8 +1,25 @@
 CMAKE_MINIMUM_REQUIRED( VERSION 3.10 )
-PROJECT( FXRunner VERSION 0.1 DESCRIPTION "GUI application launcher for Linux with history" )
+PROJECT( FXRunner DESCRIPTION "GUI application launcher for Linux with history" )
+
+# Project Version
+SET( FXGHI_VER_DATE  01 )
+SET( FXGHI_VER_MONTH 03 )
+SET( FXGHI_VER_YEAR  25 )
+
+SET( FXGHI_VER_MAJOR    0 )
+SET( FXGHI_VER_MINOR    5 )
+SET( FXGHI_VER_REVISION 0 )
+SET( FXGHI_VER_BUILD    0 )
+
+SET( FXGHI_VER_FLAG   "Alpha" )
+SET( FXGHI_VER_SHFLAG "a" )
+
+SET( PROJECT_VERSION_UBUNTU 24.${FXGHI_VER_MONTH} )
+SET( PROJECT_VERSION ${FXGHI_VER_MAJOR}.${FXGHI_VER_MINOR}.${FXGHI_VER_REVISION} )
+SET( PROJECT_VERSION_FULL "${PROJECT_VERSION_UBUNTU} ${PROJECT_VERSION}.${FXGHI_VER_BUILD} ${FXGHI_VER_FLAG}" )
 
 # The project settings
-SET( BIN_NAME "fxrunner" )                   # Executable binnary filename
+SET( BIN_NAME "fxrunner" )                  # Executable binnary filename
 SET( CMAKE_INSTALL_PREFIX "/usr" )  # Install target directory
 SET( LIB_FOX   "/opt/foxlib/1.7/84" )       # Fox toolkit path
 SET( LIB_FXGHI "/opt/foxghi/0.5/2"  )       # Fox GHI path
@@ -13,8 +30,10 @@ SET( CMAKE_CXX_STANDARD_REQUIRED ON )       # C++ Standard
 
 # Configure project
 #CONFIGURE_FILE( MakeConfig.h.in MakeConfig.h )
-FILE( GLOB SOURCES src/*.cpp src/core/*.cpp src/widgets/*.cpp src/windows/*.cpp )                          # List of implementation files
+configure_file( version.h.in "${PROJECT_SOURCE_DIR}/include/core/version.h" )      # generate version.h file
+FILE( GLOB SOURCES src/*.cpp src/core/*.cpp src/widgets/*.cpp src/windows/*.cpp )  # List of implementation files
 INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/include" )
+
 
 # Add directories for project dependecies
 INCLUDE_DIRECTORIES( "${LIB_FOX}/include/" )

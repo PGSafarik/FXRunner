@@ -26,7 +26,7 @@
 #include "History.h"
 #include "HistoryFile.h"
 #include "FXIconsTheme.h"
-#include "../version.h"
+#include "version.h"
 
 
 /*** Terminal emulator Profile struct ***/
