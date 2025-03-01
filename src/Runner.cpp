@@ -33,10 +33,10 @@ Runner::Runner( Application *a )
   
   //  Window composite mask
   setWMDecorations( WM_DECOR_PRIMARY );
-  FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL );
+  FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL, 0, 0, 0, 0,  0, 0, 0, 0,  0, 0 );
   
   /* Aplication layout */
-  FXVerticalFrame *up_frame = new FXVerticalFrame( content, FRAME_NONE| LAYOUT_FILL);
+  FXVerticalFrame *up_frame = new FXVerticalFrame( content, FRAME_NONE| LAYOUT_FILL, 0, 0, 0, 0,  0, 0, 0, 0,  0, 0 );
   FXMatrix        *matrix   = new FXMatrix( up_frame, 2, FRAME_NONE | MATRIX_BY_COLUMNS | LAYOUT_FILL );
   new FXStatusBar( content, FRAME_RAISED | LAYOUT_SIDE_BOTTOM | LAYOUT_BOTTOM | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0  );
 
@@ -65,6 +65,7 @@ Runner::Runner( Application *a )
   /* Initialize */
   this->LoadHistory( );
   r_combo->setText( "" );
+
 }
 
 
@@ -167,7 +168,8 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
      }
      case Runner::OPEN_OPTIONS :{
        SettingsDialog *set = new SettingsDialog( this );
-       if( set->execute( ) ) { }
+       //if( set->execute( ) ) { }
+       set->execute( );
        break; 
      }
    }
