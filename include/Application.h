@@ -21,10 +21,7 @@
 * Systemovy zaklad aplikace                                              *
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<main.h>
-#include<Task.h>
-#include<History.h> 
-#include<HistoryFile.h>
+#include "core.h"
 
 /*** Terminal emulator Profile struct ***/
 struct app_teprofile {

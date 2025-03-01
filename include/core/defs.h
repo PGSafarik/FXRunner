@@ -21,15 +21,12 @@
 * Deklarace zakladnich datovych struktur a hlavickovych souboru          *
 * Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<iostream>
-#include<fox-1.7/fx.h>
-#include<fxghi.h>
-
-#include<../version.h>
-#include<FXIconsTheme.h>
-
-/* Declaration new types */
-typedef FXArray<FXString> FXString_List;
+#include <iostream>
+#include <string>
+#include <map>
+#include <fox-1.7/fx.h>
+#include <fxghi.h>
+#include<loki/SmallObj.h>
 
 /* Alternative WM decorations */
 #define WM_DECOR_PRIMARY    DECOR_TITLE | DECOR_MINIMIZE | DECOR_CLOSE | DECOR_BORDER| DECOR_MENU
@@ -52,12 +49,6 @@ typedef FXArray<FXString> FXString_List;
 #else
 #define DEBUG_OUT(text)
 #endif
-
-/* Special core functions */
-extern FX::FXString& operator <<( FX::FXString &dest, const std::string &source );
-extern std::string& operator <<( std::string &dest, const FX::FXString &source );
-extern std::ostream& operator <<( std::ostream &store, const FX::FXString &str );
-extern std::istream& operator >>( std::istream &store, FX::FXString &str );
 
 #endif /* __MAIN_H */
 /*** END ****************************************************************/

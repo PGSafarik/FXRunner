@@ -20,11 +20,9 @@
 * Deklarace tridy hlavniho okna aplikace                                 *
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<main.h>
-#include<Application.h>
-#include<FXIconsTheme.h>
-#include<Boxes.h>
-
+#include "core.h"
+#include <Application.h>
+#include <Boxes.h>
 
 /* Settings frame class */
 class Settings : public FXScrollWindow

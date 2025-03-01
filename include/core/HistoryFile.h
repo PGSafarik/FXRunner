@@ -12,16 +12,17 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#ifndef __HISTORYFILE_H
-#define __HISTORYFILE_H
+#ifndef FXRUNNER_HISTORYFILE_H
+#define FXRUNNER_HISTORYFILE_H
+
 /*************************************************************************
 * HistoryFile.h                                                          *
 *                                                                        *
 * The class, represent a file for recording the commands history         *
-* Copyright (c) 05/04/2024 D.A.Tiger <drakarax@seznam.cz>                *
+* Copyright (c) 2025 D.A.Tiger <drakarax@seznam.cz>                      *
 *************************************************************************/
-#include<main.h>
-#include<History.h>
+#include "defs.h"
+#include "History.h"
 
 class SubstrStream  {
 	FXString m_str;      // CSV line String 
@@ -54,4 +55,4 @@ public:
   FXint writeHistory( History *history );
 };
 
-#endif /* __HISTORYFILE_H */
+#endif /* FXRUNNER_HISTORYFILE_H */

@@ -12,18 +12,17 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
+#ifndef FXRUNNER_TASK_H
+#define FXRUNNER_TASK_H
 
-#ifndef __TASK_H
-#define __TASK_H
 /*************************************************************************
 * Task.h                                                                 *
 *                                                                        *
 * The data structure of the task to run                                  *
 * Copyright (c) 23/11/2015 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<main.h>
-#include<loki/SmallObj.h>
- 
+#include "defs.h"
+
 struct Properties : public Loki::SmallObject<> {   // Auxiliary structure for storing the state of properties 
   FXbool suaccess    = false; // Run with super user access
   FXbool unblock     = true;  // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
@@ -69,7 +68,7 @@ struct Task : public Loki::SmallObject<> {
 
 };
 
-#endif /* __TASK_H */
+#endif /* FXRUNNER_TASK_H */
 /*** END ****************************************************************/
 
 

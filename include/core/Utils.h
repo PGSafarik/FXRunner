@@ -13,51 +13,23 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
 
-#ifndef __COMMANDLINE_H
-#define __COMMANDLINE_H
+#ifndef FXRUNNER_UTILS_H
+#define FXRUNNER_UTILS_H
 /*************************************************************************
-* CommandLine.h                                                          *
+* Utils.h                                                                 *
 *                                                                        *
-* Widget pro zadavani prikazu a vyber z historie                         *
-* Copyright (c) 23/11/2015 D.A.Tiger <drakarax@seznam.cz>                *
+* Deklarace zakladnich datovych struktur a hlavickovych souboru          *
+* Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include "core.h"
+#include "defs.h"
 
-class CommandLine : public FXComboBox {
-  FXArray<Task> cmd_list;
+/* String utils */
+typedef FXArray<FXString> FXString_List;
 
-public :
-  CommandLine( FXComposite *p, FXObject* tgt = NULL, FXSelector sel = 0, FXuint opts = COMBOBOX_NORMAL );
-  virtual ~CommandLine( );
+extern FX::FXString& operator <<( FX::FXString &dest, const std::string &source );
+extern std::string& operator <<( std::string &dest, const FX::FXString &source );
+extern std::ostream& operator <<( std::ostream &store, const FX::FXString &str );
+extern std::istream& operator >>( std::istream &store, FX::FXString &str );
 
-  virtual void create( );
-  virtual void save( FXStream &store )
-  {
-    FXint size = cmd_list.no( );
-    store << size;
 
-    if( size > 0 ) {
-      for( FXint i = 0; i != size; i++ ) {
-        cmd_list[ i ]->save( store );  // alt: store << ( *cmd_list[ i ] );
-      }
-    }
-  }
-
-  virtual void load( FXStream &store )
-  {
-    FXint size;
-    store >> size;
-
-    if( size < 0 ) {
-      cmd_list.clear( );
-      for( i = 0; i != size; i++ ) {
-        Task *cmd = new Task;
-        cmd->load( store );   // alt: store >> ( *cmd );
-        cmd_list.append( cmd );
-      }
-    }
-  }
-};
-
-#endif /* __COMMANDLINE_H */
-/*** END ****************************************************************/
+#endif /* FXRUNNER_UTILS_H */

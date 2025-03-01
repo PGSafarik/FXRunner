@@ -1,5 +1,5 @@
 /*************************************************************************
-* Utils.cpp Copyright (c) 2022 by  D.A.Tiger                             *
+* Task.cpp Copyright (c) 2015 - 2022 by  D.A.Tiger                       *
 *                                                                        *
 * This program is free software: you can redistribute it and/or modify   *
 * it under the terms of the GNU General Public License as published by   *
@@ -14,40 +14,20 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include<main.h>
-#include<string>
-
-
-/*** String utils *********************************************************************************/
-FX::FXString& operator <<( FX::FXString &dest, const std::string &source ) {
-  if( !source.empty( ) ) {
-    int len = source.size( );
-    dest.length( len );
-    source.copy( dest.text( ), len ); 
-  }   
-  else { dest = FXString::null; }
-
-  return dest;
-}
-
-std::string& operator <<( std::string &dest, const FX::FXString &source ) {
-  if( !source.empty( ) ) { dest.assign( source.text( ) ); } 
-  else { dest = ""; }
+#include "core/Task.h"
+ 
+Task::Task( const FXString &cmd_str )
+{
+  cmd  = cmd_str;
+  prm  = FXString::null;
+  wpth = FXString::null;
   
-  return dest;
+  prop = new Properties;
 }
 
-std::ostream& operator <<( std::ostream &store, const FX::FXString &str  ) {
-  return store << str.text( );
-}
-
-std::istream& operator >>( std::istream &store, FX::FXString &str  ) {
-  std::string s;
-
-  store >> s;
-  str << s;
-
-  return store;
+Task::~Task( )
+{ 
+  delete prop;
 }
 
 /*** END ******************************************************************************************/

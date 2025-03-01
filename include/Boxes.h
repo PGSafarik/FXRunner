@@ -21,7 +21,7 @@
 * Male prvky (boxiky, widgety) do Header baru aplikace                   *
 * Copyright (c) 01/11/2017 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<fxghi.h>
+#include "core.h"
 #include<Application.h>
 #include<Runner.h>
 

@@ -20,12 +20,10 @@
 * Main window                                                            *
 * Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<main.h>
+#include "core.h"
 #include<Application.h>
-#include<History.h>
 #include<Boxes.h>
 #include<Settings.h>
-#include<Task.h>
 
 //class Runner : public FXMainWindow {
 class Runner : public FXPrimaryWindow {

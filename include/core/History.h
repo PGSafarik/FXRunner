@@ -12,17 +12,18 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
+#ifndef FXRUNNER_HISTORY_H
+#define FXRUNNER_HISTORY_H
 
-#ifndef __HISTORY_H
-#define __HISTORY_H
 /*************************************************************************
 * History.h                                                              *
 *                                                                        *
 * Zaznam a sprava historie prikazu                                       *
 * Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include<main.h>
-#include<Task.h>
+#include "defs.h"
+#include "Utils.h"
+#include "Task.h"
 
 class History : public FXObject {
 FXDECLARE( History )
@@ -61,4 +62,4 @@ protected :
   FXbool Index( FXint value );                            // Check is index value is valid
 };
 
-#endif /*__HISTORY_H */
+#endif /* FXRUNNER_HISTORY_H */

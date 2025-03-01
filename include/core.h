@@ -1,6 +1,4 @@
 /*************************************************************************
-* Task.cpp Copyright (c) 2015 - 2022 by  D.A.Tiger                       *
-*                                                                        *
 * This program is free software: you can redistribute it and/or modify   *
 * it under the terms of the GNU General Public License as published by   *
 * the Free Software Foundation, either version 3 of the License, or      *
@@ -14,20 +12,23 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include<Task.h>
- 
-Task::Task( const FXString &cmd_str )
-{
-  cmd  = cmd_str;
-  prm  = FXString::null;
-  wpth = FXString::null;
-  
-  prop = new Properties;
-}
+#ifndef FXRUNNER_CORE_H
+#define FXRUNNER_CORE_H
 
-Task::~Task( )
-{ 
-  delete prop;
-}
+/*************************************************************************
+* File:      core.h                                                      *
+* Project:   FXRunner                                                    *
+* Copyright: Copyriright (C) 2019 - 2024 by D.A.Tiger GNU GPL v3         *
+* Author(s): D.A.Tiger ( drakarax@seznam.cz )                            *
+* Note:                                                                  *
+*************************************************************************/
+//#include "core/version.h"
+#include "core/defs.h"
+#include "core/Utils.h"
+#include "core/Task.h"
+#include "core/FXIconsTheme.h"
+#include "core/History.h"
+#include "core/HistoryFile.h"
 
-/*** END ******************************************************************************************/
+#include "../version.h"
+#endif /* FXRUNNER_CORE_H */
