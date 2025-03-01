@@ -75,7 +75,9 @@ Runner::~Runner( )
 void Runner::create( )
 {
   FXPrimaryWindow::create( );
+
   show( PLACEMENT_SCREEN );
+  DefaultFocus( );
 }
 
 
@@ -231,6 +233,11 @@ void Runner::Check_property( Task *task )
     task->prop->term = r_prop.term;
     task->prop->nocloseterm = r_prop.nocloseterm;
   }
+}
+
+void Runner::DefaultFocus( )
+{
+   if( !r_combo->hasFocus( ) ) { r_combo->setFocus( ); }
 }
 
 /*** END ******************************************************************************************/

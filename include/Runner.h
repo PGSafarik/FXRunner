@@ -76,6 +76,7 @@ protected:
   History*   GetHistory( ) { return r_app->get_History( ); } 
   void       LoadHistory( );
   void       Check_property( Task *task );
+  void       DefaultFocus( );
 };
 
 #endif /* __RUNNER_H */
