@@ -120,21 +120,5 @@ protected:
 
 };
 
-/* Settings dialog window class */
-class SettingsDialog : public FXSecondaryWindow
-{
-  FXDECLARE( SettingsDialog )
-
-public :
-  SettingsDialog( FXWindow *own );
-  ~SettingsDialog( );
-
-  virtual void create( );
-  long onCmdCancel( FXObject *sender, FXSelector sel, void *data );  
-
-protected:
-  SettingsDialog( ) { }
-};
-
 #endif /* FXRUNNER_SETTINGS_H */
-/*** END ****************************************************************/
+/*** END ******************************************************************************************/

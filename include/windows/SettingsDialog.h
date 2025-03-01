@@ -12,17 +12,30 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#ifndef FXRUNNER_WINDOWS_H
-#define FXRUNNER_WINDOWS_H
-
+#ifndef FXRUNNER_SETDIALOG_H
+#define FXRUNNER_SETDIALOG_H
 /*************************************************************************
-* File:      windows.h                                                   *
-* Project:   FXRunner                                                    *
-* Copyright: Copyriright (C) 2017 - 2025 by D.A.Tiger GNU GPL v3         *
-* Author(s): D.A.Tiger ( drakarax@seznam.cz )                            *
-* Note:                                                                  *
+* Runner.h                                                               *
+*                                                                        *
+* Deklarace tridy hlavniho okna aplikace                                 *
+* Copyright (c) 22/09/2012 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include "windows/Runner.h"
-#include "windows/SettingsDialog.h"
+#include <core.h>
+#include <widgets.h>
 
-#endif /* FXRUNNER_WINDOWS_H */
+class SettingsDialog : public FXSecondaryWindow {
+FXDECLARE( SettingsDialog )
+
+public :
+  SettingsDialog( FXWindow *own );
+  ~SettingsDialog( );
+
+  virtual void create( );
+  long onCmdCancel( FXObject *sender, FXSelector sel, void *data );
+
+protected:
+  SettingsDialog( ) { }
+};
+
+#endif /* FXRUNNER_SETDIALOG_H */
+/*** END ******************************************************************************************/
