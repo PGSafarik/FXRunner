@@ -16,7 +16,69 @@
 *************************************************************************/
 #include "core/StringUtils.h"
 
-/*** String utils *********************************************************************************/
+/*** String list class ****************************************************************************/
+FXString FXStringList::join( const FXString &sep, FXint n )
+{
+  FXString str;
+
+  if( n <= 0 ) { n = no( ); }
+  else if ( n > no( ) ) { n = no( ); }
+
+  for( int i = 0; i != n; i++ ) {
+    if( i > 0 ) { str += sep; }
+    str += at( i );
+  }
+
+  return str;
+}
+
+FXint FXStringList::split( const FXString &str, const FXString &sep )
+{
+  if( str.empty( ) ) { return 0; }
+
+  int num, count;
+  count = num = 0;
+
+  if( !sep.empty( ) ) {
+    num = str.contains( sep );
+    if( str.right( 1 ) != sep ) { num += 1; }
+
+    for( int i = 0; i != num; i++ ) {
+      FXString substr = str.section( sep, i );
+
+      if( i == 0 && substr.empty( ) ) { continue; }
+      if( !substr.empty( ) ) { substr.trim( ); }
+
+      push( substr );
+      count++;
+    }
+  }
+  else {
+    push( str );
+    count = 1;
+  }
+
+  return count;
+}
+
+void FXStringList::sort( )
+{
+  ::qsort( data( ), no( ), sizeof( FXString ), [](const void* a, const void* b)
+  {
+    const FXString _a = *static_cast<const FXString*>( a );
+    const FXString _b = *static_cast<const FXString*>( b );
+
+    if( _a != _b ) {
+      if( _a < _b ) { return -1; }
+      else { return 1; }
+    }
+
+    return 0;
+  });
+
+}
+
+/*** String stream operators **********************************************************************/
 FX::FXString& operator <<( FX::FXString &dest, const std::string &source ) {
   if( !source.empty( ) ) {
     int len = source.size( );

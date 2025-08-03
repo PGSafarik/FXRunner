@@ -23,9 +23,49 @@
 *************************************************************************/
 #include "defs.h"
 
-/* String utils */
-typedef FXArray<FXString> FXString_List;
+/* String list class */
+class FXStringList : public FXArray<FXString> {
 
+public :
+  FXStringList( ) = default;
+  virtual ~FXStringList( ) = default;
+
+  /* Operations */
+  FXString join( const FXString &sep = "", FXint n = 0 );       // Join content in this array
+  FXint    split( const FXString &str, const FXString &sep );   // Splits the specified string into individual substrings separated by a separator
+  void     sort( );
+
+  /* Flags */
+  enum {
+    Search_forward = 0,  // Prohledavat od zacatku
+    Search_backward,     // Prohledavat od konce
+  };
+
+  /* String List Iterator */
+  class Iterator {
+    FXStringList &list;
+    FXival act;
+
+  public:
+    Iterator( FXival pos, FXStringList &reflist ) : list( reflist ), act( pos ) {};
+    ~Iterator( ) = default;
+
+    FXString operator*( ) { return list.at( act ); }
+
+    void operator++( ) { if( act < list.no( ) ) { act++; } }
+    void operator--( ) { if( act > 0 ) { act--; } }
+
+    FXbool operator==( Iterator &other ) { return list.at( act ) == other.list.at( act ); }
+    FXbool operator!=( Iterator &other ) { return list.at( act ) != other.list.at( act ); }
+  };
+
+  Iterator begin( ) { return Iterator( 0, *this ); }
+  Iterator end( )   { return Iterator( no( ) - 1, *this ); }
+
+protected :
+};
+
+/* Adition stream operators for compatibility with std::iostream and std::string */
 extern FX::FXString& operator <<( FX::FXString &dest, const std::string &source );
 extern std::string& operator <<( std::string &dest, const FX::FXString &source );
 extern std::ostream& operator <<( std::ostream &store, const FX::FXString &str );
