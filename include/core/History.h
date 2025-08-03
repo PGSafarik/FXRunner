@@ -22,7 +22,7 @@
 * Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include "defs.h"
-#include "Utils.h"
+#include "StringUtils.h"
 #include "Task.h"
 
 class History : public FXObject {

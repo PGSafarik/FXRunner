@@ -24,7 +24,7 @@
 *************************************************************************/
 #include "core/version.h"
 #include "core/defs.h"
-#include "core/Utils.h"
+#include "core/StringUtils.h"
 #include "core/Task.h"
 #include "core/FXIconsTheme.h"
 #include "core/History.h"
