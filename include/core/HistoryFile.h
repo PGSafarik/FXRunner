@@ -51,6 +51,10 @@ public:
 class HistoryFile : protected FXFile {
 public:
   HistoryFile(const FXString &filename, FXuint m = FXIO::Reading, FXuint perm = FXIO::AllReadWrite );
+
+	using FXFile::isOpen;
+	using FXFile::close;
+
   FXint readHistory( History *history );
   FXint writeHistory( History *history );
 };
