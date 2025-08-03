@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include "core/Utils.h"
+#include "core/StringUtils.h"
 
 /*** String utils *********************************************************************************/
 FX::FXString& operator <<( FX::FXString &dest, const std::string &source ) {
