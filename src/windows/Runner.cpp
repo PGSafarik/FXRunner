@@ -95,13 +95,13 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
       FXString pth = r_tfield->getText( );
       
       // Set command
-      if( cmd.empty( ) != true ) { 
+      if( !cmd.empty( ) ) {
         Task *task = new Task;
         task->cmd = cmd; 
 
 	      // Set command working path
         task->prm = FXString::null;
-        if( pth.empty( ) != true ) {
+        if( !pth.empty( ) ) {
           task->wpth = pth;
           if( task->wpth[ task->wpth.length( ) - 1 ] != '/' ) { task->wpth += "/"; }
         }
@@ -110,7 +110,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
         Check_property( task );
 
         // Compile the command
-        if( err_flg != true ) {
+        if( !err_flg ) {
           r_app->task_exec( task );         // Running application
           GetHistory( )->insert( task );  // Insert command to history
           this->LoadHistory( );            // Aktualize history command list in combobox
@@ -206,7 +206,7 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
     }
   }
    
-  if( r_prop.term == false ) { r_prop.nocloseterm = false; }
+  if( !r_prop.term ) { r_prop.nocloseterm = false; }
 
   return 1;
 }

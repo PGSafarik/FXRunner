@@ -61,9 +61,9 @@ FXint Application::task_exec( Task *cmd )
   // Prikaz, parametry, neblokujici spusteni
   if( !cmd->cmd.empty( ) ) { _cmd += cmd->cmd; }
   if( !cmd->prm.empty( ) ) { _cmd += cmd->prm; }
-  if( cmd->prop->unblock == true ) { _cmd += "&"; }
+  if( cmd->prop->unblock ) { _cmd += "&"; }
 
-  if( _cmd.empty( ) != true  ) {
+  if( !_cmd.empty( ) ) {
     _command = CheckTerminal( cmd ) + CheckPrivilege( cmd ) + _cmd;
     DEBUG_OUT( "Running: " << _command )
     resh = system( _command.text( ) );
@@ -75,7 +75,7 @@ FXint Application::task_exec( Task *cmd )
 
 void Application::task_write( Task *cmd, const FXString &pth )
 {
-  if( ( pth.empty( ) == true ) || ( cmd == NULL )  ) { return; }
+  if( pth.empty( ) || !cmd ) { return; }
 
   DEBUG_OUT( "writing " << pth )
   FXSettings desk_file;
@@ -83,7 +83,7 @@ void Application::task_write( Task *cmd, const FXString &pth )
   FXString   command, name = FXPath::name( cmd->cmd );
 
   /// FIXME APP_001 : sudo!
-  //if( cmd->su == true ) { command += a_cfg->su + " "; }
+  //if( cmd->su ) { command += a_cfg->su + " "; }
   command += cmd->cmd;
   if( !cmd->prm.empty( ) ) { command += " " + cmd->prm; }
 
@@ -182,9 +182,7 @@ void Application::settings_save( )
     a_cfg->change = false;
   } 
 
-  if( reg( ).isModified( ) == true ) { 
-    reg( ).write( ); 
-  }
+  if( reg( ).isModified( ) ) { reg( ).write( ); }
 }
 
 FXString Application::CheckPrivilege( Task *t )
