@@ -21,11 +21,11 @@
 * Application icon manager (dictionary - pattern method )                *
 * Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
-#include "defs.h"
+#include "core/defs.h"
+//? #include "core/StringUtils.h"
 
 typedef FXDictionaryOf<FXint>     FXSizesMap;
-typedef std::map<FXString, FXint> __SizeMap; 
-typedef FXArray<FXString>         FXStringList;
+typedef std::map<FXString, FXint> __SizeMap;
 
 class FXIconsTheme {
   FXString t_name;		// Theme name
@@ -33,7 +33,7 @@ class FXIconsTheme {
   FXString t_path;		// Root path to the ikons theme
   FXString t_pattern;	// Pattern for composing paths to icon files in a theme
 
-  FXStringList        t_list;      // List dictionaries (sections)
+  //? FXStringList        t_list;      // List dictionaries (sections)
   FXStringDictionary  t_dict;	     // Dictionary (section)
   FXIconCache        *t_cache;     // Icons cache 
   FXSizesMap          t_sizes;     // Sizes map

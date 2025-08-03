@@ -68,7 +68,7 @@ void FXIconsTheme::load( const FXString &themefile, const FXString &name )
   t_dict.clear( );
   t_sizes.clear( );
   t_cache->clear( );
-  t_list.clear( );
+  //? t_list.clear( );
 
   if( FXStat::exists( themefile ) && data.parseFile( themefile ) ) {
     //std::cout << "Load icons theme \'" << name.text( ) << "\' from \'" << themefile.text( ) << "\' mapfile" << std::endl;
