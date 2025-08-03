@@ -69,7 +69,8 @@ SubstrStream& SubstrStream::operator << ( FXbool value )
 }
 	
 /**************************************************************************************************/
-HistoryFile::HistoryFile( const FXString &filename, FXuint m, FXuint perm ) : FXFile( filename, m, perm )
+HistoryFile::HistoryFile( const FXString &filename, FXuint mode )
+           : FXFile( filename, mode, FXIO::AllReadWrite )
 { }
 	
 FXint HistoryFile::readHistory( History *history )
