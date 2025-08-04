@@ -73,7 +73,7 @@ HistoryFile::HistoryFile( const FXString &filename, FXuint mode )
            : FXFile( filename, mode, FXIO::AllReadWrite )
 { }
 	
-FXint HistoryFile::readHistory( History *history )
+FXint HistoryFile::read( History *history )
 {
 	if( !isOpen( ) ) { return -1; }
 	DEBUG_OUT( "Read history list" ) 
@@ -106,7 +106,7 @@ FXint HistoryFile::readHistory( History *history )
 	return count;
 }
 
-FXint HistoryFile::writeHistory( History *history )
+FXint HistoryFile::write( History *history )
 {
 	FXint size  = 0;
 		

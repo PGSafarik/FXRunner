@@ -111,14 +111,14 @@ void Application::load( )
 	DEBUG_OUT( "Loading the history file: " << a_history_filename )
 	
 	HistoryFile hfd( a_history_filename );
-	if( hfd.isOpen( ) ) { hfd.readHistory( a_history ); }
+	if( hfd.isOpen( ) ) { hfd.read( a_history ); }
 	hfd.close( );
 }
 
 void Application::save( )
 {
 	HistoryFile hfd( a_history_filename, FXIO::WriteOnly | FXIO::Create );
-	hfd.writeHistory( a_history );
+	hfd.write( a_history );
 	hfd.close( );
 	
   settings_save( );

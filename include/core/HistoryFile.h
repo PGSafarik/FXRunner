@@ -54,9 +54,8 @@ public:
 
 	using FXFile::isOpen;
 	using FXFile::close;
-
-  FXint readHistory( History *history );
-  FXint writeHistory( History *history );
+  FXint read( History *history );
+  FXint write( History *history );
 };
 
 #endif /* FXRUNNER_HISTORYFILE_H */
