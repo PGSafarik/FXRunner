@@ -31,6 +31,7 @@ class SubstrStream  {
 	FXint    m_num;      // Number of substrings (only for reading?)
 	FXint    m_index;    // Index of working record in a source of data
 	FXint    m_state;    // Status of data transfer between client and storage ( 0 - OK, < 0 - ERROR, 1 - END, > 1 - Other message )
+
 	FXString GetSection( );
 
 public:
@@ -40,6 +41,8 @@ public:
 
   /* Access methods */
 	FXString get_str( ) { return m_str; }
+	void set_str( const FXString &str ) { m_str = str; m_num = m_str.contains( m_delim ); }
+
   FXint get_num( ) { return m_num; }
 	FXint get_index( ) { return m_index; }
 	void set_index( FXint index ) { m_index = index; }
@@ -47,7 +50,7 @@ public:
 	void set_state( FXint state ) { m_state = state; }
 
   /* Operations Methods */
-	void clear( ) { m_str.clear( ); }
+	void clear( ) { m_str.clear( ); m_num = 0; m_pos = 0; }
 
 	/* operators */
 	SubstrStream& operator++( ) { m_index++; return *this; }

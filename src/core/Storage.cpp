@@ -20,9 +20,8 @@
 FXString SubstrStream::GetSection( )
 {
 	FXString substr;
-	substr = m_str.section( m_delim, m_index );
-	m_index++;
-		
+	substr = m_str.section( m_delim, m_pos );
+	m_pos++;
 	return substr;
 }
 
@@ -31,13 +30,7 @@ SubstrStream::SubstrStream( const FXString &delimiter ) : m_delim( delimiter )
   m_index = 0;
   m_num   = 0;
 	m_state = 0;
-}	
-	
-SubstrStream::SubstrStream( const FXString &str, const FXString &delimiter ) : m_str( str ), m_delim( delimiter )
-{
-	m_state = 0;
-	m_index = 0;
-	m_num   = str.contains( m_delim );
+	m_pos   = 0;
 }
 	
 SubstrStream::~SubstrStream( ) 
