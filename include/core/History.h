@@ -54,7 +54,29 @@ public :
   FXbool insert( Task *task, FXint pos = 0 );             // Insert existing task on list
   Task*  remove( FXint index );                           // Remove existing index
   void   clear( );                                        // Clear all items 
-  
+
+  template <typename STREAMER> FXbool load_data( STREAMER &streamer ) {
+    Task *task = new Task;
+    task->load_data( streamer );
+    push( task, false );
+
+    return true;
+  }
+
+  template <typename STREAMER> FXbool save_data( STREAMER &streamer ) {
+    FXbool success = false;
+
+     FXint index = streamer.get_index( );
+     if( index < m_buffer.no( ) ) {
+       Task *task = m_buffer.at( index );
+       if( task ) { task->save_data( streamer );
+         success = true;
+       }
+     }
+     else { streamer.set_state( 1 ); }
+
+     return success;
+  }
   /* Debug & tests */
   void Dump( );                                           // Dumping actual history state on std::cout
   
