@@ -110,16 +110,16 @@ void Application::load( )
 	a_history_filename = a_cfg->cache_dir + "/" +  getAppName( ) + "/History";
 	DEBUG_OUT( "Loading the history file: " << a_history_filename )
 	
-	HistoryFile hfd( a_history_filename );
-	if( hfd.isOpen( ) ) { hfd.read( a_history ); }
-	hfd.close( );
+	Storage<SubstrStream, History> history_store( a_history_filename );
+	if( history_store.isOpen( ) ) { history_store.read( a_history ); }
+	history_store.close( );
 }
 
 void Application::save( )
 {
-	HistoryFile hfd( a_history_filename, FXIO::WriteOnly | FXIO::Create );
-	hfd.write( a_history );
-	hfd.close( );
+	Storage<SubstrStream, History> history_store( a_history_filename, FXIO::WriteOnly | FXIO::Create );
+	history_store.write( a_history );
+	history_store.close( );
 	
   settings_save( );
 }
