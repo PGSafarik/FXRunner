@@ -59,6 +59,16 @@ public:
 	SubstrStream& operator >> ( FXbool &value );
 	SubstrStream& operator << ( const FXString &str );
 	SubstrStream& operator << ( FXbool value );
+
+	/*
+	void Dump( ) {
+    std::cout << m_str << "[ ";
+		std::cout << m_num << ";";
+    std::cout << m_index << ";";
+		std::cout << m_state << ";";
+		std::cout << " ]" << std::endl;
+	}
+	*/
 };
 
 template<typename STREAMER, typename CLIENT > class Storage : protected FXFile {
