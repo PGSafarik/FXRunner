@@ -22,7 +22,6 @@
 * Copyright (c) 2025 D.A.Tiger <drakarax@seznam.cz>                      *
 *************************************************************************/
 #include "defs.h"
-#include "History.h"
 
 /* CSV STREAMER */
 class SubstrStream  {
