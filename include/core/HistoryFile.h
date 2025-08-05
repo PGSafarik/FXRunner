@@ -24,6 +24,7 @@
 #include "defs.h"
 #include "History.h"
 
+/* CSV STREAMER */
 class SubstrStream  {
 	FXString m_str;      // CSV line String 
 	FXString m_delim;    // Delimiter
@@ -33,7 +34,7 @@ class SubstrStream  {
 	FXString GetSection( );
 	
 public:
-  SubstrStream( const FXString &delimiter );  
+  explicit SubstrStream( const FXString &delimiter = ";" );
   SubstrStream( const FXString &str, const FXString &delimiter );
 	~SubstrStream( ); 
 
