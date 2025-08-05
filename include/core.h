@@ -28,7 +28,7 @@
 #include "core/Task.h"
 #include "core/FXIconsTheme.h"
 #include "core/History.h"
-#include "core/HistoryFile.h"
+#include "core/Storage.h"
 #include "core/Application.h"
 
 //#include "../version.h"

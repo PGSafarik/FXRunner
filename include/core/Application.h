@@ -24,7 +24,7 @@
 #include "defs.h"
 #include "Task.h"
 #include "History.h"
-#include "HistoryFile.h"
+#include "Storage.h"
 #include "FXIconsTheme.h"
 #include "version.h"
 

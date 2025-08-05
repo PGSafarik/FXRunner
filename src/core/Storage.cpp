@@ -14,7 +14,7 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include "core/HistoryFile.h"
+#include "core/Storage.h"
 
 /**************************************************************************************************/
 FXString SubstrStream::GetSection( )
