@@ -28,7 +28,8 @@
 class SubstrStream  {
 	FXString m_str;      // CSV line String
 	FXString m_delim;    // Delimiter
-	FXint    m_num;      // Number of substrings (only for reading?)
+	FXint    m_num;      // Number of substrings
+  FXint    m_pos;      // Indicate actual substring position
 	FXint    m_index;    // Index of working record in a source of data
 	FXint    m_state;    // Status of data transfer between client and storage ( 0 - OK, < 0 - ERROR, 1 - END, > 1 - Other message )
 
@@ -36,7 +37,6 @@ class SubstrStream  {
 
 public:
   explicit SubstrStream( const FXString &delimiter = ";" );
-  SubstrStream( const FXString &str, const FXString &delimiter );
 	~SubstrStream( );
 
   /* Access methods */
