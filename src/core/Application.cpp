@@ -108,17 +108,15 @@ void Application::load( )
 	a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
 	
 	a_history_filename = a_cfg->cache_dir + "/" +  getAppName( ) + "/History";
-	DEBUG_OUT( "Loading the history file: " << a_history_filename )
-	
 	Storage<SubstrStream, History> history_store( a_history_filename );
-	if( history_store.isOpen( ) ) { history_store.read( a_history ); }
+	if( history_store.isOpen( ) ) { history_store.load( a_history ); }
 	history_store.close( );
 }
 
 void Application::save( )
 {
 	Storage<SubstrStream, History> history_store( a_history_filename, FXIO::WriteOnly | FXIO::Create );
-	history_store.write( a_history );
+	history_store.save( a_history );
 	history_store.close( );
 	
   settings_save( );
