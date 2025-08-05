@@ -50,6 +50,8 @@ public:
 	void clear( ) { m_str.clear( ); }
 
 	/* operators */
+	SubstrStream& operator++( ) { m_index++; return *this; }
+
 	SubstrStream& operator >> ( FXString &str );
 	SubstrStream& operator >> ( FXbool &value );
 	SubstrStream& operator << ( const FXString &str );
