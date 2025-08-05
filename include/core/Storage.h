@@ -80,15 +80,15 @@ public:
 
 	/* Operations */
 	using FXFile::close;
-	FXint read( CLIENT *history );
-	FXint write( CLIENT *history );
+	FXint load( CLIENT *history );
+	FXint save( CLIENT *history );
 };
 
 template<typename STREAMER, typename CLIENT> Storage<STREAMER, CLIENT>::Storage( const FXString &filename, FXuint mode )
 					 : FXFile( filename, mode, FXIO::AllReadWrite )
 { }
 
-template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::read( CLIENT *history )
+template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::load( CLIENT *client )
 {
 	if( !isOpen( ) ) { return -1; }
 	DEBUG_OUT( "Read history list" )
@@ -119,7 +119,7 @@ template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::re
 	return count;
 }
 
-template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::write( CLIENT *client )
+template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::save( CLIENT *client )
 {
 	if( !isOpen( ) ) { return -1; }
 	if( !client->isChange( ) ) { return -4; }
