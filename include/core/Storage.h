@@ -97,27 +97,26 @@ template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::lo
 	FXlong fsize = size( );
 	if( fsize == 0 ) { return -2; }
 
-	FXint count = 0;
 	FXString buffer;
 	buffer.length( fsize );
 
-	history->clear( );
-
+  STREAMER stream;
 	if( readBlock( buffer.text( ), fsize ) == fsize ) {
-		FXint num   = buffer.contains( '\n' );
-		for( FXint i = 0; i != num; i++ ) {
-			FXString line = buffer.section( '\n', i );
+		FXint num = buffer.contains( '\n' );
+		while( stream.get_index( ) < num ) {
+			FXString line = buffer.section( '\n', stream.get_index( ) );
 			line.trim( );
 			if( !line.empty( ) ) {
-				STREAMER substrs( line, ";" );
-				history->load_data( substrs );
-				count++;
+				stream.clear( );
+				stream.set_str( line );
+				client->load_data( stream );
 			}
+			++stream;
 		}
 	}
 	else { return -3; }
 
-	return count;
+	return stream.get_index( );
 }
 
 template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::save( CLIENT *client )
