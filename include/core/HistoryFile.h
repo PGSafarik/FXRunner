@@ -12,11 +12,11 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#ifndef FXRUNNER_HISTORYFILE_H
-#define FXRUNNER_HISTORYFILE_H
+#ifndef FXRUNNER_Storage_H
+#define FXRUNNER_Storage_H
 
 /*************************************************************************
-* HistoryFile.h                                                          *
+* Storage.h                                                          *
 *                                                                        *
 * The class, represent a file for recording the commands history         *
 * Copyright (c) 2025 D.A.Tiger <drakarax@seznam.cz>                      *
@@ -58,18 +58,80 @@ public:
 	SubstrStream& operator << ( FXbool value );
 };
 
-
-class HistoryFile : protected FXFile {
+template<typename STREAMER, typename CLIENT > class Storage : protected FXFile {
 public:
-  explicit HistoryFile( const FXString &filename, FXuint mode = FXIO::Reading );
+	explicit Storage( const FXString &filename, FXuint mode = FXIO::Reading );
 
 	/* Access */
 	using FXFile::isOpen;
 
 	/* Operations */
 	using FXFile::close;
-  FXint read( History *history );
-  FXint write( History *history );
+	FXint read( CLIENT *history );
+	FXint write( CLIENT *history );
 };
 
-#endif /* FXRUNNER_HISTORYFILE_H */
+template<typename STREAMER, typename CLIENT> Storage<STREAMER, CLIENT>::Storage( const FXString &filename, FXuint mode )
+					 : FXFile( filename, mode, FXIO::AllReadWrite )
+{ }
+
+template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::read( CLIENT *history )
+{
+	if( !isOpen( ) ) { return -1; }
+	DEBUG_OUT( "Read history list" )
+
+	FXlong fsize = size( );
+	if( fsize == 0 ) { return -2; }
+
+	FXint count = 0;
+	FXString buffer;
+	buffer.length( fsize );
+
+	history->clear( );
+
+	if( readBlock( buffer.text( ), fsize ) == fsize ) {
+		FXint num   = buffer.contains( '\n' );
+		for( FXint i = 0; i != num; i++ ) {
+			FXString line = buffer.section( '\n', i );
+			line.trim( );
+			if( !line.empty( ) ) {
+				STREAMER substrs( line, ";" );
+				history->load_data( substrs );
+				count++;
+			}
+		}
+	}
+	else { return -3; }
+
+	return count;
+}
+
+template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::write( CLIENT *client )
+{
+	if( !isOpen( ) ) { return -1; }
+	if( !client->isChange( ) ) { return -4; }
+
+	FXString buffer = "";
+	STREAMER stream;
+
+  while( stream.get_state( ) == 0 ) {
+    stream.clear( );
+  	if( client->save_data( stream ) ) {
+  		buffer += stream.get_str( ) + "\n";
+  	}
+  	++stream;
+  }
+
+	FXint size  = 0;
+ 	if( ( size = buffer.length( ) ) > 0 ) {
+		DEBUG_OUT( "Write history list" )
+		truncate( 0 );
+		if( writeBlock( buffer.text( ), size ) != size ) { return -5; }
+		flush( );
+	}
+
+	return 0;
+}
+
+
+#endif /* FXRUNNER_Storage_H */
