@@ -56,6 +56,8 @@ public :
   void   clear( );                                        // Clear all items 
 
   template <typename STREAMER> FXbool load_data( STREAMER &streamer ) {
+    if( streamer.get_index( ) == 0 ) { clear( ); }
+
     Task *task = new Task;
     task->load_data( streamer );
     push( task, false );
