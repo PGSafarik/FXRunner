@@ -26,7 +26,7 @@
 
 /* CSV STREAMER */
 class SubstrStream  {
-	FXString m_str;      // CSV line String 
+	FXString m_str;      // CSV line String
 	FXString m_delim;    // Delimiter
 	FXint    m_num;      // Number of substrings (only for reading?)
 	FXint    m_index;    // Index of working record in a source of data
@@ -38,7 +38,7 @@ public:
   SubstrStream( const FXString &str, const FXString &delimiter );
 	~SubstrStream( );
 
-  /* Access methods */	
+  /* Access methods */
 	FXString get_str( ) { return m_str; }
   FXint get_num( ) { return m_num; }
 	FXint get_index( ) { return m_index; }
@@ -53,7 +53,7 @@ public:
 	SubstrStream& operator >> ( FXString &str );
 	SubstrStream& operator >> ( FXbool &value );
 	SubstrStream& operator << ( const FXString &str );
-	SubstrStream& operator << ( FXbool value ); 
+	SubstrStream& operator << ( FXbool value );
 };
 
 
@@ -61,7 +61,10 @@ class HistoryFile : protected FXFile {
 public:
   explicit HistoryFile( const FXString &filename, FXuint mode = FXIO::Reading );
 
+	/* Access */
 	using FXFile::isOpen;
+
+	/* Operations */
 	using FXFile::close;
   FXint read( History *history );
   FXint write( History *history );
