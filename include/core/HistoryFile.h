@@ -29,18 +29,26 @@ class SubstrStream  {
 	FXString m_str;      // CSV line String 
 	FXString m_delim;    // Delimiter
 	FXint    m_num;      // Number of substrings (only for reading?)
-	FXint    m_index;    // Index of actual substring (only for reading?)
-	
+	FXint    m_index;    // Index of working record in a source of data
+	FXint    m_state;    // Status of data transfer between client and storage ( 0 - OK, < 0 - ERROR, 1 - END, > 1 - Other message )
 	FXString GetSection( );
-	
+
 public:
   explicit SubstrStream( const FXString &delimiter = ";" );
   SubstrStream( const FXString &str, const FXString &delimiter );
-	~SubstrStream( ); 
+	~SubstrStream( );
 
   /* Access methods */	
 	FXString get_str( ) { return m_str; }
-	
+  FXint get_num( ) { return m_num; }
+	FXint get_index( ) { return m_index; }
+	void set_index( FXint index ) { m_index = index; }
+	FXint get_state( ) { return m_state; }
+	void set_state( FXint state ) { m_state = state; }
+
+  /* Operations Methods */
+	void clear( ) { m_str.clear( ); }
+
 	/* operators */
 	SubstrStream& operator >> ( FXString &str );
 	SubstrStream& operator >> ( FXbool &value );
