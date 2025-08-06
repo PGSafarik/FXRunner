@@ -56,6 +56,7 @@ buffer_clean=actions/remove
 buffer_size=actions/view-refresh
 properties=actions/gtk-properties
 settings=categories/preferences-system
+popup=actions/go-down
 
 accept="actions/dialog-ok"
 discard="actions/edit-delete"
