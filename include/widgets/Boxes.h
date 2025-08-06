@@ -85,6 +85,33 @@ protected:
   Toolbar( ) { }
 };
 
+/*** Run Button with menu *************************************************************************/
+class RunBox : public FXHeaderBox {
+FXDECLARE( RunBox )
+  Application *m_app;
+  FXList *m_list;
+
+public:
+  explicit RunBox( FXWindowHeader *p );
+  virtual ~RunBox( ) { }
+
+  /* Access methods */
+
+  /* Operations methods */
+  void create( ) override;
+
+  /* Messages & Handlers */
+  enum {
+    ID_UPDATE = FXHeaderBox::ID_LAST,
+    ID_LIST,
+    ID_LAST
+  };
+  long onUpd_list( FXObject *sender, FXSelector sel, void *data );
+protected:
+  RunBox( ) { }
+
+};
+
 #endif /* FXRUNNER_BOXES_H */
 
 /*** END ****************************************************************/

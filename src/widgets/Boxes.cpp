@@ -132,4 +132,44 @@ void Toolbar::create( )
   FXHeaderBox::create( );
 }
 
+/*** Run buttons **********************************************************************************/
+FXDEFMAP( RunBox ) RB_MAP[ ] = {
+  FXMAPFUNC( SEL_UPDATE, RunBox::ID_LIST, RunBox::onUpd_list ),
+};
+FXIMPLEMENT( RunBox, FXHeaderBox, RB_MAP, ARRAYNUMBER( RB_MAP ) )
+
+RunBox::RunBox( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN | LAYOUT_LEFT, 0, 0, 0 )
+{
+   m_app = dynamic_cast< Application* >( this->getApp( ) );
+   FXIconsTheme *icons = m_app->get_iconstheme( );
+   FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
+
+   FXPopup *popup = new FXPopup( this, POPUP_VERTICAL|FRAME_RAISED|FRAME_THICK, 0, 0, 350, 165  );
+   m_list  = new FXList( popup, nullptr, 0, LIST_NORMAL | LAYOUT_FILL );
+
+   new FXButton( this, "\t\t Spustit", icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT, BUTTON_NORMAL | LAYOUT_LEFT );
+   new FXMenuButton( this, FXString::null, icons->get_icon( "popup", 16 ), popup, FRAME_RAISED | FRAME_THICK | JUSTIFY_NORMAL | ICON_BEFORE_TEXT | MENUBUTTON_DOWN | LAYOUT_FILL_Y, 18 );
+}
+
+void RunBox::create( )
+{
+  FXHeaderBox::create( );
+
+  onUpd_list( this, ID_UPDATE, NULL );
+}
+
+long RunBox::onUpd_list ( FXObject *sender, FXSelector sel, void *data )
+{
+  History *hist = m_app->get_History( );
+  Task *t = nullptr;
+
+  m_list->clearItems( );
+  for( int i = 0; i < 7; i++ ) {
+    t = hist->at( i );
+    if( t ) { m_list->insertItem( i, t->cmd ); }
+  }
+
+  return 0;
+}
+
 /*** END ******************************************************************************************/
