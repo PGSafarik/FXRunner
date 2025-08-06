@@ -36,20 +36,19 @@ Runner::Runner( Application *a )
   FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL, 0, 0, 0, 0,  0, 0, 0, 0,  0, 0 );
   
   /* Aplication layout */
-  FXVerticalFrame *up_frame = new FXVerticalFrame( content, FRAME_NONE| LAYOUT_FILL, 0, 0, 0, 0,  0, 0, 0, 0,  0, 0 );
-  FXMatrix        *matrix   = new FXMatrix( up_frame, 2, FRAME_NONE | MATRIX_BY_COLUMNS | LAYOUT_FILL );
+  //FXVerticalFrame *up_frame = new FXVerticalFrame( content, FRAME_NONE| LAYOUT_FILL, 0, 0, 0, 0,  0, 0, 0, 0,  0, 0 );
+  FXMatrix        *matrix   = new FXMatrix( content, 2, FRAME_NONE | MATRIX_BY_COLUMNS | LAYOUT_CENTER_Y | LAYOUT_FILL );
   new FXStatusBar( content, FRAME_RAISED | LAYOUT_SIDE_BOTTOM | LAYOUT_BOTTOM | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0  );
 
   /* Command field */
   FXint ncol = 50;
   new FXLabel( matrix, "Command to run: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
-  FXHorizontalFrame *cmdfrm = new FXHorizontalFrame( matrix, FRAME_NONE | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0  );
-  r_combo = new FXComboBox( cmdfrm, 10, NULL, 0, FRAME_GROOVE | COMBOBOX_NORMAL | LAYOUT_FILL  );
+  r_combo = new FXComboBox( matrix, 50, NULL, 0, FRAME_GROOVE | COMBOBOX_NORMAL | LAYOUT_FILL  );
   r_combo->setNumVisible( 10 );
 
   /* Work dir field */ 
-  new FXLabel( matrix, "Workdir: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL_X );
-  r_tfield = new FXTextField( matrix, ncol, NULL, 0, TEXTFIELD_NORMAL | LAYOUT_FILL_X );
+  new FXLabel( matrix, "Workdir: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
+  r_tfield = new FXTextField( matrix, ncol, NULL, 0, TEXTFIELD_NORMAL | LAYOUT_FILL );
   r_tfield->setText( FXSystem::getHomeDirectory( ) );
 
   /* HEADER BAR */
