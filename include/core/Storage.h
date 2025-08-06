@@ -16,7 +16,7 @@
 #define FXRUNNER_Storage_H
 
 /*************************************************************************
-* Storage.h                                                          *
+* Storage.h                                                              *
 *                                                                        *
 * The class, represent a file for recording the commands history         *
 * Copyright (c) 2025 D.A.Tiger <drakarax@seznam.cz>                      *
