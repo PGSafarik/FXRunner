@@ -19,7 +19,7 @@
 /*** APPLICATION MENU ****************************************************************************/
 FXIMPLEMENT( FXMenuBox, FXHeaderBox, NULL, 0 )
 
-FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, NULL, 0, LAYOUT_CENTER_Y, 0, 0, 0 )
+FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, nullptr, 0, LAYOUT_CENTER_Y, 0, 0, 0 )
 {
   m_button = new FXMenuButton( this, "\t\t Menu aplikace", ic, make_menu( ), BUTTON_TOOLBAR|ICON_ABOVE_TEXT|LAYOUT_FILL_Y );
 }
@@ -78,7 +78,7 @@ FXMenuCommand* FXMenuBox::makeCommand( FXMenuPane *pane, const FXString &title, 
 /*** OPTIONS MENU ****************************************************************************/
 FXIMPLEMENT( FXOptionsBox, FXHeaderBox, NULL, 0 )
 
-FXOptionsBox::FXOptionsBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, NULL, 0, LAYOUT_CENTER_Y | LAYOUT_RIGHT, 0, 0, 0 )
+FXOptionsBox::FXOptionsBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, nullptr, 0, LAYOUT_CENTER_Y | LAYOUT_RIGHT, 0, 0, 0 )
 {
   m_button = new FXMenuButton( this, "\t\tMoznosti spusteni", ic, make_menu( ), BUTTON_TOOLBAR|ICON_ABOVE_TEXT|LAYOUT_FILL_Y );
 }
@@ -115,7 +115,7 @@ FXMenuCommand* FXOptionsBox::makeCommand( FXMenuPane *pane, const FXString &titl
 /*** Tool bar *************************************************************************************/
 FXIMPLEMENT( Toolbar, FXHeaderBox, NULL, 0 )
 
-Toolbar::Toolbar( FXWindowHeader *p ) : FXHeaderBox( p, NULL, 0, FRAME_SUNKEN | LAYOUT_LEFT, 0, 0, 0 )
+Toolbar::Toolbar( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN | LAYOUT_LEFT, 0, 0, 0 )
 {
   Application  *app = ( Application * ) this->getApp( );
   FXIconsTheme *icons = app->get_iconstheme( );
