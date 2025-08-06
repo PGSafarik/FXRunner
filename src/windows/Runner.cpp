@@ -58,6 +58,7 @@ Runner::Runner( Application *a )
 
   new FXMenuBox( whb, this->getMenuIcon( ) );
   new FXVerticalSeparator( whb );
+  new RunBox( whb );
   new Toolbar( whb );
   new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
