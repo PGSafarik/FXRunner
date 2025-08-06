@@ -121,8 +121,6 @@ Toolbar::Toolbar( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN
   FXIconsTheme *icons = app->get_iconstheme( );
   FXObject     *tgt = getBoxFrame( )->getBoxTarget( );  
   
-  new FXButton( this, "\t\t Spustit",    icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT,   BUTTON_NORMAL | LAYOUT_LEFT );
-  new FXVerticalSeparator( this, SEPARATOR_RIDGE | LAYOUT_FILL_Y, 0, 0, 0, 0, 1, 1 ); 
   new FXButton( this, "\t\t Otevrit soubor", icons->get_icon( "open", "HeaderBar" ), tgt, Runner::OPEN_FILE, BUTTON_NORMAL | LAYOUT_RIGHT );
   new FXButton( this, "\t\t Zmenit pracovni adresar", icons->get_icon( "directory", "HeaderBar" ), tgt, Runner::OPEN_DIR, BUTTON_NORMAL | LAYOUT_RIGHT );
 }
