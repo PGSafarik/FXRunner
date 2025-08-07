@@ -74,6 +74,9 @@ protected:
   void       Check_property( Task *task );
   void       DefaultFocus( );
   void       ShortCuts( );
+  Task*      MakeTask( );  // Vytvori novou ulohu z formulare
+  Task*      SetTask( Task *task ); // Nastavi
+  void       Update( );    // Provede nacteni hodnot z historie do UI
 };
 
 #endif /* FXRUNNER_RUNNER_H */

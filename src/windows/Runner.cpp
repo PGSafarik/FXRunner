@@ -85,62 +85,33 @@ void Runner::create( )
 long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
 {
   long     resh = 1;
-  FXString err_str = "";     // Hlaseni uzivatelseke chyby
-  FXbool   err_flg = false;  // Priznak uzivatelske chyby
+  FXbool   quit = false;  // Priznak uzivatelske chyby
 
   switch( FXSELID( sel ) ) {
     case Runner::ID_ACCEPT : {
-      // Get command and working path
-      FXString cmd = r_combo->getText( );
-      FXString pth = r_tfield->getText( );
-      
-      // Set command
-      if( !cmd.empty( ) ) {
-        Task *task = new Task;
-        task->cmd = cmd; 
 
-	      // Set command working path
-        task->prm = FXString::null;
-        if( !pth.empty( ) ) {
-          task->wpth = pth;
-          if( task->wpth[ task->wpth.length( ) - 1 ] != '/' ) { task->wpth += "/"; }
-        }
+      Task *task = MakeTask( );
 
-        // Set properties
-        Check_property( task );
-
-        // Compile the command
-        if( !err_flg ) {
-          r_app->task_exec( task );         // Running application
-          GetHistory( )->insert( task );  // Insert command to history
-          this->LoadHistory( );            // Aktualize history command list in combobox
-          r_combo->setText( "" );           // Clean command text 
-
-          // Command reset
-          //delete task;  // I do not like it... :( if will completed task history, ok )
-        }
-        else {
-          FXMessageBox::error( this, MBOX_OK, "Incorrect input", err_str.text( ) );
-          resh = 0;
-        } 
+      // Compile the command
+      if( task ) {
+        r_app->task_exec( task );       // Running application
+        GetHistory( )->insert( task );  // Insert command to history
+        Update( );                      // Aktualize history command list in combobox
+        r_combo->setText( "" );      // Clean command text
+        if( r_app->autoexit( ) ) { quit = true; }
       }
-      else {
-		    err_flg = true;
-	      err_str = "The field for entering the command must not be empty!\nPlease enter the required command to run";
-	    }
 
       break;
     }
 
     case Runner::ID_CANCEL : {
       FXuint answer = FXMessageBox::question( this, MBOX_YES_NO, "Question", "Really quit?" );
-      if( answer == MBOX_CLICKED_YES ) { r_app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
-      else{ err_flg = true; }
+      if( answer == MBOX_CLICKED_YES ) { quit = true; }
       break;
     }
   }
 
-  if( r_app->autoexit( ) && !err_flg ) { r_app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
+  if( quit ) { r_app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
   return resh;
 }
 
@@ -250,6 +221,50 @@ void Runner::ShortCuts( )
     act->addAccel( "alt+d",  this, FXSEL( SEL_COMMAND, OPEN_DIR ) );
     act->addAccel( "alt+c",  this, FXSEL( SEL_COMMAND, OPEN_OPTIONS ) );
   }
+}
+
+Task* Runner::MakeTask( )
+{
+  Task *task = nullptr;
+  FXString err_str = "";     // Hlaseni uzivatelseke chyby
+  FXbool   err_flg = false;  // Priznak uzivatelske chyby
+
+  // Get command and working path
+  FXString cmd = r_combo->getText( );
+  FXString pth = r_tfield->getText( );
+
+  // Set command
+  if( !cmd.empty( ) ) {
+    task = new Task;
+    task->cmd = cmd;
+
+    // Set command working path
+    if( !pth.empty( ) ) {
+      task->wpth = pth;
+      if( task->wpth[ task->wpth.length( ) - 1 ] != '/' ) { task->wpth += "/"; }
+    }
+
+    // Set properties
+    Check_property( task );
+  }
+  else {
+      err_str = "The field for entering the command must not be empty!\nPlease enter the required command to run";
+      FXMessageBox::error( this, MBOX_OK, "Incorrect input", err_str.text( ) );
+      /* FIXME RUNNER_002: Po odkliknuti tohoto dialogu program skonci - to by ale nemel. */
+  }
+
+  return task;
+}
+
+Task* Runner::SetTask( Task *task )
+{
+
+}
+
+void Runner::Update( )
+{
+  LoadHistory( );
+  m_runbox->handle( this, FXSEL( SEL_UPDATE, RunBox::ID_LIST ), nullptr );
 }
 
 /*** END ******************************************************************************************/
