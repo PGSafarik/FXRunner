@@ -133,6 +133,7 @@ void Toolbar::create( )
 /*** Run buttons **********************************************************************************/
 FXDEFMAP( RunBox ) RB_MAP[ ] = {
   FXMAPFUNC( SEL_UPDATE, RunBox::ID_LIST, RunBox::onUpd_list ),
+  FXMAPFUNC( SEL_COMMAND, RunBox::ID_LIST, RunBox::onCmd_select ),
 };
 FXIMPLEMENT( RunBox, FXHeaderBox, RB_MAP, ARRAYNUMBER( RB_MAP ) )
 
@@ -143,7 +144,7 @@ RunBox::RunBox( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN |
    FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
 
    FXPopup *popup = new FXPopup( this, POPUP_VERTICAL|FRAME_RAISED|FRAME_THICK, 0, 0, 350, 165  );
-   m_list  = new FXList( popup, nullptr, 0, LIST_NORMAL | LAYOUT_FILL );
+   m_list  = new FXList( popup, this, ID_LIST, LIST_NORMAL | LAYOUT_FILL );
 
    new FXButton( this, "\t\t Spustit", icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT, BUTTON_NORMAL | LAYOUT_LEFT );
    new FXMenuButton( this, FXString::null, icons->get_icon( "popup", 16 ), popup, FRAME_RAISED | FRAME_THICK | JUSTIFY_NORMAL | ICON_BEFORE_TEXT | MENUBUTTON_DOWN | LAYOUT_FILL_Y, 18 );
@@ -166,6 +167,15 @@ long RunBox::onUpd_list ( FXObject *sender, FXSelector sel, void *data )
     t = hist->at( i );
     if( t ) { m_list->insertItem( i, t->cmd ); }
   }
+
+  return 0;
+}
+
+long RunBox::onCmd_select( FXObject *sender, FXSelector sel, void *data )
+{
+  FXival pos = (FXival) data;
+  Task *t = m_app->get_History( )->at( (FXint ) pos );
+  if( t ) { std::cout << pos << ". " << t->cmd << std::endl; }
 
   return 0;
 }

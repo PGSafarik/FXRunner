@@ -107,6 +107,8 @@ public:
     ID_LAST
   };
   long onUpd_list( FXObject *sender, FXSelector sel, void *data );
+  long onCmd_select( FXObject *sender, FXSelector sel, void *data );
+
 protected:
   RunBox( ) { }
 
