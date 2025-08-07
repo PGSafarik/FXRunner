@@ -175,8 +175,7 @@ void History::__dedupl( Task *entry, FXint start )
   FXint num = m_buffer.no( );
   for( FXint index = start; index != num; index++ ) {
     Task *tmp = m_buffer[ index ];
-		/// FIXME HISTORY_001 : Add copmpare operator for Task
-    if( tmp && tmp != entry && tmp->cmd == entry->cmd ) { __rem( index, true ); }
+    if( tmp && tmp != entry && *tmp == *entry ) { __rem( index, true ); }  // They must exist, they must not be the same object, but they must also match in values.
   }  
 }
 
