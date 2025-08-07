@@ -40,6 +40,9 @@ struct Task : public Loki::SmallObject<> {
   Task( const FXString &cmd_str = FXString::null );
   virtual ~Task( );
 
+  FXbool operator == ( const Task &other ) const { return cmd == other.cmd && prm == other.prm; }
+  FXbool operator != ( const Task &other ) const { return !(*this == other); }
+
   template<class STREAM> void load_data( STREAM &store )
   {
     store >> cmd;
