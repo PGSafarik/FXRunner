@@ -58,7 +58,7 @@ Runner::Runner( Application *a )
 
   new FXMenuBox( whb, this->getMenuIcon( ) );
   new FXVerticalSeparator( whb );
-  new RunBox( whb );
+  m_runbox = new RunBox( whb );
   new Toolbar( whb );
   new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
@@ -103,7 +103,6 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
 
       break;
     }
-
     case Runner::ID_CANCEL : {
       FXuint answer = FXMessageBox::question( this, MBOX_YES_NO, "Question", "Really quit?" );
       if( answer == MBOX_CLICKED_YES ) { quit = true; }
@@ -160,8 +159,8 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
   switch( msgid ) {
     case Runner::ID_USER     : { /*r_acmd->su*/ r_prop.suaccess    = status; break; }
     case Runner::ID_ANNOUNCE : { /*r_acmd->ow*/ r_prop.unblock     = status; break; }
-    case Runner::ID_TERMINAL : { /*r_acmd->te*/ r_prop.term        = status; break; }
-    case Runner::ID_TERMLOCK : { /*r_acmd->lt*/ r_prop.nocloseterm = status; break; }
+    case Runner::ID_TERMINAL : { /*r_acmd->te*/ r_prop.term        = status; break; } // FIXME RUNNER_001: Nefunguje
+    case Runner::ID_TERMLOCK : { /*r_acmd->lt*/ r_prop.nocloseterm = status; break; } //  FIXME RUNNER_001: Nefunguje
     //case Runner::ID_LINK     : { r_acmd->cl  = status; break; }
     case Runner::ID_NOQUIT   : { 
       if( msgtype == SEL_UPDATE ) {
