@@ -157,7 +157,7 @@ void RunBox::create( )
   onUpd_list( this, ID_UPDATE, NULL );
 }
 
-long RunBox::onUpd_list ( FXObject *sender, FXSelector sel, void *data )
+long RunBox::onUpd_list( FXObject *sender, FXSelector sel, void *data )
 {
   History *hist = m_app->get_History( );
   Task *t = nullptr;
