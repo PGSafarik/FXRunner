@@ -20,8 +20,10 @@ FXDEFMAP( History ) HISTMAP[ ] = { };
 FXIMPLEMENT( History, FXObject, NULL, 0 )
 
 /*************************************************************************************************/
-History::History( FXint limit, FXuint opts ) : m_limit( limit ), m_change( false )
-{  }
+History::History( FXint limit, FXuint opts )
+{
+  m_buffer.set_limit( limit );
+}
 
 History::~History( )
 { }
@@ -29,49 +31,46 @@ History::~History( )
 /*************************************************************************************************/
 Task* History::at( FXint index, FXbool noup )
 { 
-  Task *entry = NULL;
-
-  if( this->Index( index ) ) {
-    if( noup && __top( index ) ) { entry = m_buffer[ 0 ]; } else { entry = m_buffer[ index ]; }
-  }
-  
+  Task *entry = nullptr;
+  if( noup && m_buffer.top( index ) ) { entry = m_buffer.at( 0 ); } else { entry = m_buffer.at( index ); }
 
   return entry;
 }
 
-FXbool History::add( const FXString &cmd_str )
+Task* History::add( const FXString &cmd_str )
 {
-  /// FIXME HISTORY_002 : Remove m_add_empty flag 
-  if( !cmd_str.empty( ) || m_add_empty ) { 
-   
+  if( !cmd_str.empty( ) ) {
     Task *task = new Task( cmd_str );
-    if( task && __add( task ) ) { return true; } else { delete task; } 
+    if( task && m_buffer.insert( 0, task ) ) { return task; }
   }
 
-  return false;    
+  return nullptr;
 }
 
 FXbool History::push( Task *task, FXbool ch_state )
 {
-  if( task == NULL || ( task->cmd.empty( ) && !m_add_empty ) ) { return false; } 
-  return __add( task, ch_state ); 	
+  FXbool result = false;
+  if( task && !task->cmd.empty( ) ) {
+    Task *t = m_buffer.insert( 0 , task , ch_state );
+    if( t ) { result = true; }
+  }
+  return result;
 }
 
 FXbool History::insert( Task *task, FXint pos )
 {
-  /// FIXME HISTORY_002 : Remove m_add_empty flag
-  if( task == NULL || ( task->cmd.empty( ) && !m_add_empty ) ) { return false; } 
-  return __insert( task, pos ); 
+  if( task && !task->cmd.empty( ) ) {
+    Task *t = m_buffer.insert( pos, task );
+    if( t ) { return true; }
+  }
+  return false;
 }
 
 Task* History::remove( FXint index )
 {
-  if( this->Index( index ) ) {
-    Task *t = m_buffer[ index ];  
-    if( __rem( index ) ) { return t; }
-  }
-  
-  return NULL;  
+    Task *t = m_buffer.at( index );
+    if( t && m_buffer.remove( index ) ) { return t; }
+    return nullptr;
 }
 
 void History::clear( )
@@ -80,10 +79,8 @@ void History::clear( )
   
   while( num > 0 ) {
     num--;
-    __rem( num, true );
-  }  
-
-  m_buffer.clear( );
+    m_buffer.remove( num, true );
+  }
 }
 
 
@@ -91,13 +88,13 @@ void History::clear( )
 void History::Dump( )
 {
   FXint num = m_buffer.no( );
-  std::cout << "[DUMP History] count: " << num << "; limit: " << m_limit << std::endl;
+  std::cout << "[DUMP History] count: " << num << "; limit: " << m_buffer.get_limit( ) << std::endl;
 
   if( num > 0 ) {
     for( FXint i = 0; i != num; i++ ) {
       std::cout << i << ". ";
 
-      Task *task = m_buffer[ i ];
+      Task *task = m_buffer.at( i );
       if( task ) {
         std::cout << task->cmd  << "; ";
         std::cout << task->wpth << "; ";
@@ -111,87 +108,6 @@ void History::Dump( )
   }
   else {  std::cout << "  - History is empty -  " << std::endl; }
   std::cout << "--- End History object dump ---" << std::endl;
-
 }
-
-/**************************************************************************************************/
-FXbool History::__add( Task *entry, FXbool ch )
-{
-	if( !entry->cmd.empty( ) ) {
-		__dedupl( entry );
-    if( m_buffer.push( entry ) ) {
-			__limit( );        
-      if( ch ) { m_change = true; }  /// FIXME HISTORY_002 : Add optional flag for disable change the value of the m_change 
-      return true;
-		}
-  }
-  
-  return false;
-}
-
-FXbool History::__insert( Task *entry, FXint pos, FXbool ch )
-{
-	if( !entry->cmd.empty( ) ) {
-		__dedupl( entry );
-    if( m_buffer.insert( pos, entry ) ) {
-			__limit( );        
-      if( ch ) { m_change = true; } 
-      return true;
-		}
-  }
-  
-  return false;
-}
-
-FXbool History::__rem( FXint pos, FXbool destroy )
-{
-   Task *entry = ( destroy ? m_buffer[ pos ] : NULL );
-   
-   if( m_buffer.erase( pos ) ) {
-     m_change = true;
-     if( entry ) { delete entry; } 
-     return true;  
-   }
-   
-   return false;
-}
-
-FXbool History::__top( FXint index )
-{
-  if( index == 0 ) { return true; }  
-  if( index > 0 ) {  
-    Task *tmp = m_buffer[ index ];
-    if( __rem( index ) && __add( tmp, false ) ) { 
-      return true; 
-    }
-  }
-  
-  return false;
-}
-
-void History::__dedupl( Task *entry, FXint start )
-{
-	// Deduplication
-  FXint num = m_buffer.no( );
-  for( FXint index = start; index != num; index++ ) {
-    Task *tmp = m_buffer[ index ];
-    if( tmp && tmp != entry && *tmp == *entry ) { __rem( index, true ); }  // They must exist, they must not be the same object, but they must also match in values.
-  }  
-}
-
-void History::__limit( )
-{
-  if( m_limit > 0 ) {
-    FXint num = m_buffer.no( );
-    while( num < m_limit ) { num--; __rem( num, true ); }
-  }
-}
-
-/*************************************************************************************************/
-FXbool History::Index( FXint value )
-{
-  return ( value >= 0 && value < m_buffer.no( ) );   
-}
-
 
 /*** END *****************************************************************************************/

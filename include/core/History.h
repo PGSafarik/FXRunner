@@ -24,32 +24,25 @@
 #include "defs.h"
 #include "StringUtils.h"
 #include "Task.h"
+#include "HistoryList.h"
 
 class History : public FXObject {
 FXDECLARE( History )
-  FXArray<Task*> m_buffer;      // Tasks list
-  FXint          m_limit;       // Max number limit of entries in the list   
-  FXbool         m_change;      // flag for changes in tasks list
-  FXbool         m_add_empty;   // flaeg enabled add empty task
-              
-  FXbool __add( Task *entry, FXbool ch = true ); 										// Add Task instance on the tasklist
-	FXbool __insert( Task *entry, FXint pos = 0, FXbool ch = true );	// Insert task to specific position in the tasklist 
-  FXbool __rem( FXint pos, FXbool destroy = false ); 								// Remove tesk from list
-  FXbool __top( FXint index );                       								// Move task from index on position 0
-	void   __dedupl( Task *entry, FXint start = 0 );   								// Find and remove all duplication with this task; 
-	void   __limit( );                                 								// Check history max size - if its set 
-  
+  HistoryList  m_buffer;      // Tasks list
+
+  /* FIXME HITORY_001: Adding the settings flags for: Only read history, adding emty task, */
+  /* FIXME HISTOR_002: Adding messages & handlers ;) */
 public :
   History( FXint limit = 0, FXuint opts = 0 );
   virtual ~History( );
   
   /* Access methods */
   FXint no( )        { return m_buffer.no( ); } 
-  FXbool isChange( ) { return m_change; }
+  FXbool isChange( ) { return m_buffer.is_changed( ); }
   
   /* operations methods */
   Task*  at( FXint index, FXbool noup = false );
-  FXbool add( const FXString &cmd_str = FXString::null ); // Create new Task instance and insert on list
+  Task*  add( const FXString &cmd_str );                  // Create new Task instance and insert on list
 	FXbool push( Task *task, FXbool ch_state = true );      // Insert a task on end of history list
   FXbool insert( Task *task, FXint pos = 0 );             // Insert existing task on list
   Task*  remove( FXint index );                           // Remove existing index
@@ -60,8 +53,8 @@ public :
 
     Task *task = new Task;
     task->load_data( streamer );
-    push( task, false );
-
+    //push( task, false );
+    m_buffer.insert( static_cast<FXint>( m_buffer.no( ) ), task, false );
     return true;
   }
 
@@ -83,7 +76,7 @@ public :
   void Dump( );                                           // Dumping actual history state on std::cout
   
 protected :
-  FXbool Index( FXint value );                            // Check is index value is valid
+
 };
 
 #endif /* FXRUNNER_HISTORY_H */
