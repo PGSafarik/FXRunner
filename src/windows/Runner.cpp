@@ -257,7 +257,7 @@ Task* Runner::MakeTask( )
 
 Task* Runner::SetTask( Task *task )
 {
-
+  return nullptr;
 }
 
 void Runner::Update( )
