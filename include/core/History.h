@@ -30,15 +30,24 @@ class History : public FXObject {
 FXDECLARE( History )
   HistoryList  m_buffer;      // Tasks list
 
+  FXObject   *m_tgt;   // A target object for notifications
+  FXSelector  m_sel;   // A notification message ID
+  FXuint      m_opts;  // List of the object options
+
   /* FIXME HITORY_001: Adding the settings flags for: Only read history, adding emty task, */
   /* FIXME HISTOR_002: Adding messages & handlers ;) */
 public :
-  History( FXint limit = 0, FXuint opts = 0 );
+  History( FXint limit = 0, FXuint opts = 0, FXObject* target = nullptr, FXSelector notify = 0 );
   virtual ~History( );
   
   /* Access methods */
   FXint no( )        { return m_buffer.no( ); } 
   FXbool isChange( ) { return m_buffer.is_changed( ); }
+
+  FXObject* get_target( )             { return m_tgt; }
+  void set_target( FXObject* target ) { m_tgt = target; }
+  FXSelector get_notify( )            { return m_sel; }
+  void set_notify( FXSelector sel )   { m_sel = sel; }
   
   /* operations methods */
   Task*  at( FXint index, FXbool noup = false );
@@ -76,7 +85,7 @@ public :
   void Dump( );                                           // Dumping actual history state on std::cout
   
 protected :
-
+  long notify( FXuint type = 0, void *data = nullptr );
 };
 
 #endif /* FXRUNNER_HISTORY_H */

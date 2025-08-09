@@ -20,9 +20,12 @@ FXDEFMAP( History ) HISTMAP[ ] = { };
 FXIMPLEMENT( History, FXObject, NULL, 0 )
 
 /*************************************************************************************************/
-History::History( FXint limit, FXuint opts )
+History::History( FXint limit, FXuint opts, FXObject* target, FXSelector notify )
 {
   m_buffer.set_limit( limit );
+  m_tgt = target;
+  m_sel = notify;
+  m_opts = opts;
 }
 
 History::~History( )
@@ -110,4 +113,15 @@ void History::Dump( )
   std::cout << "--- End History object dump ---" << std::endl;
 }
 
-/*** END *****************************************************************************************/
+/**************************************************************************************************/
+long History::notify( FXuint type, void *data )
+{
+  long result = -1;
+  if( m_tgt ) {
+    result = m_tgt->handle( this, type == 0 ? m_sel : FXSEL( type, m_sel ), data );
+  }
+
+  return result;
+}
+
+/*** END ******************************************************************************************/
