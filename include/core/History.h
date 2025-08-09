@@ -44,11 +44,11 @@ public :
   FXint no( )        { return m_buffer.no( ); } 
   FXbool isChange( ) { return m_buffer.is_changed( ); }
 
-  FXObject* get_target( )             { return m_tgt; }
-  void set_target( FXObject* target ) { m_tgt = target; }
-  FXSelector get_notify( )            { return m_sel; }
-  void set_notify( FXSelector sel )   { m_sel = sel; }
-  
+  FXObject*  get_target( )                  { return m_tgt; }
+  void       set_target( FXObject* target ) { m_tgt = target; }
+  FXSelector get_notify( )                  { return m_sel; }
+  void       set_notify( FXSelector sel )   { m_sel = sel; }
+
   /* operations methods */
   Task*  at( FXint index, FXbool noup = false );
   Task*  add( const FXString &cmd_str );                  // Create new Task instance and insert on list
