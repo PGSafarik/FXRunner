@@ -43,11 +43,12 @@ public :
   Task* insert( FXint pos, Task *entry, FXbool change = true );
   Task* remove( FXint pos, FXbool destroy = false, FXbool change = true );
   FXbool top( FXint pos );
+  FXbool CheckPosition( FXint value ) const;          // True if the value is between 0 and the current number of records
 
 protected:
   void Deduplication( const Task *entry, FXint start = 0 ); // Finds and removes from the list all duplicates of the task specified by the function parameter
-  void CheckLimit( );                                 // Checking and maintaining the set number of records
-  FXbool CheckPosition( FXint value ) const;          // True if the value is between 0 and the current number of records
+  void CheckLimit( );                                       // Checking and maintaining the set number of records
+
 };
 
 
