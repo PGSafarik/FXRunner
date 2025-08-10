@@ -175,8 +175,8 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
   switch( msgid ) {
     case Runner::ID_USER     : { /*r_acmd->su*/ r_prop.suaccess    = status; break; }
     case Runner::ID_ANNOUNCE : { /*r_acmd->ow*/ r_prop.unblock     = status; break; }
-    case Runner::ID_TERMINAL : { /*r_acmd->te*/ r_prop.term        = status; break; } // FIXME RUNNER_001: Nefunguje
-    case Runner::ID_TERMLOCK : { /*r_acmd->lt*/ r_prop.nocloseterm = status; break; } //  FIXME RUNNER_001: Nefunguje
+    case Runner::ID_TERMINAL : { /*r_acmd->te*/ r_prop.term        = status; break; } // FIXME RUNNER_001: Nefunguje?
+    case Runner::ID_TERMLOCK : { /*r_acmd->lt*/ r_prop.nocloseterm = status; break; } //  FIXME RUNNER_001: Nefunguje?
     //case Runner::ID_LINK     : { r_acmd->cl  = status; break; }
     case Runner::ID_NOQUIT   : { 
       if( msgtype == SEL_UPDATE ) {
@@ -230,11 +230,11 @@ void Runner::ShortCuts( )
 {
   FXAccelTable *act = getShell( )->getAccelTable( );
   if( act ) {
-    act->addAccel( "Esc",    this, FXSEL( SEL_COMMAND, ID_CANCEL ) );
-    act->addAccel( "alt+r",  this, FXSEL( SEL_COMMAND, ID_ACCEPT ) );
-    act->addAccel( "alt+s",  this, FXSEL( SEL_COMMAND, OPEN_FILE ) );
-    act->addAccel( "alt+d",  this, FXSEL( SEL_COMMAND, OPEN_DIR ) );
-    act->addAccel( "alt+c",  this, FXSEL( SEL_COMMAND, OPEN_OPTIONS ) );
+    act->addAccel( "Esc",    this, FXSEL( SEL_COMMAND, ID_CANCEL ) );       // [ESC]ape
+    act->addAccel( "alt+r",  this, FXSEL( SEL_COMMAND, ID_ACCEPT ) );       // [R]un command
+    act->addAccel( "alt+s",  this, FXSEL( SEL_COMMAND, OPEN_FILE ) );       // [S]elect file
+    act->addAccel( "alt+d",  this, FXSEL( SEL_COMMAND, OPEN_DIR ) );        // Select work [D]irectory
+    act->addAccel( "alt+c",  this, FXSEL( SEL_COMMAND, OPEN_OPTIONS ) );    // [C]onfigure
   }
 }
 
