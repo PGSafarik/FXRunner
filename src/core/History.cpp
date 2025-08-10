@@ -26,12 +26,26 @@ History::History( FXint limit, FXuint opts, FXObject* target, FXSelector notify 
   m_tgt = target;
   m_sel = notify;
   m_opts = opts;
+  //! m_select = -1;
 }
 
 History::~History( )
 { }
 
-/*************************************************************************************************/
+/**************************************************************************************************/
+FXbool History::current( FXint pos, FXbool notify )
+{
+  FXbool result = false;
+
+  if( m_buffer.check_position( pos ) ) {
+    result = m_buffer.top( pos );
+    if( result && notify ) { Notify( SEL_UPDATE ); }
+  }
+
+  return result;
+}
+
+/**************************************************************************************************/
 Task* History::at( FXint index, FXbool noup )
 { 
   Task *entry = nullptr;

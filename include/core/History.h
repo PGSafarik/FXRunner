@@ -29,7 +29,7 @@
 class History : public FXObject {
 FXDECLARE( History )
   HistoryList  m_buffer;      // Tasks list
-  FXint        m_select;      // Position of select task
+  //! FXint        m_select;      // Position of select task
 
   FXObject   *m_tgt;   // A target object for notifications
   FXSelector  m_sel;   // A notification message ID
@@ -42,10 +42,10 @@ public :
   virtual ~History( );
   
   /* Access methods */
-  FXint  no( )                   { return m_buffer.no( ); }
-  FXbool isChange( )             { return m_buffer.is_changed( ); }
-  FXint  get_select( )           { return m_select; }
-  void   set_select( FXint sel ) { m_select = sel; }
+  FXival no( )        const     { return m_buffer.no( ); }
+  FXbool isChange( )   const     { return m_buffer.is_changed( ); }
+  //! FXint  get_select( ) const     { return m_select; }
+
 
   FXObject*  get_target( )                  { return m_tgt; }
   void       set_target( FXObject* target ) { m_tgt = target; }
