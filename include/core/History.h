@@ -53,12 +53,13 @@ public :
   void       set_notify( FXSelector sel )   { m_sel = sel; }
 
   /* operations methods */
-  Task*  at( FXint index, FXbool noup = false );
-  Task*  add( const FXString &cmd_str );                  // Create new Task instance and insert on list
-	FXbool push( Task *task, FXbool ch_state = true );      // Insert a task on end of history list
-  FXbool insert( Task *task, FXint pos = 0 );             // Insert existing task on list
-  Task*  remove( FXint index );                           // Remove existing index
-  void   clear( );                                        // Clear all items 
+  Task*  at( FXint index = 0, FXbool noup = false );              // Returns task from specific position (if any)
+  FXbool current( FXint pos, FXbool notify = true );              // Returns true if the task is set to current (i.e., to the top of the history stack).
+  Task*  add( const FXString &cmd_str, FXbool notify = false );   // Create new Task instance and insert on list
+	FXbool push( Task *task, FXbool ch_state = true );              // Insert a task on end of history list (DEPRECATED)
+  FXbool insert( FXint pos, Task *task, FXbool notify = false );  // Insert existing task on list
+  Task*  remove( FXint index, FXbool notify = false );            // Remove existing index
+  void   clear( FXbool notify = false );                          // Clear all items
 
   template <typename STREAMER> FXbool load_data( STREAMER &streamer ) {
     if( streamer.get_index( ) == 0 ) { clear( ); }
@@ -88,7 +89,7 @@ public :
   void Dump( );                                           // Dumping actual history state on std::cout
   
 protected :
-  long notify( FXuint type = 0, void *data = nullptr );
+  long Notify( FXuint type = 0, void *data = nullptr );
 };
 
 #endif /* FXRUNNER_HISTORY_H */

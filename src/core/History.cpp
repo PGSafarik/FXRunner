@@ -40,11 +40,13 @@ Task* History::at( FXint index, FXbool noup )
   return entry;
 }
 
-Task* History::add( const FXString &cmd_str )
+Task* History::add( const FXString &cmd_str, FXbool notify )
 {
   if( !cmd_str.empty( ) ) {
     Task *task = new Task( cmd_str );
-    if( task && m_buffer.insert( 0, task ) ) { return task; }
+    if( task && m_buffer.insert( 0, task, notify ) ) {
+      return task;
+    }
   }
 
   return nullptr;
@@ -60,23 +62,30 @@ FXbool History::push( Task *task, FXbool ch_state )
   return result;
 }
 
-FXbool History::insert( Task *task, FXint pos )
+FXbool History::insert( FXint pos, Task *task, FXbool notify )
 {
+  FXbool result = false;
+
   if( task && !task->cmd.empty( ) ) {
-    Task *t = m_buffer.insert( pos, task );
-    if( t ) { return true; }
+    if ( m_buffer.insert( pos, task ) ) {
+      if ( notify ) { Notify( SEL_INSERTED ); }
+      return true;
+    }
   }
-  return false;
+  return result;
 }
 
-Task* History::remove( FXint index )
+Task* History::remove( FXint index, FXbool notify )
 {
     Task *t = m_buffer.at( index );
-    if( t && m_buffer.remove( index ) ) { return t; }
+    if( t && m_buffer.remove( index ) ) {
+      if ( notify) { Notify( SEL_DELETED ); }
+      return t;
+    }
     return nullptr;
 }
 
-void History::clear( )
+void History::clear( FXbool notify )
 {
   FXint num = m_buffer.no( );
   
@@ -84,6 +93,8 @@ void History::clear( )
     num--;
     m_buffer.remove( num, true );
   }
+
+  if( notify ) { Notify( SEL_UPDATE ); }
 }
 
 
@@ -114,7 +125,7 @@ void History::Dump( )
 }
 
 /**************************************************************************************************/
-long History::notify( FXuint type, void *data )
+long History::Notify( FXuint type, void *data )
 {
   long result = -1;
   if( m_tgt ) {
