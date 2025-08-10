@@ -30,7 +30,6 @@ class Runner : public FXPrimaryWindow {
 FXDECLARE( Runner )
   Application *r_app;
   FXComboBox  *r_combo;
-  //! FXTextField *r_pfield;
   FXTextField *r_tfield;
 
   RunBox *m_runbox;
