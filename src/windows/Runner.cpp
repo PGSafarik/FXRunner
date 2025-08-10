@@ -111,7 +111,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
 
       // Compile the command
       if( task ) {
-        r_app->task_exec( task );       // Running application
+        r_app->task_exec( );       // Running application
         Update( );                      // Actualize history command list in combobox
         r_combo->setText( "" );      // Clean command text
         if( r_app->autoexit( ) ) { quit = true; }
