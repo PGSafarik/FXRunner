@@ -8,7 +8,7 @@ HistoryList::HistoryList( FXint limit )
 
 Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
 {
-  if( CheckPosition( pos ) && entry && !entry->cmd.empty( ) ) {
+  if( check_position( pos ) && entry && !entry->cmd.empty( ) ) {
     Deduplication( entry );
     if( FXArray<Task*>::insert( pos, entry ) ) {
       CheckLimit( );
@@ -22,7 +22,7 @@ Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
 
 Task* HistoryList::remove( FXint pos, FXbool destroy, FXbool change )
 {
-  if( !CheckPosition( pos ) ) { return nullptr; }
+  if( !check_position( pos ) ) { return nullptr; }
   Task *entry = at( pos );
 
   if( erase( pos ) ) {
@@ -38,17 +38,23 @@ Task* HistoryList::remove( FXint pos, FXbool destroy, FXbool change )
 
 FXbool HistoryList::top( FXint pos )
 {
-  if( CheckPosition( pos ) && pos > 0 ) {
+  if( check_position( pos ) && pos > 0 ) {
     Task *entry = at( pos );
     if( remove( pos, false, false ) && insert( 0, entry ) ) { return true; }
   }
   return false;
 }
 
+FXbool HistoryList::check_position( FXint value ) const
+{
+  FXint num = FXArray<Task*>::no( );
+  return ( num > 0 ?  0 <= value && value <= num : value == 0 );
+}
+
 /**********************************************************************************************************************/
 void HistoryList::Deduplication( const Task *entry, const FXint start )
 {
-  if( !CheckPosition( start ) ) { return; }
+  if( !check_position( start ) ) { return; }
 
   FXint num = no( );
   for( FXint i = start; i < num; i++ ) {
@@ -57,7 +63,6 @@ void HistoryList::Deduplication( const Task *entry, const FXint start )
   }
 }
 
-// Checking and maintaining the set number of records
 void HistoryList::CheckLimit( )
 {
   if ( m_limit > 0 ) {
@@ -66,8 +71,4 @@ void HistoryList::CheckLimit( )
   }
 }
 
-FXbool HistoryList::CheckPosition( FXint value ) const
-{
-  FXint num = FXArray<Task*>::no( );
-  return ( num > 0 ?  0 <= value && value <= num : value == 0 );
-}
+
