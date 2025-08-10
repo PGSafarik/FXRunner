@@ -108,7 +108,7 @@ void History::clear( FXbool notify )
     m_buffer.remove( num, true );
   }
 
-  if( notify ) { Notify( SEL_UPDATE ); }
+  if( notify ) { Notify( SEL_CHANGED ); }
 }
 
 
