@@ -20,7 +20,10 @@ FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
   FXMAPFUNCS( SEL_COMMAND, Runner::ID_ACCEPT, Runner::ID_CANCEL, Runner::onCmd_Run ),
   FXMAPFUNCS( SEL_COMMAND, Runner::OPEN_DIR,  Runner::OPEN_HELP, Runner::onCmd_Open ),
   FXMAPFUNCS( SEL_COMMAND, Runner::ID_NOQUIT, Runner::HYSTORY_CLEAR, Runner::onCmd_Tools ),
-  FXMAPFUNC(  SEL_UPDATE,  Runner::ID_NOQUIT, Runner::onCmd_Tools )
+  FXMAPFUNC(  SEL_UPDATE,  Runner::ID_NOQUIT,  Runner::onCmd_Tools ),
+  FXMAPFUNC( SEL_UPDATE,   Runner::ID_HISTORY, Runner::on_History ),
+  FXMAPFUNC( SEL_INSERTED, Runner::ID_HISTORY, Runner::on_History ),
+  FXMAPFUNC( SEL_DELETED,  Runner::ID_HISTORY, Runner::on_History ),
 };
 
 FXIMPLEMENT( Runner, FXPrimaryWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
@@ -63,6 +66,9 @@ Runner::Runner( Application *a )
   new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
   /* Initialize */
+  GetHistory( )->set_target( this );
+  GetHistory( )->set_notify( ID_HISTORY );
+
   this->LoadHistory( );
   r_combo->setText( "" );
 
@@ -196,6 +202,33 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
 
   return 1;
 }
+
+long Runner::on_History( FXObject *tgt, FXSelector sel, void *data )
+{
+   switch( FXSELTYPE( sel ) ) {
+     case SEL_UPDATE : {
+       Task *task = GetHistory( )->at( );
+       if( task ) {
+         r_combo->setText( task->cmd );
+         r_tfield->setText( task->wpth.empty( )? getenv( "HOME" ): task->wpth );
+       }
+       break;
+     }
+     case SEL_INSERTED : {
+
+       break;
+     }
+
+     case SEL_DELETED : {
+
+       break;
+     }
+
+   }
+
+  return 0;
+}
+
 
 /**************************************************************************************************/
 void Runner::LoadHistory( )

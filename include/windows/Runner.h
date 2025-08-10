@@ -61,12 +61,14 @@ public:
     ID_TERMINAL,
     ID_TERMLOCK,
 
+    ID_HISTORY,
     HYSTORY_CLEAR,
   };
 
   long onCmd_Run( FXObject *tgt, FXSelector sel, void *data );
   long onCmd_Open( FXObject *tgt, FXSelector sel, void *data );
   long onCmd_Tools( FXObject *tgt, FXSelector sel, void *data );
+  long on_History( FXObject *tgt, FXSelector sel, void *data );
 
 protected:
   Runner( ) { }
