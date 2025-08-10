@@ -85,18 +85,34 @@ void Runner::create( )
 long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
 {
   long     resh = 1;
-  FXbool   quit = false;  // Priznak uzivatelske chyby
+  FXbool   quit = false;  // flag for exit this application.
+  FXuint   msg_id = FXSELID( sel );
+  FXuint   msg_type = FXSELTYPE( sel );
 
-  switch( FXSELID( sel ) ) {
+  switch( msg_id ) {
     case Runner::ID_ACCEPT : {
+      /* FIXME RUNNER_002: The task should always be launched from the top of the history stack. (pos = 0).
+         Tzn. Spravne by se zde nemel task vubec resit, ale pripadne pozadat o jeho vytvoreni a hlavne nastavit podle
+         uzivatelovych pokynu pres GUI formular. Jeho spusteni by pak bylo zalozitosti FXApplication::task_exec( ),
+         ktera si task ke spusteni muze klidne vyzvednout na vrcholu zasobniku historie. */
+      Task *task = nullptr;
 
-      Task *task = MakeTask( );
+      switch ( msg_type ) {
+        case SEL_COMMAND : {
+          // Command -> Create new task and insert on top in history
+          task = MakeTask( );
+          break;
+        }
+        default: {
+          // Used select task in history -> see note RUNNER_002 at up.
+          task = GetHistory( )->at( );
+        }
+      }
 
       // Compile the command
       if( task ) {
         r_app->task_exec( task );       // Running application
-        GetHistory( )->insert( task );  // Insert command to history
-        Update( );                      // Aktualize history command list in combobox
+        Update( );                      // Actualize history command list in combobox
         r_combo->setText( "" );      // Clean command text
         if( r_app->autoexit( ) ) { quit = true; }
       }
@@ -226,7 +242,7 @@ Task* Runner::MakeTask( )
 {
   Task *task = nullptr;
   FXString err_str = "";     // Hlaseni uzivatelseke chyby
-  FXbool   err_flg = false;  // Priznak uzivatelske chyby
+  FXbool   err_flg = false;     // Priznak uzivatelske chyby
 
   // Get command and working path
   FXString cmd = r_combo->getText( );
@@ -234,8 +250,7 @@ Task* Runner::MakeTask( )
 
   // Set command
   if( !cmd.empty( ) ) {
-    task = new Task;
-    task->cmd = cmd;
+    task = GetHistory(  )->add( cmd, false );
 
     // Set command working path
     if( !pth.empty( ) ) {
@@ -249,7 +264,6 @@ Task* Runner::MakeTask( )
   else {
       err_str = "The field for entering the command must not be empty!\nPlease enter the required command to run";
       FXMessageBox::error( this, MBOX_OK, "Incorrect input", err_str.text( ) );
-      /* FIXME RUNNER_002: Po odkliknuti tohoto dialogu program skonci - to by ale nemel. */
   }
 
   return task;
