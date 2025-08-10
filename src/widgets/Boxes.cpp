@@ -119,7 +119,7 @@ Toolbar::Toolbar( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN
 {
   Application  *app = ( Application * ) this->getApp( );
   FXIconsTheme *icons = app->get_iconstheme( );
-  FXObject     *tgt = getBoxFrame( )->getBoxTarget( );  
+  FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
   
   new FXButton( this, "\t\t Otevrit soubor", icons->get_icon( "open", "HeaderBar" ), tgt, Runner::OPEN_FILE, BUTTON_NORMAL | LAYOUT_RIGHT );
   new FXButton( this, "\t\t Zmenit pracovni adresar", icons->get_icon( "directory", "HeaderBar" ), tgt, Runner::OPEN_DIR, BUTTON_NORMAL | LAYOUT_RIGHT );
@@ -143,11 +143,11 @@ RunBox::RunBox( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN |
    FXIconsTheme *icons = m_app->get_iconstheme( );
    FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
 
-   FXPopup *popup = new FXPopup( this, POPUP_VERTICAL|FRAME_RAISED|FRAME_THICK, 0, 0, 350, 165  );
-   m_list  = new FXList( popup, this, ID_LIST, LIST_NORMAL | LAYOUT_FILL );
+   m_popup = new FXPopup( this, POPUP_VERTICAL|FRAME_RAISED|FRAME_THICK, 0, 0, 350, 165  );
+   m_list  = new FXList( m_popup, this, ID_LIST, LIST_NORMAL | LAYOUT_FILL );
 
-   new FXButton( this, "\t\t Spustit", icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT, BUTTON_NORMAL | LAYOUT_LEFT );
-   new FXMenuButton( this, FXString::null, icons->get_icon( "popup", 16 ), popup, FRAME_RAISED | FRAME_THICK | JUSTIFY_NORMAL | ICON_BEFORE_TEXT | MENUBUTTON_DOWN | LAYOUT_FILL_Y, 18 );
+   m_action_btn = new FXButton( this, "\t\t Spustit", icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT, BUTTON_NORMAL | LAYOUT_LEFT );
+   m_menu_btn   = new FXMenuButton( this, FXString::null, icons->get_icon( "popup", 16 ), m_popup, FRAME_RAISED | FRAME_THICK | JUSTIFY_NORMAL | ICON_BEFORE_TEXT | MENUBUTTON_DOWN | LAYOUT_FILL_Y, 18 );
 }
 
 void RunBox::create( )
@@ -175,7 +175,12 @@ long RunBox::onCmd_select( FXObject *sender, FXSelector sel, void *data )
 {
   FXival pos = (FXival) data;
   Task *t = m_app->get_History( )->at( (FXint ) pos );
-  if( t ) { std::cout << pos << ". " << t->cmd << std::endl; }
+  if( t ) {
+    //std::cout << pos << ". " << t->cmd << std::endl;
+    m_app->get_History( )->current( ( FXint )pos );
+    m_menu_btn->handle( this, FXSEL( SEL_COMMAND, ID_UNPOST ), nullptr );
+    return 1;
+  }
 
   return 0;
 }

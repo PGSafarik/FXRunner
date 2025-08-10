@@ -88,8 +88,11 @@ protected:
 /*** Run Button with menu *************************************************************************/
 class RunBox : public FXHeaderBox {
 FXDECLARE( RunBox )
-  Application *m_app;
-  FXList *m_list;
+  Application  *m_app;
+  FXButton     *m_action_btn;
+  FXMenuButton *m_menu_btn;
+  FXPopup      *m_popup;
+  FXList       *m_list;
 
 public:
   explicit RunBox( FXWindowHeader *p );
