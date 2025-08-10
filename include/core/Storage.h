@@ -91,7 +91,7 @@ template<typename STREAMER, typename CLIENT> Storage<STREAMER, CLIENT>::Storage(
 template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::load( CLIENT *client )
 {
 	if( !isOpen( ) ) { return -1; }
-	DEBUG_OUT( "Loading a data from store file: " << m_filename )
+	DEBUG_OUT( "Loading a data from store file: " << m_filename.text( ) )
 
 	FXlong fsize = size( );
 	if( fsize == 0 ) { return -2; }
@@ -136,7 +136,7 @@ template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::sa
 
 	FXint size  = 0;
  	if( ( size = buffer.length( ) ) > 0 ) {
- 		DEBUG_OUT( "Saving a data to store file: " << m_filename )
+ 		DEBUG_OUT( "Saving a data to store file: " << m_filename.text( ) )
 		truncate( 0 );
 		if( writeBlock( buffer.text( ), size ) != size ) { return -5; }
 		flush( );
