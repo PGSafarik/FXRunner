@@ -86,8 +86,10 @@ int Application::task_exec( )
 
     command = CheckTerminal( t ) + CheckPrivilege( t ) + command;
     int code = std::system( command.text( ) );
-    resh = WEXITSTATUS( code );
-    DEBUG_OUT(  "Running: " << command << " with " << resh )
+    // Not used for now
+    //resh = WEXITSTATUS( code );
+    //DEBUG_OUT(  "Running: " << command << " with " << resh )
+    return code;
   }
 
   return resh;
