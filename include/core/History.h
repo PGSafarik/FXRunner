@@ -66,7 +66,6 @@ public :
 
     Task *task = new Task;
     task->load_data( streamer );
-    //push( task, false );
     m_buffer.insert( static_cast<FXint>( m_buffer.no( ) ), task, false );
     return true;
   }

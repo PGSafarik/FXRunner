@@ -66,11 +66,11 @@ Task* History::add( const FXString &cmd_str, FXbool notify )
   return nullptr;
 }
 
-FXbool History::push( Task *task, FXbool ch_state )
+FXbool History::push( Task *task, FXbool ch_state ) // DEPRECATED: Used History::add( ), or History::insert( )
 {
   FXbool result = false;
   if( task && !task->cmd.empty( ) ) {
-    Task *t = m_buffer.insert( 0 , task , ch_state );
+    Task *t = m_buffer.insert( 0, task, ch_state );
     if( t ) { result = true; }
   }
   return result;
