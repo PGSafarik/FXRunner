@@ -73,6 +73,26 @@ FXint Application::task_exec( Task *cmd )
   return resh;
 }
 
+int Application::task_exec( )
+{
+  FXint resh = -1;
+  FXString command = FXString::null;
+  Task *t = a_history->at( );
+
+  if( !t->cmd.empty( ) ) {
+    command += t->cmd;
+    if( !t->prm.empty( ) )  { command += t->prm; }
+    if( !t->prop->unblock ) { command += "&"; }
+
+    command = CheckTerminal( t ) + CheckPrivilege( t ) + command;
+    int code = std::system( command.text( ) );
+    resh = WEXITSTATUS( code );
+    DEBUG_OUT(  "Running: " << command << " with " << resh )
+  }
+
+  return resh;
+}
+
 void Application::task_write( Task *cmd, const FXString &pth )
 {
   if( pth.empty( ) || !cmd ) { return; }

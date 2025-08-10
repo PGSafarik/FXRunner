@@ -85,6 +85,7 @@ public :
   /* Operations */
 	virtual void init( int& argc, char** argv, FXbool connect = true ); 
   int task_exec( Task *cmd );                                          // Run a command
+  int task_exec( );
   void task_write( Task *cmd, const FXString &pth = FXString::null );  // Write a command on a desktop file
   void load( );                                                        // Complete load
   void save( );                                                        // Complete application save
