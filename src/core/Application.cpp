@@ -208,9 +208,9 @@ void Application::settings_save( )
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_workdir",  a_cfg->term_work.text( ) );
 
     cfg_prefix = CFG_HISTORY_PREFIX;
-    reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".History_limit",      a_cfg->hist_limit );
-    reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".History_hysteresis", a_cfg->hist_lhyster );
-    reg( ).writeBoolEntry( CFG_RUNNER, cfg_prefix + ".History_cleaning",   a_cfg->hist_loadopt );
+    reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".limit",      a_cfg->hist_limit );
+    reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".hysteresis", a_cfg->hist_lhyster );
+    reg( ).writeBoolEntry( CFG_RUNNER, cfg_prefix + ".cleaning",   a_cfg->hist_loadopt );
 
     a_cfg->change = false;
   } 
