@@ -180,9 +180,11 @@ void Application::settings_load( )
   a_cfg->term_run     = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec", "-e" );
 
   cfg_prefix = CFG_HISTORY_PREFIX;
-  a_cfg->hist_limit   = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".limit",     0 );
-  a_cfg->hist_lhyster = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".hysteresis",0 );
-  a_cfg->hist_loadopt = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".cleaning",  false );
+  a_cfg->hist_limit    = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".limit",     0 );
+  a_cfg->hist_lhyster  = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".hysteresis",0 );
+  a_cfg->hist_headsize = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".head_size", 10 );
+  a_cfg->hist_loadopt  = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".cleaning",  false );
+
 
   a_nquit_flg = false;
 
@@ -214,6 +216,7 @@ void Application::settings_save( )
     cfg_prefix = CFG_HISTORY_PREFIX;
     reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".limit",      a_cfg->hist_limit );
     reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".hysteresis", a_cfg->hist_lhyster );
+    reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".head_size",  a_cfg->hist_headsize );
     reg( ).writeBoolEntry( CFG_RUNNER, cfg_prefix + ".cleaning",   a_cfg->hist_loadopt );
 
     a_cfg->change = false;

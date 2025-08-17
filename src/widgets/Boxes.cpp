@@ -143,7 +143,7 @@ RunBox::RunBox( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN |
    FXIconsTheme *icons = m_app->get_iconstheme( );
    FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
 
-   m_popup = new FXPopup( this, POPUP_VERTICAL|FRAME_RAISED|FRAME_THICK, 0, 0, 350, 165  );
+   m_popup = new FXPopup( this, POPUP_VERTICAL|FRAME_RAISED|FRAME_THICK, 0, 0, 450, 232  );
    m_list  = new FXList( m_popup, this, ID_LIST, LIST_NORMAL | LAYOUT_FILL );
 
    m_action_btn = new FXButton( this, "\t\t Spustit", icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT, BUTTON_NORMAL | LAYOUT_LEFT );
@@ -160,10 +160,11 @@ void RunBox::create( )
 long RunBox::onUpd_list( FXObject *sender, FXSelector sel, void *data )
 {
   History *hist = m_app->get_History( );
+  FXint items_num = m_app->HistoryQuickSize( );
   Task *t = nullptr;
 
   m_list->clearItems( );
-  for( int i = 0; i < 7; i++ ) {
+  for( int i = 0; i < items_num; i++ ) {
     t = hist->at( i );
     if( t ) { m_list->insertItem( i, t->cmd ); }
   }

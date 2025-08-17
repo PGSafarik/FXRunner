@@ -59,6 +59,7 @@ struct app_config {
   FXint    hist_limit;    // Limit value for the number of records in the history buffer (def: 0 )
   FXint    hist_lhyster;  // History limit hysteresis value (def: 0)
   FXbool   hist_loadopt;  // Enable clean and optimize history buffer in loading data from store (def: false)
+  FXint    hist_headsize; // Number of an items from history, visible with the Runbox
 
   FXbool  change;         // Indicate changes
 };
@@ -81,11 +82,12 @@ public :
   virtual ~Application( );
 
   /* Access methods */
-  FXIconsTheme* get_iconstheme( ) { return a_iconsth; }                // Get a icons theme instance
-  History*      get_History( )    { return a_history; }                // Get cache object, represent the launch history 
-  FXbool        autoexit( )       { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
-  FXbool        is_silent( )      { return a_cfg->silent_exit; }       // if true, the application will not ask for confirmation of termination
-  FXbool        is_changed( )     { return a_cfg->change; }            // Idicate configration is changed
+  FXIconsTheme* get_iconstheme( )   { return a_iconsth; }                // Get a icons theme instance
+  History*      get_History( )      { return a_history; }                // Get cache object, represent the launch history
+  FXint         HistoryQuickSize( ) { return a_cfg->hist_headsize; }
+  FXbool        autoexit( )         { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
+  FXbool        is_silent( )        { return a_cfg->silent_exit; }       // if true, the application will not ask for confirmation of termination
+  FXbool        is_changed( )       { return a_cfg->change; }            // Idicate configration is changed
 
 
   /* Operations */
