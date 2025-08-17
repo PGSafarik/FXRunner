@@ -80,18 +80,20 @@ int Application::task_exec( )
   Task *t = a_history->at( );
 
   if( !t->cmd.empty( ) ) {
-    command += t->cmd;
-    if( !t->prm.empty( ) )  { command += t->prm; }
-    if( !t->prop->unblock ) { command += "&"; }
+    command = t->cmd;
+    if( !t->prm.empty( ) ) { command += t->prm; }
+    if( t->prop->unblock ) { command += "&"; }
 
     command = CheckTerminal( t ) + CheckPrivilege( t ) + command;
-    int code = std::system( command.text( ) );
+    DEBUG_OUT( "Running: " << command )
+    int code = std::system( command.text( ) ); // int code =
     // Not used for now
-    //resh = WEXITSTATUS( code );
-    //DEBUG_OUT(  "Running: " << command << " with " << resh )
-    return code;
+    resh = WEXITSTATUS( code );
+    DEBUG_OUT(  "Running: " << command << " with " << resh )
+    //return resh;
   }
 
+  DEBUG_OUT( "Execute resulth " << resh )
   return resh;
 }
 
