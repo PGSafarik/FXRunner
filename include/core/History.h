@@ -42,8 +42,12 @@ public :
   virtual ~History( );
   
   /* Access methods */
-  FXival no( )        const     { return m_buffer.no( ); }
-  FXbool isChange( )   const     { return m_buffer.is_changed( ); }
+  FXival no( )        const         { return m_buffer.no( ); }
+  FXint  get_limit( ) const         { return m_buffer.limit; }
+  void   set_limit( FXint limit )   { m_buffer.limit = limit; }
+  FXint  get_hysteresis( ) const    { return m_buffer.hysteresis; }
+  void   set_hysteresis( FXint hs ) { m_buffer.hysteresis = hs; }
+  FXbool isChange( )   const        { return m_buffer.is_changed( ); }
   //! FXint  get_select( ) const     { return m_select; }
 
 

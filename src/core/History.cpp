@@ -22,7 +22,6 @@ FXIMPLEMENT( History, FXObject, NULL, 0 )
 /*************************************************************************************************/
 History::History( FXuint opts, FXObject* target, FXSelector notify )
 {
-  m_buffer.set_limit( limit );
   m_tgt = target;
   m_sel = notify;
   m_opts = opts;
@@ -116,7 +115,7 @@ void History::clear( FXbool notify )
 void History::Dump( )
 {
   FXint num = m_buffer.no( );
-  std::cout << "[DUMP History] count: " << num << "; limit: " << m_buffer.get_limit( ) << std::endl;
+  std::cout << "[DUMP History] count: " << num << "; limit: " << m_buffer.limit << std::endl;
 
   if( num > 0 ) {
     for( FXint i = 0; i != num; i++ ) {
