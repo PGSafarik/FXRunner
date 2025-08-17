@@ -176,9 +176,9 @@ void Application::settings_load( )
   a_cfg->term_run     = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec", "-e" );
 
   cfg_prefix = CFG_HISTORY_PREFIX;
-  a_cfg->hist_limit   = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".History_limit",     0 );
-  a_cfg->hist_lhyster = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".History_hysteresis",0 );
-  a_cfg->hist_loadopt = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".History_cleaning",  false );
+  a_cfg->hist_limit   = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".limit",     0 );
+  a_cfg->hist_lhyster = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".hysteresis",0 );
+  a_cfg->hist_loadopt = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".cleaning",  false );
 
   a_nquit_flg = false;
 
