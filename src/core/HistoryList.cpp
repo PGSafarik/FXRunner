@@ -12,6 +12,7 @@ Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
     Deduplication( entry );
     if( FXArray<Task*>::insert( pos, entry ) ) {
       CheckLimit( );
+      Truncate( );
       if( change ) { m_change = true; }
       return entry;
     }
@@ -62,6 +63,24 @@ FXbool HistoryList::check_position( FXint value ) const
 {
   FXint num = FXArray<Task*>::no( );
   return ( num > 0 ?  0 <= value && value <= num : value == 0 );
+}
+
+void HistoryList::cleaning( )
+{
+  // Check of size limits
+  Truncate( );
+
+  FXint num = static_cast<FXint>( no( ) );
+  for( FXint i = 0; i < num; i++ ) {
+    Task *entry = at( i );
+    // Check empty record
+    if( !entry || entry->cmd.empty( )  ) {
+      remove( i, true, true );
+      break;
+    }
+    // check duplications
+    Deduplication( entry );
+  }
 }
 
 /**********************************************************************************************************************/
