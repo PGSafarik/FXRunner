@@ -25,22 +25,18 @@
 #include "Task.h"
 
 class HistoryList : protected FXArray<Task*> {
-  FXint  m_limit;				// Limit uloziste ( 0 - bez limitu. > 0 - udrzovany pocet radku. )
-  FXint  m_hysteresis;	// Presah limitu  ( 0 - bez hysterze. < 0 - hodnota na niz klesne velikost uloziste pri dosazeni limitu. > 0 - hodnota o niz muze velikost prerust, nez bude zkracena na hodnotu limitu)
-  FXbool m_change;      //
+  FXbool m_change;      // Array changes indicator
 
 public :
-  explicit HistoryList( FXint limit = 0, FXint hysteresis = 0 );
+  explicit HistoryList( );
   ~HistoryList( ) = default;
 
-  /* Access methods */
+  /* Access objects & methods */
+  FXint  limit = 0;				     // Limit uloziste ( 0 - bez limitu. > 0 - udrzovany pocet radku. )
+  FXint  hysteresis = 0;	     // Presah limitu  ( 0 - bez hysterze. < 0 - hodnota na niz klesne velikost uloziste pri dosazeni limitu. > 0 - hodnota o niz muze velikost prerust, nez bude zkracena na hodnotu limitu)
   using FXArray<Task*>::no;
   using FXArray<Task*>::at;
-  FXint  get_limit( ) const         { return m_limit; }
-  void   set_limit( FXint limit )   { m_limit = limit; }
-  FXint  get_hysteresis( ) const    { return m_hysteresis; }
-  void   set_hysteresis( FXint hs ) { m_hysteresis = hs; }
-  FXbool is_changed( ) const        { return m_change; }
+  FXbool is_changed( ) const  { return m_change; }
 
   /* Operations */
   Task*  insert( FXint pos, Task *entry, FXbool change = true );

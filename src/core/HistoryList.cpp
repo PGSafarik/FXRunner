@@ -2,8 +2,8 @@
 // Created by gabriel on 08.08.25.
 //
 #include<core/HistoryList.h>
-HistoryList::HistoryList( FXint limit, FXint hysteresis )
-             : m_limit( limit ), m_hysteresis( hysteresis ), m_change( false )
+HistoryList::HistoryList( )
+             : m_change( false )
 { }
 
 Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
@@ -11,7 +11,6 @@ Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
   if( check_position( pos ) && entry && !entry->cmd.empty( ) ) {
     Deduplication( entry );
     if( FXArray<Task*>::insert( pos, entry ) ) {
-      CheckLimit( );
       Truncate( );
       if( change ) { m_change = true; }
       return entry;
