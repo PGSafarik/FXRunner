@@ -36,6 +36,11 @@ Task* HistoryList::remove( FXint pos, FXbool destroy, FXbool change )
   return entry;
 }
 
+void HistoryList::clear( )
+{
+
+}
+
 FXbool HistoryList::top( FXint pos )
 {
   if( check_position( pos ) && pos > 0 ) {
