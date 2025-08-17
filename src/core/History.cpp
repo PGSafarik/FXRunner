@@ -20,7 +20,7 @@ FXDEFMAP( History ) HISTMAP[ ] = { };
 FXIMPLEMENT( History, FXObject, NULL, 0 )
 
 /*************************************************************************************************/
-History::History( FXint limit, FXuint opts, FXObject* target, FXSelector notify )
+History::History( FXuint opts, FXObject* target, FXSelector notify )
 {
   m_buffer.set_limit( limit );
   m_tgt = target;

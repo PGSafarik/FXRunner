@@ -38,7 +38,7 @@ FXDECLARE( History )
   /* FIXME HITORY_001: Adding the settings flags for: Only read history, adding emty task, */
   /* FIXME HISTOR_002: Adding messages & handlers ;) */
 public :
-  History( FXint limit = 0, FXuint opts = 0, FXObject* target = nullptr, FXSelector notify = 0 );
+  History( FXuint opts = 0, FXObject* target = nullptr, FXSelector notify = 0 );
   virtual ~History( );
   
   /* Access methods */
