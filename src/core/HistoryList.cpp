@@ -60,7 +60,7 @@ FXbool HistoryList::top( FXint pos )
 
 FXbool HistoryList::check_position( FXint value ) const
 {
-  FXint num = FXArray<Task*>::no( );
+  FXint num = static_cast<FXint>( no( ) );
   return ( num > 0 ?  0 <= value && value <= num : value == 0 );
 }
 
