@@ -36,9 +36,17 @@ Task* HistoryList::remove( FXint pos, FXbool destroy, FXbool change )
   return entry;
 }
 
-void HistoryList::clear( )
+void HistoryList::clear( FXbool change )
 {
+  FXival num = no( );
 
+  while ( num > 0 ) {
+    remove( static_cast<FXint>( num - 1 ), true, false  );
+    num = no( );
+  }
+  FXArray<Task*>::clear( );
+
+  m_change = change;
 }
 
 FXbool HistoryList::top( FXint pos )

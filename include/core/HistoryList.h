@@ -45,7 +45,7 @@ public :
   /* Operations */
   Task*  insert( FXint pos, Task *entry, FXbool change = true );
   Task*  remove( FXint pos, FXbool destroy = false, FXbool change = true );
-  void   clear( ); //{}
+  void   clear( FXbool change = true );
   FXbool top( FXint pos );
   FXbool check_position( FXint value ) const;          // True if the value is between 0 and the current number of records
 
