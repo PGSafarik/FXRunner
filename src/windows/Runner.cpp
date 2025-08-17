@@ -47,7 +47,7 @@ Runner::Runner( Application *a )
   FXint ncol = 50;
   new FXLabel( matrix, "Command to run: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
   r_combo = new FXComboBox( matrix, 50, NULL, 0, FRAME_GROOVE | COMBOBOX_NORMAL | LAYOUT_FILL  );
-  r_combo->setNumVisible( 10 );
+  r_combo->setNumVisible( 0 );
 
   /* Work dir field */ 
   new FXLabel( matrix, "Workdir: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
@@ -193,7 +193,7 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
       break; 
     }
     case Runner::HYSTORY_CLEAR : {
-      r_combo->clearItems( );
+      // r_combo->clearItems( );
       GetHistory( )->clear( );
     }
   }
@@ -236,12 +236,13 @@ void Runner::LoadHistory( )
   History *history = GetHistory( );
   FXint num = history->no( );
   FXString cmd;
-  
+  /*
   r_combo->clearItems( );
   for( FXint i = 0; i != num; i++ ) {
     Task *entry = history->at( i, false );
     r_combo->insertItem( i, entry->cmd );
   }
+  */
 }
 
 void Runner::Check_property( Task *task )
