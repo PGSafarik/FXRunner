@@ -130,7 +130,10 @@ void Application::load( )
   settings_load( );
   
 	a_iconsth->load( ICON_THEME_MAP, a_cfg->icons_name );
-	
+
+  a_history->set_limit( a_cfg->hist_limit );
+  a_history->set_hysteresis( a_cfg->hist_lhyster );
+
 	a_history_filename = a_cfg->cache_dir + "/" +  getAppName( ) + "/History";
 	Storage<SubstrStream, History> history_store( a_history_filename );
 	if( history_store.isOpen( ) ) { history_store.load( a_history ); }
