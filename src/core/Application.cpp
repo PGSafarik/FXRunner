@@ -138,6 +138,7 @@ void Application::load( )
 	Storage<SubstrStream, History> history_store( a_history_filename );
 	if( history_store.isOpen( ) ) { history_store.load( a_history ); }
 	history_store.close( );
+  //if( a_cfg->hist_loadopt ) { a_history->handle( this, FXSEL( SEL_UPDATE, ID_CLEANING), nullptr ); }
 }
 
 void Application::save( )
