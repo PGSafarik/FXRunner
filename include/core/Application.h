@@ -58,6 +58,7 @@ struct app_config {
 
   FXint    hist_limit;    // Limit value for the number of records in the history buffer (def: 0 )
   FXint    hist_lhyster;  // History limit hysteresis value (def: 0)
+  FXbool   hist_loadopt;  // Enable clean and optimize history buffer in loading data from store (def: false)
 
   FXbool  change;         // Indicate changes
 };
