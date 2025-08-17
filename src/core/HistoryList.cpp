@@ -1,18 +1,34 @@
-//
-// Created by gabriel on 08.08.25.
-//
+/*************************************************************************
+* HistoryList.cpp Copyright (c) 2015 - 2025 by D.A.Tiger                        *
+*                                                                        *
+* This program is free software: you can redistribute it and/or modify   *
+* it under the terms of the GNU General Public License as published by   *
+* the Free Software Foundation, either version 3 of the License, or      *
+* (at your option) any later version.                                    *
+*                                                                        *
+* This program is distributed in the hope that it will be useful,        *
+* but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the          *
+* GNU General Public License for more details.                           *
+*                                                                        *
+* You should have received a copy of the GNU General Public License      *
+* along with this program.  If not, see <https://www.gnu.org/licenses/>. *
+*************************************************************************/
 #include<core/HistoryList.h>
+
+/**************************************************************************************************/
 HistoryList::HistoryList( )
-             : m_change( false )
+            : m_change( false )
 { }
 
+/**************************************************************************************************/
 Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
 {
   if( check_position( pos ) && entry && !entry->cmd.empty( ) ) {
     Deduplication( entry );
     if( FXArray<Task*>::insert( pos, entry ) ) {
       Truncate( );
-      if( change ) { m_change = true; }
+      m_change = change;   // note: result is same like for: if( change ) { m_change = true; }
       return entry;
     }
   }
@@ -26,7 +42,7 @@ Task* HistoryList::remove( FXint pos, FXbool destroy, FXbool change )
   Task *entry = at( pos );
 
   if( erase( pos ) ) {
-    if( change ) { m_change = true; }
+    m_change = change;
     if( destroy && entry ) {
       delete entry;
       return nullptr;
@@ -96,33 +112,32 @@ void HistoryList::Deduplication( const Task *entry, const FXint start )
 
 void HistoryList::Truncate( )
 {
-  FXint number = CheckLimit( );                            // Pocet zaznamu (od konce), ktere maji byt smazany
+  FXint overload_num = CheckLimit( );
 
-  while( 0 < number ) {
+  while( 0 < overload_num ) {
     remove( static_cast<FXint>( no( ) - 1 ), true, false  );
-    number--;
+    overload_num--;
   }
 }
 
 FXint HistoryList::CheckLimit( )
 {
-  FXint count = 0;                            // Pocet zaznamu (od konce), ktere maji byt smazany
-  FXint size  = static_cast<FXint>( no( ) );  // Aktualni pocet zaznamu v seznamu
+  FXint count = 0;
+  FXint size  = static_cast<FXint>( no( ) );
 
   if( limit > 0 && limit <= size ) {
-    // Povolena limitace poctu radku a zaroven je dosazena, ci prekrocena jeho hodnota
-    if( hysteresis == 0 ) {  // hysterze neni povolena, udrzuje se za vse okolnosti maximalni pocet zaznamu v seznamu
+    if( hysteresis == 0 ) {  // No hysteresis
       count = size - limit;
     }
-    else if( hysteresis > 0 && ( size == limit + hysteresis) ) { // Kladna hysterze - Pocka se az pocet zaznamu naroste na urcitou mez nad zadany limit a pak se zkrati na nastveny limit
+    else if( hysteresis > 0 && ( size == limit + hysteresis) ) { // Positive hysteresis
       count = hysteresis;
     }
-    else if( hysteresis < 0 ) { // Zaporna hysterze - smaze se vse co je nadlimit + yvoleny pocet zaznamu pod limitem
+    else if( hysteresis < 0 ) { // Negative hysteresis
       count = -hysteresis + ( size - limit );
     }
   }
-  DEBUG_OUT( "Truncate offset: " << limit << "/" << hysteresis << " => " << size << "-" << count << ( size == limit ? " *" : "" ) )
+  DEBUG_OUT( "History list count of overload: " << limit << "/" << hysteresis << " => " << size << "-" << count << ( size == limit ? " *" : "" ) )
   return count;
 }
 
-
+/*** END ******************************************************************************************/

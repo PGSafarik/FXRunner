@@ -18,7 +18,7 @@
 /*************************************************************************
 * History.h                                                              *
 *                                                                        *
-* Zaznam a sprava historie prikazu                                       *
+* Record and management command history                                  *
 * Copyright (c) 18/03/2019 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include "defs.h"
@@ -28,12 +28,11 @@
 
 class History : public FXObject {
 FXDECLARE( History )
-  HistoryList  m_buffer;      // Tasks list
-  //! FXint        m_select;      // Position of select task
+  HistoryList  m_buffer;  // Tasks list
 
-  FXObject   *m_tgt;   // A target object for notifications
-  FXSelector  m_sel;   // A notification message ID
-  FXuint      m_opts;  // List of the object options
+  FXObject   *m_tgt;      // A target object for notifications
+  FXSelector  m_sel;      // A notification message ID
+  FXuint      m_opts;     // List of the object options
 
   /* FIXME HITORY_001: Adding the settings flags for: Only read history, adding emty task, */
   /* FIXME HISTOR_002: Adding messages & handlers ;) */
@@ -48,8 +47,6 @@ public :
   FXint  get_hysteresis( ) const    { return m_buffer.hysteresis; }
   void   set_hysteresis( FXint hs ) { m_buffer.hysteresis = hs; }
   FXbool isChange( )   const        { return m_buffer.is_changed( ); }
-  //! FXint  get_select( ) const     { return m_select; }
-
 
   FXObject*  get_target( )                  { return m_tgt; }
   void       set_target( FXObject* target ) { m_tgt = target; }
@@ -57,13 +54,12 @@ public :
   void       set_notify( FXSelector sel )   { m_sel = sel; }
 
   /* operations methods */
-  Task*  at( FXint index = 0, FXbool noup = false );              // Returns task from specific position (if any)
-  FXbool current( FXint pos, FXbool notify = true );              // Returns true if the task is set to current (i.e., to the top of the history stack).
-  Task*  add( const FXString &cmd_str, FXbool notify = false );   // Create new Task instance and insert on list
-	FXbool push( Task *task, FXbool ch_state = true );              // Insert a task on end of history list (DEPRECATED)
-  FXbool insert( FXint pos, Task *task, FXbool notify = false );  // Insert existing task on list
-  Task*  remove( FXint index, FXbool notify = false );            // Remove existing index
-  void   clear( FXbool notify = false );                          // Clear all items
+  Task*  at( const FXint index = 0 ) { return m_buffer.at( index ); }   // Returns task from specific position (if any)
+  FXbool current( FXint pos, FXbool notify = true );                    // Returns true if the task is set to current (i.e., to the top of the history stack).
+  Task*  add( const FXString &cmd_str, FXbool notify = false );         // Create new Task instance and insert on list
+  FXbool insert( FXint pos, Task *task, FXbool notify = false );        // Insert existing task on list
+  Task*  remove( FXint index, FXbool notify = false );                  // Remove existing index
+  void   clear( FXbool notify = false );                                // Clear all items
 
   template <typename STREAMER> FXbool load_data( STREAMER &streamer ) {
     if( streamer.get_index( ) == 0 ) { clear( ); }
@@ -73,7 +69,6 @@ public :
     m_buffer.insert( static_cast<FXint>( m_buffer.no( ) ), task, false );
     return true;
   }
-
   template <typename STREAMER> FXbool save_data( STREAMER &streamer ) {
     FXbool success = false;
 
@@ -88,6 +83,7 @@ public :
 
      return success;
   }
+
   /* Debug & tests */
   void Dump( );                                           // Dumping actual history state on std::cout
   

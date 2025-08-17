@@ -16,40 +16,40 @@
 #define FXRUNNER_HISTORYBUFFER_H
 
 /*************************************************************************
-* History.h                                                              *
+* HistoryList.h                                                          *
 *                                                                        *
-* Zaznam a sprava historie prikazu                                       *
-* Copyright (c) 08/08/2025 D.A.Tiger <drakarax@seznam.cz>                *
+* Basic structure and operation of the history list                      *
+* Copyright (c) 17/08/2025 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
 #include "defs.h"
 #include "Task.h"
 
 class HistoryList : protected FXArray<Task*> {
-  FXbool m_change;      // Array changes indicator
+  FXbool m_change;      // List changes indicator
 
 public :
-  explicit HistoryList( );
+  HistoryList( );
   ~HistoryList( ) = default;
 
   /* Access objects & methods */
-  FXint  limit = 0;				     // Limit uloziste ( 0 - bez limitu. > 0 - udrzovany pocet radku. )
-  FXint  hysteresis = 0;	     // Presah limitu  ( 0 - bez hysterze. < 0 - hodnota na niz klesne velikost uloziste pri dosazeni limitu. > 0 - hodnota o niz muze velikost prerust, nez bude zkracena na hodnotu limitu)
+  FXint  limit = 0;				     // Limit number of items in the list ( 0 - no limit; > 0 - the value at which the number of items is maintained )
+  FXint  hysteresis = 0;	     // Limit hysteresis ( 0 - limit = strict maximum; < 0 - The value by which the list will be truncated as soon as the limit is reached; > 0 - Exceeding the limit )
   using FXArray<Task*>::no;
   using FXArray<Task*>::at;
   FXbool is_changed( ) const  { return m_change; }
 
   /* Operations */
-  Task*  insert( FXint pos, Task *entry, FXbool change = true );
-  Task*  remove( FXint pos, FXbool destroy = false, FXbool change = true );
-  void   clear( FXbool change = true );
-  FXbool top( FXint pos );
-  FXbool check_position( FXint value ) const;          // True if the value is between 0 and the current number of records
-  void   cleaning( );                           // Cleaning and optimalization of this list
+  Task*  insert( FXint pos, Task *entry, FXbool change = true );            // Insert item to specific position in list
+  Task*  remove( FXint pos, FXbool destroy = false, FXbool change = true ); // Remove item from specific index
+  void   clear( FXbool change = true );                                     // Delete all items in list
+  FXbool top( FXint pos );                                                  // True if the item at the specified index was successfully moved to the beginning of the list
+  FXbool check_position( FXint value ) const;                               // True if the value is between 0 and the current number of records
+  void   cleaning( );                                                       // Cleaning and optimization of this list
 
 protected:
   void Deduplication( const Task *entry, FXint start = 0 ); // Finds and removes from the list all duplicates of the task specified by the function parameter
-  void Truncate( );                                         //{} Monitors the buffer size based on the set limit and hysteresis.
-  FXint CheckLimit( );                                       // Checking and maintaining the set number of records
+  void Truncate( );                                         // Monitors the buffer size based on the set limit and hysteresis.
+  FXint CheckLimit( );                                      // Checking and maintaining the set number of records
 };
 
 #endif //FXRUNNER_HISTORYBUFFER_H

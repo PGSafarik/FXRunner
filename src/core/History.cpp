@@ -1,5 +1,5 @@
 /*************************************************************************
-* Task.cpp Copyright (c) 2015 - 2025 by D.A.Tiger                        *
+* Hystory.cpp Copyright (c) 2015 - 2025 by D.A.Tiger                     *
 *                                                                        *
 * This program is free software: you can redistribute it and/or modify   *
 * it under the terms of the GNU General Public License as published by   *
@@ -17,16 +17,12 @@
 #include "core/History.h"
 
 FXDEFMAP( History ) HISTMAP[ ] = { };
-FXIMPLEMENT( History, FXObject, NULL, 0 )
+FXIMPLEMENT( History, FXObject, HISTMAP, ARRAYNUMBER( HISTMAP ) )
 
 /*************************************************************************************************/
 History::History( FXuint opts, FXObject* target, FXSelector notify )
-{
-  m_tgt = target;
-  m_sel = notify;
-  m_opts = opts;
-  //! m_select = -1;
-}
+       : m_tgt( target ), m_sel( notify ), m_opts( opts )
+{ }
 
 History::~History( )
 { }
@@ -45,19 +41,11 @@ FXbool History::current( FXint pos, FXbool notify )
 }
 
 /**************************************************************************************************/
-Task* History::at( FXint index, FXbool noup )
-{ 
-  Task *entry = nullptr;
-  if( noup && m_buffer.top( index ) ) { entry = m_buffer.at( 0 ); } else { entry = m_buffer.at( index ); }
-
-  return entry;
-}
-
 Task* History::add( const FXString &cmd_str, FXbool notify )
 {
   if( !cmd_str.empty( ) ) {
     Task *task = new Task( cmd_str );
-    if( task && m_buffer.insert( 0, task, notify ) ) {
+    if( m_buffer.insert( 0, task, notify ) ) {
       return task;
     }
   }
@@ -65,27 +53,15 @@ Task* History::add( const FXString &cmd_str, FXbool notify )
   return nullptr;
 }
 
-FXbool History::push( Task *task, FXbool ch_state ) // DEPRECATED: Used History::add( ), or History::insert( )
-{
-  FXbool result = false;
-  if( task && !task->cmd.empty( ) ) {
-    Task *t = m_buffer.insert( 0, task, ch_state );
-    if( t ) { result = true; }
-  }
-  return result;
-}
-
 FXbool History::insert( FXint pos, Task *task, FXbool notify )
 {
-  FXbool result = false;
-
   if( task && !task->cmd.empty( ) ) {
     if ( m_buffer.insert( pos, task ) ) {
       if ( notify ) { Notify( SEL_INSERTED ); }
       return true;
     }
   }
-  return result;
+  return false;
 }
 
 Task* History::remove( FXint index, FXbool notify )
