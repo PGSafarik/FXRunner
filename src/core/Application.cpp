@@ -175,6 +175,11 @@ void Application::settings_load( )
   a_cfg->term_noclose = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", "+hold" );
   a_cfg->term_run     = reg( ).readStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec", "-e" );
 
+  cfg_prefix = CFG_HISTORY_PREFIX;
+  a_cfg->hist_limit   = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".History_limit",     0 );
+  a_cfg->hist_lhyster = reg( ).readIntEntry( CFG_RUNNER,  cfg_prefix + ".History_hysteresis",0 );
+  a_cfg->hist_loadopt = reg( ).readBoolEntry( CFG_RUNNER, cfg_prefix + ".History_cleaning",  false );
+
   a_nquit_flg = false;
 
   a_cfg->change = false;
@@ -201,6 +206,12 @@ void Application::settings_save( )
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_exec",     a_cfg->term_run.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_disclose", a_cfg->term_noclose.text( ) );
     reg( ).writeStringEntry( CFG_RUNNER, cfg_prefix + ".arg_workdir",  a_cfg->term_work.text( ) );
+
+    cfg_prefix = CFG_HISTORY_PREFIX;
+    reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".History_limit",      a_cfg->hist_limit );
+    reg( ).writeIntEntry( CFG_RUNNER,  cfg_prefix + ".History_hysteresis", a_cfg->hist_lhyster );
+    reg( ).writeBoolEntry( CFG_RUNNER, cfg_prefix + ".History_cleaning",   a_cfg->hist_loadopt );
+
     a_cfg->change = false;
   } 
 
