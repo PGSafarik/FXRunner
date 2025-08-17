@@ -24,9 +24,6 @@ History::History( FXuint opts, FXObject* target, FXSelector notify )
        : m_tgt( target ), m_sel( notify ), m_opts( opts )
 { }
 
-History::~History( )
-{ }
-
 /**************************************************************************************************/
 FXbool History::current( FXint pos, FXbool notify )
 {

@@ -38,7 +38,7 @@ FXDECLARE( History )
   /* FIXME HISTOR_002: Adding messages & handlers ;) */
 public :
   History( FXuint opts = 0, FXObject* target = nullptr, FXSelector notify = 0 );
-  virtual ~History( );
+  ~History( ) override = default;
   
   /* Access methods */
   FXival no( )        const         { return m_buffer.no( ); }
