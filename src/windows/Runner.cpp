@@ -284,7 +284,7 @@ Task* Runner::MakeTask( )
 
   // Set command
   if( !cmd.empty( ) ) {
-    task = GetHistory(  )->add( cmd, false );
+    task = GetHistory(  )->add( cmd, true );
 
     // Set command working path
     if( !pth.empty( ) ) {
