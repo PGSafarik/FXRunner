@@ -49,7 +49,7 @@ public :
 protected:
   void Deduplication( const Task *entry, FXint start = 0 ); // Finds and removes from the list all duplicates of the task specified by the function parameter
   void Truncate( );                                         //{} Monitors the buffer size based on the set limit and hysteresis.
-  void CheckLimit( );                                       // Checking and maintaining the set number of records
+  FXint CheckLimit( );                                       // Checking and maintaining the set number of records
 };
 
 #endif //FXRUNNER_HISTORYBUFFER_H

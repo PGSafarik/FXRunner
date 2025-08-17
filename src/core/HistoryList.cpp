@@ -117,12 +117,25 @@ void HistoryList::Truncate( )
   }
 }
 
-void HistoryList::CheckLimit( )
+FXint HistoryList::CheckLimit( )
 {
-  if ( m_limit > 0 ) {
-    FXint num = FXArray<Task*>::no( );
-    while( num < m_limit ) { num--; remove( num, true ); }
+  FXint count = 0;                            // Pocet zaznamu (od konce), ktere maji byt smazany
+  FXint size  = static_cast<FXint>( no( ) );  // Aktualni pocet zaznamu v seznamu
+
+  if( limit > 0 && limit <= size ) {
+    // Povolena limitace poctu radku a zaroven je dosazena, ci prekrocena jeho hodnota
+    if( hysteresis == 0 ) {  // hysterze neni povolena, udrzuje se za vse okolnosti maximalni pocet zaznamu v seznamu
+      count = size - limit;
+    }
+    else if( hysteresis > 0 && ( size == limit + hysteresis) ) { // Kladna hysterze - Pocka se az pocet zaznamu naroste na urcitou mez nad zadany limit a pak se zkrati na nastveny limit
+      count = hysteresis;
+    }
+    else if( hysteresis < 0 ) { // Zaporna hysterze - smaze se vse co je nadlimit + yvoleny pocet zaznamu pod limitem
+      count = -hysteresis + ( size - limit );
+    }
   }
+  DEBUG_OUT( "Truncate offset: " << limit << "/" << hysteresis << " => " << size << "-" << count << ( size == limit ? " *" : "" ) )
+  return count;
 }
 
 
