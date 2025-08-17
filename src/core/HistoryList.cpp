@@ -78,7 +78,25 @@ void HistoryList::Deduplication( const Task *entry, const FXint start )
 
 void HistoryList::Truncate( )
 {
+  FXint count = 0;                            // Pocet zaznamu (od konce), ktere maji byt smazany
+  FXint size  = static_cast<FXint>( no( ) );  // Aktualni pocet zaznamu v seznamu
 
+  if( m_limit > 0 && m_limit <= size ) {  // Povolena limitace poctu radku a zaroven je dosazena, ci prekrocena jeho hodnota
+    if( m_hysteresis == 0 ) {  // hysterze neni povolena, udrzuje se za vse okolnosti maximalni pocet zaznamu v seznamu
+      count = size - m_limit;
+    }
+    else if( m_hysteresis > 0 && ( size == m_limit + m_hysteresis) ) { // Kladna hysterze - Pocka se az pocet zaznamu naroste na urcitou mez nad zadany limit a pak se zkrati na nastveny limit
+      count = m_hysteresis;
+    }
+    else if( m_hysteresis < 0 ) { // Zaporna hysterze - smaze se vse co je nadlimit + yvoleny pocet zaznamu pod limitem
+      count = -m_hysteresis + ( size - m_limit );
+    }
+
+    while( count > 0 ) {
+      remove( static_cast<FXint>( no( ) - 1 ), true, false  );
+      count--;
+    }
+  }
 }
 
 void HistoryList::CheckLimit( )
