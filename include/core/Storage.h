@@ -74,6 +74,7 @@ template<typename STREAMER, typename CLIENT > class Storage : protected FXFile {
 	FXString m_filename;
 public:
 	explicit Storage( const FXString &filename, FXuint mode = FXIO::Reading );
+  ~Storage( ) override = default;
 
 	/* Access */
 	using FXFile::isOpen;
