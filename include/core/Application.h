@@ -38,22 +38,27 @@ struct app_teprofile {
   FXString p_Workdir; // (param), nastavit pracovni adresar  
 };  
 
-/*** Konfiguracni struktura aplikace ***/
-struct app_config {       // konfiguracni data tridy Application
-  FXbool sudo;            // [Sudo.Enable]  - Povolit spusteni s pravy superuzivatele (s pomoci sudo )
-  FXbool askpass;         // [Sudo.Askpass] - Povolit pouziti parametru askpass ( sudo -A ... )
-  FXString term_enable;   // 
-  FXString term;          // aplikace emulatoru terminalu
-  FXString term_noclose;  // parametr terminalu, nezavirat terminal
-  FXString term_run;      // parametr terminalu, spustit prikaz
-  FXString term_work;     // parametr terminalu, nastavit pracovni adresar 
-  FXString icon_path;     // cesta k ikonam aplikace
-  FXString icons_name;    // Nazev ikonoveho tematu
-  FXString cache_dir;     // Cache Adresas 
+/*** Application configuration structure ***/
+struct app_config {
+  FXbool sudo;            // [Sudo.Enable]  - Enable running as root (using sudo; def: false )
+  FXbool askpass;         // [Sudo.Askpass] - Enable use of the askpass parameter for sudo ( sudo -A ..., def: false )
+
+  FXString term_enable;             // Enable run command in terminal (def: true)
+  FXString term;                    // aplikace emulatoru terminalu
+  FXString term_noclose;            // parametr terminalu, nezavirat terminal
+  FXString term_run;                // parametr terminalu, spustit prikaz
+  FXString term_work;               // parametr terminalu, nastavit pracovni adresar
+  FXStringDictionary term_profiles; // List of terminal emulators
+
+  FXString icon_path;     // Path for application icons
+  FXString icons_name;    // Name of the used icons theme
+  FXString cache_dir;     // Path of the cache directory (def: $HOME/.cache )
   FXbool   auto_exit;     // Automaticaly exit FXRunner after launch application
   FXbool   silent_exit;   // Require confirmation of program termination
-  FXStringDictionary term_profiles; // List of terminal emulators
-   
+
+  FXint    hist_limit;    // Limit value for the number of records in the history buffer (def: 0 )
+  FXint    hist_lhyster;  // History limit hysteresis value (def: 0)
+
   FXbool  change;         // Indicate changes
 };
 
