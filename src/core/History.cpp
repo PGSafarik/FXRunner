@@ -30,7 +30,7 @@ FXbool History::current( FXint pos, FXbool notify )
   FXbool result = false;
 
   if( m_buffer.check_position( pos ) ) {
-    result = m_buffer.top( pos );
+    result = ( pos > 0 ) ? m_buffer.top( pos ) : true;
     if( result && notify ) { Notify( SEL_UPDATE ); }
   }
 
