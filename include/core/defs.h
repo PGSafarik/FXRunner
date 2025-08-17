@@ -33,10 +33,11 @@
 #define WM_DECOR_SECONDARY  DECOR_TITLE | DECOR_CLOSE | DECOR_BORDER  
 
 /* Runner configure sections */
-#define CFG_RUNNER      "Runner"
-#define CFG_TERM_PREFIX "Term"
-#define CFG_SUDO_PREFIX "Sudo"
-#define CFG_UI_PREFIX   "Interface"
+#define CFG_RUNNER         "Runner"
+#define CFG_TERM_PREFIX    "Term"
+#define CFG_SUDO_PREFIX    "Sudo"
+#define CFG_UI_PREFIX      "Interface"
+#define CFG_HISTORY_PREFIX "History"
 
 #define ICON_THEME_MAP  "/usr/share/FXRunner/data/icons.map"
 
