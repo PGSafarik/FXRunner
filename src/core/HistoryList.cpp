@@ -2,8 +2,8 @@
 // Created by gabriel on 08.08.25.
 //
 #include<core/HistoryList.h>
-HistoryList::HistoryList( FXint limit )
-             : m_limit( limit ), m_change( false )
+HistoryList::HistoryList( FXint limit, FXint hysteresis )
+             : m_limit( limit ), m_hysteresis( hysteresis ), m_change( false )
 { }
 
 Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
@@ -66,6 +66,11 @@ void HistoryList::Deduplication( const Task *entry, const FXint start )
     Task *tmp = at( i );
     if (tmp && tmp != entry && *tmp == *entry) { remove( i , true ); } // if: 'Entry' must exist, 'Entry' and 'tmp' must not be the same object, and both must have the same values
   }
+}
+
+void HistoryList::Truncate( )
+{
+
 }
 
 void HistoryList::CheckLimit( )

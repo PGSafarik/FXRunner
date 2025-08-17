@@ -25,19 +25,22 @@
 #include "Task.h"
 
 class HistoryList : protected FXArray<Task*> {
- FXint m_limit;
- FXbool m_change;
+  FXint  m_limit;				// Limit uloziste ( 0 - bez limitu. > 0 - udrzovany pocet radku. )
+  FXint  m_hysteresis;	// Presah limitu  ( 0 - bez hysterze. < 0 - hodnota na niz klesne velikost uloziste pri dosazeni limitu. > 0 - hodnota o niz muze velikost prerust, nez bude zkracena na hodnotu limitu)
+  FXbool m_change;      //
 
 public :
-  explicit HistoryList( FXint limit = 0 );
+  explicit HistoryList( FXint limit = 0, FXint hysteresis = 0 );
   ~HistoryList( ) = default;
 
   /* Access methods */
   using FXArray<Task*>::no;
   using FXArray<Task*>::at;
-  FXint get_limit( ) const { return m_limit; }
-  void set_limit( FXint limit ) { m_limit = limit; }
-  FXbool is_changed( ) const { return m_change; }
+  FXint  get_limit( ) const         { return m_limit; }
+  void   set_limit( FXint limit )   { m_limit = limit; }
+  FXint  get_hysteresis( ) const    { return m_hysteresis; }
+  void   set_hysteresis( FXint hs ) { m_hysteresis = hs; }
+  FXbool is_changed( ) const        { return m_change; }
 
   /* Operations */
   Task*  insert( FXint pos, Task *entry, FXbool change = true );
@@ -48,9 +51,8 @@ public :
 
 protected:
   void Deduplication( const Task *entry, FXint start = 0 ); // Finds and removes from the list all duplicates of the task specified by the function parameter
+  void Truncate( );                                         //{} Monitors the buffer size based on the set limit and hysteresis.
   void CheckLimit( );                                       // Checking and maintaining the set number of records
-
 };
-
 
 #endif //FXRUNNER_HISTORYBUFFER_H
