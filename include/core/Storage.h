@@ -70,81 +70,130 @@ public:
 	*/
 };
 
+/*** Storage **************************************************************************************/
 template<typename STREAMER, typename CLIENT > class Storage : protected FXFile {
-	FXString m_filename;
+	FXString m_filename;	// Path of the file of the storage
+	FXbool   m_ready;			// Indication that all conditions for proper storage function are met
+
 public:
-	explicit Storage( const FXString &filename, FXuint mode = FXIO::Reading );
+	explicit Storage( const FXString &filename = FXString::null );
   ~Storage( ) override = default;
 
 	/* Access */
 	using FXFile::isOpen;
+	FXbool ready( ) const { return m_ready; }
+  FXbool set_filename( const FXString &filename );
+	FXString get_filename( ) { return m_filename; }
 
 	/* Operations */
-	using FXFile::close;
-	FXint load( CLIENT *history );
-	FXint save( CLIENT *history );
+	void operator <<( CLIENT &client );
+	void operator >>( CLIENT &client );
 };
 
-template<typename STREAMER, typename CLIENT> Storage<STREAMER, CLIENT>::Storage( const FXString &filename, FXuint mode )
-					 : FXFile( filename, mode, FXIO::AllReadWrite ), m_filename( filename)
-{ }
-
-template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::load( CLIENT *client )
+template<typename STREAMER, typename CLIENT> Storage<STREAMER, CLIENT>::Storage( const FXString &filename )
 {
-	if( !isOpen( ) ) { return -1; }
+  set_filename( filename );
+}
+
+template<typename STREAMER, typename CLIENT> FXbool Storage<STREAMER, CLIENT>::set_filename( const FXString &filename )
+{
+	m_filename = filename;
+  m_ready = false;
+
+	// Checking the conditions for proper storage function
+	if( !m_filename.empty( ) ) {
+		if( FXStat::exists( m_filename ) ) {
+		  if( FXStat::isFile( m_filename ) ) {
+			  m_ready = ( FXStat::isReadable( m_filename ) && FXStat::isWritable( m_filename ) );
+		  }
+		}
+		else {
+		  FXString dir = FXPath::directory( m_filename );
+			m_ready = ( FXStat::isReadable( dir ) && FXStat::isWritable( dir ) );
+		}
+	}
+
+	return m_ready;
+}
+
+template<typename STREAMER, typename CLIENT> void Storage<STREAMER, CLIENT>::operator >>( CLIENT &client )
+{
+	STREAMER pipe;
+
+	if( !m_ready || !open( m_filename, FXIO::Reading, FXIO::AllReadWrite ) ) {
+		pipe.set_state( -1 );
+		client.load_data( pipe );
+		return;
+	}
 	DEBUG_OUT( "Loading a data from store file: " << m_filename.text( ) )
 
 	FXlong fsize = size( );
-	if( fsize == 0 ) { return -2; }
+	if( fsize == 0 ) {
+		pipe.set_state( -2 );
+		client.load_data( pipe );
+		close( );
+		return;
+	}
 
 	FXString buffer;
 	buffer.length( fsize );
 
-  STREAMER stream;
 	if( readBlock( buffer.text( ), fsize ) == fsize ) {
+		pipe.set_state( 0 );
 		FXint num = buffer.contains( '\n' );
-		while( stream.get_index( ) < num ) {
-			FXString line = buffer.section( '\n', stream.get_index( ) );
+		while( pipe.get_index( ) < num ) {
+			FXString line = buffer.section( '\n', pipe.get_index( ) );
 			line.trim( );
 			if( !line.empty( ) ) {
-				stream.clear( );
-				stream.set_str( line );
-				client->load_data( stream );
+				pipe.clear( );
+				pipe.set_str( line );
+				client.load_data( pipe );
 			}
-			++stream;
+			++pipe;
 		}
 	}
-	else { return -3; }
+	else {
+		pipe.set_state( -3 );
+		client.load_data( pipe );
+		close( );
+		return;
+	}
 
-	return stream.get_index( );
+	close( );
 }
 
-template<typename STREAMER, typename CLIENT> FXint Storage<STREAMER, CLIENT>::save( CLIENT *client )
+template<typename STREAMER, typename CLIENT> void Storage<STREAMER, CLIENT>::operator <<( CLIENT &client )
 {
-	if( !isOpen( ) ) { return -1; }
-	if( !client->isChange( ) ) { return -4; }
+	if( !client.isChange( ) ) { return; }
+	STREAMER pipe;
+
+	if( !m_ready || !open( m_filename, FXIO::Writing | FXIO::Create, FXIO::AllReadWrite ) ) {
+		pipe.set_state( -1 );
+		client.save_data( pipe );
+		return;
+	}
 
 	FXString buffer = "";
-	STREAMER stream;
-
-  while( stream.get_state( ) == 0 ) {
-    stream.clear( );
-  	if( client->save_data( stream ) ) {
-  		buffer += stream.get_str( ) + "\n";
-  	}
-  	++stream;
-  }
+	while( pipe.get_state( ) == 0 ) {
+		pipe.clear( );
+		client.save_data( pipe );
+		if( pipe.get_state( ) == 0 ) { buffer += pipe.get_str( ) + "\n"; }
+		++pipe;
+	}
 
 	FXint size  = 0;
- 	if( ( size = buffer.length( ) ) > 0 ) {
- 		DEBUG_OUT( "Saving a data to store file: " << m_filename.text( ) )
-		truncate( 0 );
-		if( writeBlock( buffer.text( ), size ) != size ) { return -5; }
+	if( ( size = buffer.length( ) ) > 0 ) {
+		DEBUG_OUT( "Saving a data to store file: " << m_filename.text( ) )
+	  truncate( 0 );
+		if( writeBlock( buffer.text( ), size ) != size ) {
+			pipe.set_state( -5 );
+			close( );
+			return;
+		}
 		flush( );
 	}
 
-	return 0;
+	close( );
 }
-
 
 #endif /* FXRUNNER_Storage_H */
