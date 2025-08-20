@@ -53,7 +53,7 @@ struct app_config {
   FXString icon_path;     // Path for application icons
   FXString icons_name;    // Name of the used icons theme
   FXString cache_dir;     // Path of the cache directory (def: $HOME/.cache )
-  FXbool   auto_exit;     // Automaticaly exit FXRunner after launch application
+  FXbool   auto_exit;     // Automatically exit FXRunner after launch application
   FXbool   silent_exit;   // Require confirmation of program termination
 
   FXint    hist_limit;    // Limit value for the number of records in the history buffer (def: 0 )
@@ -69,34 +69,32 @@ class Application : public FXApp {
 FXDECLARE( Application )
   friend class Settings;
 
-  app_config        *a_cfg;    // The application Configuration struct
-
-  FXIconsTheme *a_iconsth;     			// Icons theme manager
-  History      *a_history;     			// Manager of history of commands
-	FXString      a_history_filename; //
-
-  FXbool a_nquit_flg;          // Flag about temporary negation of autoexit settings
+  app_config                     *a_cfg;           // The application Configuration struct
+  FXIconsTheme                   *a_iconsth;     	 // Icons theme manager
+  History                        *a_history;     	 // Manager of history of commands
+  Storage<SubstrStream, History>  m_history_store; //
+  FXbool                          a_nquit_flg;     // Flag about temporary negation of autoexit settings
 
 public :
   Application( );
-  virtual ~Application( );
+  ~Application( ) override;
 
   /* Access methods */
   FXIconsTheme* get_iconstheme( )   { return a_iconsth; }                // Get a icons theme instance
   History*      get_History( )      { return a_history; }                // Get cache object, represent the launch history
-  FXint         HistoryQuickSize( ) { return a_cfg->hist_headsize; }
+  FXint         HistoryQuickSize( ) { return a_cfg->hist_headsize; }     //
   FXbool        autoexit( )         { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
   FXbool        is_silent( )        { return a_cfg->silent_exit; }       // if true, the application will not ask for confirmation of termination
-  FXbool        is_changed( )       { return a_cfg->change; }            // Idicate configration is changed
+  FXbool        is_changed( )       { return a_cfg->change; }            // Indicate configration is changed
 
 
   /* Operations */
 	virtual void init( int& argc, char** argv, FXbool connect = true ); 
-  int task_exec( Task *cmd );                                          // Run a command
-  int task_exec( );
-  void task_write( Task *cmd, const FXString &pth = FXString::null );  // Write a command on a desktop file
-  void load( );                                                        // Complete load
-  void save( );                                                        // Complete application save
+  int task_exec( Task *cmd );                                            // Run a command
+  int task_exec( );                                                      //
+  void task_write( Task *cmd, const FXString &pth = FXString::null ); // Write a command on a desktop file
+  void load( );                                                          // Complete load
+  void save( );                                                          // Complete application save
 
   /* messages & handlers */
   enum {

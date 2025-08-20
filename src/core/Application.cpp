@@ -45,7 +45,7 @@ void Application::init( int &argc, char** argv, FXbool connect )
 	Welcome( );
 	
   FXApp::init( argc, argv, connect );
-	
+
 	load( );
 	std::cout.flush( );	
 }
@@ -69,7 +69,7 @@ FXint Application::task_exec( Task *cmd )
     resh = system( _command.text( ) );
   }
 
-  DEBUG_OUT( "Execute resulth " << resh )
+  DEBUG_OUT( "Execute result " << resh )
   return resh;
 }
 
@@ -93,7 +93,7 @@ int Application::task_exec( )
     //return resh;
   }
 
-  DEBUG_OUT( "Execute resulth " << resh )
+  DEBUG_OUT( "Execute result " << resh )
   return resh;
 }
 
@@ -119,7 +119,7 @@ void Application::task_write( Task *cmd, const FXString &pth )
 
   desk_file.writeStringEntry( desk_head, "Comment", FXString::null );
   desk_file.writeStringEntry( desk_head, "Icon",    FXString::null );
-  desk_file.writeStringEntry( desk_head, "Notyfy",  FXString::null );
+  desk_file.writeStringEntry( desk_head, "Notify",  FXString::null );
   desk_file.writeStringEntry( desk_head, "Type",    "Application" );
 
   desk_file.unparseFile( pth + "/" + name + ".desktop" );
@@ -134,19 +134,19 @@ void Application::load( )
   a_history->set_limit( a_cfg->hist_limit );
   a_history->set_hysteresis( a_cfg->hist_lhyster );
 
-	a_history_filename = a_cfg->cache_dir + "/" +  getAppName( ) + "/History";
-	Storage<SubstrStream, History> history_store( a_history_filename );
-	if( history_store.isOpen( ) ) { history_store.load( a_history ); }
-	history_store.close( );
+  // Storages
+  m_history_store.set_filename( a_cfg->cache_dir + "/" +  getAppName( ) + "/History" );
+  DEBUG_OUT( "Store " << m_history_store.get_filename( ) << " ready state: " << ( m_history_store.ready( ) ? "true" : "false" ) )
+  m_history_store >> *a_history;
   //if( a_cfg->hist_loadopt ) { a_history->handle( this, FXSEL( SEL_UPDATE, ID_CLEANING), nullptr ); }
 }
 
 void Application::save( )
 {
-	Storage<SubstrStream, History> history_store( a_history_filename, FXIO::WriteOnly | FXIO::Create );
-	history_store.save( a_history );
-	history_store.close( );
-	
+  // Storages
+  DEBUG_OUT( "Store " << m_history_store.get_filename( ) << " ready state: " << ( m_history_store.ready( ) ? "true" : "false" ) )
+  m_history_store << *a_history;
+
   settings_save( );
 }
 
