@@ -160,13 +160,19 @@ void RunBox::create( )
 long RunBox::onUpd_list( FXObject *sender, FXSelector sel, void *data )
 {
   History *hist = m_app->get_History( );
-  FXint items_num = m_app->HistoryQuickSize( );
-  Task *t = nullptr;
+  FXint    number = hist->no( );
+  FXint    count = m_app->HistoryQuickSize( );
+  Task    *t = nullptr;
 
-  m_list->clearItems( );
-  for( int i = 0; i < items_num; i++ ) {
-    t = hist->at( i );
-    if( t ) { m_list->insertItem( i, t->cmd ); }
+  if( number > 0 ) {
+    m_list->clearItems( );
+    for( int i = 0; i < count; i++ ) {
+      if( i < number ) {
+        t = hist->at( i );
+        if( t ) { m_list->insertItem( i, t->cmd ); }
+      }
+      else { break; }
+    }
   }
 
   return 0;
