@@ -61,27 +61,24 @@ public :
   Task*  remove( FXint index, FXbool notify = false );                  // Remove existing index
   void   clear( FXbool notify = false );                                // Clear all items
 
-  template <typename STREAMER> FXbool load_data( STREAMER &streamer ) {
-    if( streamer.get_index( ) == 0 ) { clear( ); }
+  template <typename STREAMER> void load_data( STREAMER &pipe ) {
+    if( pipe.get_state( ) == 0 ) {
+      if( pipe.get_index( ) == 0 ) { clear( ); }
 
-    Task *task = new Task;
-    task->load_data( streamer );
-    m_buffer.insert( static_cast<FXint>( m_buffer.no( ) ), task, false );
-    return true;
+      Task *task = new Task;
+      task->load_data( pipe );
+      m_buffer.insert( static_cast<FXint>( m_buffer.no( ) ), task, false );
+    } // FIXME HISTOR_003: else -> handle state
   }
-  template <typename STREAMER> FXbool save_data( STREAMER &streamer ) {
-    FXbool success = false;
-
-     FXint index = streamer.get_index( );
-     if( index < m_buffer.no( ) ) {
-       Task *task = m_buffer.at( index );
-       if( task ) { task->save_data( streamer );
-         success = true;
-       }
-     }
-     else { streamer.set_state( 1 ); }
-
-     return success;
+  template <typename STREAMER> void save_data( STREAMER &pipe ) {
+    if( pipe.get_state( ) == 0 ) {
+      FXint index = pipe.get_index( );
+      if( index < m_buffer.no( ) ) {
+        Task *task = m_buffer.at( index );
+        if( task ) { task->save_data( pipe ); }
+      }
+      else { pipe.set_state( 1 ); }
+    } // FIXME HISTOR_003: else -> handle stating
   }
 
   /* Debug & tests */
