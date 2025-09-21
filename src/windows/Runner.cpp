@@ -70,7 +70,7 @@ Runner::Runner( Application *a )
 
   /* Initialize */
   GetHistory( )->set_target( this );
-  GetHistory( )->set_notify( ID_HISTORY );
+  GetHistory( )->set_notify( HISTORY_EVENT );
 
   this->LoadHistory( );
   r_combo->setText( "" );
@@ -195,10 +195,6 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
       else { r_app->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATION ), NULL ); }
       break; 
     }
-    case Runner::HYSTORY_CLEAR : {
-      // r_combo->clearItems( );
-      GetHistory( )->clear( );
-    }
   }
    
   if( !r_prop.term ) { r_prop.nocloseterm = false; }
@@ -206,26 +202,44 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
   return 1;
 }
 
-long Runner::on_History( FXObject *tgt, FXSelector sel, void *data )
+long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
 {
-   switch( FXSELTYPE( sel ) ) {
-     case SEL_UPDATE : {
-       Task *task = GetHistory( )->at( );
-       if( task ) {
-         r_combo->setText( task->cmd );
-         r_tfield->setText( task->wpth.empty( )? getenv( "HOME" ): task->wpth );
-       }
-       break;
-     }
-     case SEL_INSERTED : {
+  //DEBUG_OUT( "onCmd_History:" )
+  FXuint msg_id = FXSELID( sel );
+  FXuint msg_type = FXSELTYPE( sel );
 
-       break;
-     }
+  if( msg_id == HISTORY_EVENT ) {
+    switch( msg_type ) {
+      case SEL_UPDATE : {
+        std::cout << tgt->getClassName(  ) << " - History updated" << std::endl;
+        Task *task = GetHistory( )->at( );
+        if( task ) {
+          r_combo->setText( task->cmd );
+          r_tfield->setText( task->wpth.empty( )? getenv( "HOME" ): task->wpth );
+        }
+        break;
+      }
 
-     case SEL_DELETED : {
+      case SEL_COMMAND : {
 
-       break;
-     }
+        break;
+      }
+
+      case SEL_INSERTED : {
+
+        break;
+      }
+
+      case SEL_DELETED : {
+
+        break;
+      }
+    }
+  }
+
+  return 1;
+}
+
 
    }
 
