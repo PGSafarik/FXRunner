@@ -240,12 +240,30 @@ long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
   return 1;
 }
 
+long Runner::on_HistoryShow( FXObject *tgt, FXSelector sel, void *data )
+{
+  long resh = 1;
 
-   }
+  switch ( FXSELTYPE( sel ) ) {
+    case SEL_COMMAND :
+    {
+      HistoryView hview( this );
+      hview.execute( );
+      resh = 0;
+      break;
+    }
 
-  return 0;
+    case SEL_UPDATE :
+    {
+      FXuint msg = ( GetHistory( )->no( ) > 0 ) ? FXMenuCommand::ID_ENABLE : FXMenuCommand::ID_DISABLE;
+      resh = tgt->handle( this, FXSEL( SEL_COMMAND, msg ), nullptr );
+
+      break;
+    }
+  }
+
+  return resh;
 }
-
 
 /**************************************************************************************************/
 void Runner::LoadHistory( )
