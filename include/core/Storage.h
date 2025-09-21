@@ -140,8 +140,8 @@ template<typename STREAMER, typename CLIENT> void Storage<STREAMER, CLIENT>::ope
 
 	if( readBlock( buffer.text( ), fsize ) == fsize ) {
 		pipe.set_state( 0 );
-		FXint num = buffer.contains( '\n' );
-		while( pipe.get_index( ) < num ) {
+		FXint lines_num = buffer.contains( '\n' );
+		while( pipe.get_index( ) < lines_num ) {
 			FXString line = buffer.section( '\n', pipe.get_index( ) );
 			line.trim( );
 			if( !line.empty( ) ) {
