@@ -27,6 +27,7 @@ buffer_clean=actions/remove
 buffer_size=actions/zoom-select-y
 properties=actions/settings-configure
 settings=categories/preferences-system
+popup=actions/arrow-down
 
 view="actions/document-page-setup"
 accept="actions/dialog-ok-apply"
@@ -36,6 +37,10 @@ user="actions/user-identity"
 terminal="apps/utilities-terminal"
 ui="actions/umbrello_diagram_class"
 
+history=actions/view-history
+history_top=actions/go-top
+history_delete=actions/edit-delete
+history_clear=actions/trash-empty
 
 [Faenza]
 map.type="png"
