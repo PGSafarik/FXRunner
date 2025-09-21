@@ -24,5 +24,5 @@
 *************************************************************************/
 #include "windows/Runner.h"
 #include "windows/SettingsDialog.h"
-
+#include "windows/HistoryView.h"
 #endif /* FXRUNNER_WINDOWS_H */
