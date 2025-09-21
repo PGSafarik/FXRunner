@@ -62,6 +62,7 @@ buffer_size=actions/view-refresh
 properties=actions/gtk-properties
 settings=categories/preferences-system
 popup=actions/go-down
+//history=actions/stock_file-properties
 
 accept="actions/dialog-ok"
 discard="actions/edit-delete"
@@ -70,6 +71,11 @@ view="actions/document-page-setup"
 user="stock/avatar-default"
 terminal="apps/utilities-terminal"
 ui="categories/preferences-desktop"
+
+history=actions/view-list-compact
+history_top=actions/go-top
+history_delete=actions/edit-delete
+history_clear=actions/edit-clear
 
 [Gnome]
 map.type="png"
