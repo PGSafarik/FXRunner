@@ -71,7 +71,7 @@ public:
 };
 
 /*** Storage **************************************************************************************/
-template<typename STREAMER, typename CLIENT > class Storage : protected FXFile {
+template<typename STREAMER, typename CLIENT > class Storage : private FXFile {
 	FXString m_filename;	// Path of the file of the storage
 	FXbool   m_ready;			// Indication that all conditions for proper storage function are met
 
