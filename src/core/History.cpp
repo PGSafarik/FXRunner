@@ -42,7 +42,8 @@ Task* History::add( const FXString &cmd_str, FXbool notify )
 {
   if( !cmd_str.empty( ) ) {
     Task *task = new Task( cmd_str );
-    if( m_buffer.insert( 0, task, notify ) ) {
+    if( m_buffer.insert( 0, task ) ) {
+      if ( notify ) { Notify( SEL_INSERTED ); }
       return task;
     }
   }
