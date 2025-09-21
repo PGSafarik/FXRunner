@@ -80,9 +80,8 @@ public:
   ~Storage( ) override = default;
 
 	/* Access */
-	using FXFile::isOpen;
-	FXbool ready( ) const { return m_ready; }
-  FXbool set_filename( const FXString &filename );
+	FXbool   ready( ) const { return m_ready; }
+  FXbool   set_filename( const FXString &filename );
 	FXString get_filename( ) { return m_filename; }
 
 	/* Operations */
