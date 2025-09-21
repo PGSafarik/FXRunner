@@ -271,13 +271,6 @@ void Runner::LoadHistory( )
   History *history = GetHistory( );
   FXint num = history->no( );
   FXString cmd;
-  /*
-  r_combo->clearItems( );
-  for( FXint i = 0; i != num; i++ ) {
-    Task *entry = history->at( i, false );
-    r_combo->insertItem( i, entry->cmd );
-  }
-  */
 }
 
 void Runner::Check_property( Task *task )
