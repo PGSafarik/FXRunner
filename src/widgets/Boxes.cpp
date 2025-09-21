@@ -56,6 +56,7 @@ FXMenuPane* FXMenuBox::make_menu( )
 
   // Hlavni nabidka
   new FXMenuCommand( MyMenu, "Spustit", icons->get_icon( "run", "Menu" ), tgt, Runner::ID_ACCEPT );
+  new FXMenuCommand( MyMenu, "Hystorie", icons->get_icon( "history", "Menu" ), tgt, Runner::HISTORY_SHOW );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
   new FXMenuCascade( MyMenu, "Moznosti spusteni", icons->get_icon( "properties", "Menu" ), ToolsMenu );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
