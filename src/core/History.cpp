@@ -50,17 +50,6 @@ Task* History::add( const FXString &cmd_str, FXbool notify )
   return nullptr;
 }
 
-FXbool History::insert( FXint pos, Task *task, FXbool notify )
-{
-  if( task && !task->cmd.empty( ) ) {
-    if ( m_buffer.insert( pos, task ) ) {
-      if ( notify ) { Notify( SEL_INSERTED ); }
-      return true;
-    }
-  }
-  return false;
-}
-
 Task* History::remove( FXint index, FXbool notify )
 {
     Task *t = m_buffer.at( index );

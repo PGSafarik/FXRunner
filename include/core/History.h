@@ -57,7 +57,6 @@ public :
   Task*  at( const FXint index = 0 ) { return m_buffer.at( index ); }   // Returns task from specific position (if any)
   FXbool current( FXint pos, FXbool notify = true );                    // Returns true if the task is set to current (i.e., to the top of the history stack).
   Task*  add( const FXString &cmd_str, FXbool notify = false );         // Create new Task instance and insert on list
-  FXbool insert( FXint pos, Task *task, FXbool notify = false );        // Insert existing task on list
   Task*  remove( FXint index, FXbool notify = false );                  // Remove existing index
   void   clear( FXbool notify = false );                                // Clear all items
 
