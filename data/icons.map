@@ -124,6 +124,7 @@ buffer_clean=actions/list-remove-symbolic.symbolic
 buffer_size=status/content-loading-symbolic.symbolic
 properties=categiries/prefereces-system-symbolic.symbolic
 settings=categories/preferences-system-symbolic.symbolic
+history=actions/view-list-ordered-symbolic.symbolic
 
 view="actions/document-page-setup"
 accept="actions/object-select-symbolic.symbolic"
