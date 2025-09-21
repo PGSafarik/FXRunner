@@ -96,6 +96,7 @@ buffer_clean=actions/remove
 buffer_size=actions/view-refresh
 properties=actions/gtk-properties
 settings=categories/preferences-system
+history=actions/document-open-recent
 
 view="actions/document-page-setup"
 accept="actions/gtk-execute"
