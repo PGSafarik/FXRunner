@@ -89,6 +89,22 @@ long HistoryView::on_List( FXObject *sender, FXSelector selector, void *ptr )
    return resh;
 }
 
+long HistoryView::on_select( FXObject *sender, FXSelector selector, void *ptr )
+{
+  Application *app = dynamic_cast<Application*>( getApp( ) );
+
+  switch( FXSELTYPE( selector ) ) {
+    case SEL_DOUBLECLICKED: {
+      FXint current = m_view->getCurrentItem( );
+      if( current >= 0 ) {
+        app->get_History( )->current( current, true );
+        this->handle( this, FXSEL( SEL_COMMAND, ID_CLOSE ), nullptr );
+      }
+      break;
+    }
+  }
+}
+
 long HistoryView::on_Window( FXObject *sender, FXSelector selector, void *ptr )
 {
 
