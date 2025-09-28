@@ -25,5 +25,6 @@
 #include "widgets/Boxes.h"
 #include "widgets/Settings.h"
 #include "widgets/CommandLine.h"
+#include "widgets/RunModes.h"
 
 #endif /* FXRUNNER_WIDGETS_H */
