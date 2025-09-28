@@ -5,9 +5,10 @@
 #include "windows/HistoryView.h"
 
 FXDEFMAP( HistoryView ) HW_MAP[ ] = {
-  FXMAPFUNC(  SEL_UPDATE,  HistoryView::ID_REFRESH, HistoryView::on_Window ),
-  FXMAPFUNC(  SEL_UPDATE,  HistoryView::ID_HELP,    HistoryView::on_Window ),
-  FXMAPFUNCS( SEL_COMMAND, HistoryView::ID_SELECT,  HistoryView::ID_TOP, HistoryView::on_List ),
+  FXMAPFUNC(  SEL_UPDATE,        HistoryView::ID_REFRESH, HistoryView::on_Window ),
+  FXMAPFUNC(  SEL_UPDATE,        HistoryView::ID_HELP,    HistoryView::on_Window ),
+  FXMAPFUNC(  SEL_DOUBLECLICKED, HistoryView::ID_SELECT,  HistoryView::on_select ),
+  FXMAPFUNCS( SEL_COMMAND,       HistoryView::ID_REMOVE,  HistoryView::ID_TOP, HistoryView::on_List ),
 };
 FXIMPLEMENT( HistoryView, FXSecondaryWindow, HW_MAP, ARRAYNUMBER( HW_MAP ) )
 
