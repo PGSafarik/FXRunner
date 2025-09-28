@@ -29,11 +29,9 @@ class RunBox;
 class Runner : public FXPrimaryWindow {
 FXDECLARE( Runner )
   Application *r_app;
-  FXComboBox  *r_combo;
-  FXTextField *r_tfield;
+  FXTextField *m_cmdfield;
 
   RunBox *m_runbox;
-
   Properties    r_prop;
   FXIconsTheme *r_icons;
 

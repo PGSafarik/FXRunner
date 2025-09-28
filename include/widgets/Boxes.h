@@ -46,45 +46,6 @@ protected :
   FXMenuCommand* makeCommand( FXMenuPane *pane, const FXString &Title, const FXString &icon, FXSelector sel );
 };
 
-/*** Process options menu *************************************************************************/
-class FXOptionsBox : public FXHeaderBox {
-FXDECLARE( FXOptionsBox )
-  FXMenuButton *m_button;
-  
-public :
-  FXOptionsBox( FXWindowHeader *p, FXIcon *ic );
-  virtual ~FXOptionsBox( ) { }
-
-  /* Operations */
-  virtual void create( );
-
-  /* Access methods */
-
-protected :
-  FXOptionsBox( ) { }
-  
-  /* Helpers methods */
-  FXMenuPane* make_menu( );
-  FXMenuCommand* makeCommand( FXMenuPane *pane, const FXString &Title, const FXString &icon, FXSelector sel );
-};
-
-/*** ToolBox **************************************************************************************/
-class Toolbar : public FXHeaderBox {
-FXDECLARE( Toolbar )
-  
-public:
-  Toolbar( FXWindowHeader *p);
-  virtual ~Toolbar( ) { }
-
-  /* Operations */
-  virtual void create( );
-
-  /* Access methods */
-  
-protected:
-  Toolbar( ) { }
-};
-
 /*** Run Button with menu *************************************************************************/
 class RunBox : public FXHeaderBox {
 FXDECLARE( RunBox )

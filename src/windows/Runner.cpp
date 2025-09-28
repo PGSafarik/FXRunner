@@ -32,30 +32,19 @@ FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
 FXIMPLEMENT( Runner, FXPrimaryWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
 
 Runner::Runner( Application *a )
-      : FXPrimaryWindow( a, "Fox Runner", NULL, NULL, CONTROLS_STATIC | WINDOW_MAIN | WINDOW_STATIC , 0, 0, 570, 110 )
+      : FXPrimaryWindow( a, "Fox Runner", NULL, NULL, CONTROLS_STATIC | WINDOW_MAIN | WINDOW_STATIC , 0, 0, 570, 80 )
 {
   FXString cmd;
   r_app = a;
-  
-  //  Window composite mask
   setWMDecorations( WM_DECOR_PRIMARY );
-  FXVerticalFrame *content = new FXVerticalFrame( this, FRAME_NONE | LAYOUT_FILL, 0, 0, 0, 0,  0, 0, 0, 0,  0, 0 );
-  
-  /* Aplication layout */
-  //FXVerticalFrame *up_frame = new FXVerticalFrame( content, FRAME_NONE| LAYOUT_FILL, 0, 0, 0, 0,  0, 0, 0, 0,  0, 0 );
-  FXMatrix        *matrix   = new FXMatrix( content, 2, FRAME_NONE | MATRIX_BY_COLUMNS | LAYOUT_CENTER_Y | LAYOUT_FILL );
-  new FXStatusBar( content, FRAME_RAISED | LAYOUT_SIDE_BOTTOM | LAYOUT_BOTTOM | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0  );
 
   /* Command field */
+  FXGroupBox *exec_fr = new FXGroupBox( this, "Command to run: ", GROUPBOX_NORMAL | LAYOUT_FILL_X );
   FXint ncol = 50;
-  new FXLabel( matrix, "Command to run: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
-  r_combo = new FXComboBox( matrix, 50, NULL, 0, FRAME_GROOVE | COMBOBOX_NORMAL | LAYOUT_FILL  );
-  r_combo->setNumVisible( 0 );
+  m_cmdfield = new FXTextField( exec_fr, ncol, nullptr, 0, TEXTFIELD_NORMAL | LAYOUT_FILL_X );
 
-  /* Work dir field */ 
-  new FXLabel( matrix, "Workdir: ", NULL, JUSTIFY_LEFT | LAYOUT_FILL );
-  r_tfield = new FXTextField( matrix, ncol, NULL, 0, TEXTFIELD_NORMAL | LAYOUT_FILL );
-  r_tfield->setText( FXSystem::getHomeDirectory( ) );
+  /* Status bar */
+  new FXStatusBar( this, FRAME_RAISED | LAYOUT_SIDE_BOTTOM | LAYOUT_BOTTOM | LAYOUT_FILL_X, 0, 0, 0, 0,  0, 0, 0, 0  );
 
   /* HEADER BAR */
   FXWindowHeader *whb = this->getHeader( );
@@ -65,15 +54,13 @@ Runner::Runner( Application *a )
   new FXMenuBox( whb, this->getMenuIcon( ) );
   new FXVerticalSeparator( whb );
   m_runbox = new RunBox( whb );
-  new Toolbar( whb );
-  new FXOptionsBox( whb, this->getMenuIcon( true ) );
 
   /* Initialize */
   GetHistory( )->set_target( this );
   GetHistory( )->set_notify( HISTORY_EVENT );
 
   this->LoadHistory( );
-  r_combo->setText( "" );
+  m_cmdfield->setText( "" );
 
   ShortCuts( );
 }
@@ -122,7 +109,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
       if( task ) {
         r_app->task_exec( );       // Running application
         Update( );                      // Actualize history command list in combobox
-        r_combo->setText( "" );      // Clean command text
+        m_cmdfield->setText( "" );      // Clean command text
         if( r_app->autoexit( ) ) { quit = true; }
       }
 
@@ -152,14 +139,14 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
          if( !pth.empty( ) ) {
            if( pth[ pth.length( ) - 1 ] != '/' ) { pth += "/"; }
          }
-         r_combo->setText( file );
+         m_cmdfield->setText( file );
        }
        break;
      }
      case Runner::OPEN_DIR :{
         FXDirDialog *dir = new FXDirDialog ( r_app, "Select workdir:" );
         if( dir->execute( ) ) {
-          r_tfield->setText( dir->getDirectory( ) );
+          //r_tfield->setText( dir->getDirectory( ) );
         }
        break;
      }
@@ -204,7 +191,6 @@ long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
 
 long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
 {
-  //DEBUG_OUT( "onCmd_History:" )
   FXuint msg_id = FXSELID( sel );
   FXuint msg_type = FXSELTYPE( sel );
 
@@ -214,8 +200,7 @@ long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
         std::cout << tgt->getClassName(  ) << " - History updated" << std::endl;
         Task *task = GetHistory( )->at( );
         if( task ) {
-          r_combo->setText( task->cmd );
-          r_tfield->setText( task->wpth.empty( )? getenv( "HOME" ): task->wpth );
+          m_cmdfield->setText( task->cmd );
         }
         break;
       }
@@ -285,7 +270,7 @@ void Runner::Check_property( Task *task )
 
 void Runner::DefaultFocus( )
 {
-   if( !r_combo->hasFocus( ) ) { r_combo->setFocus( ); }
+   if( !m_cmdfield->hasFocus( ) ) { m_cmdfield->setFocus( ); }
 }
 
 void Runner::ShortCuts( )
@@ -307,18 +292,11 @@ Task* Runner::MakeTask( )
   FXbool   err_flg = false;     // Priznak uzivatelske chyby
 
   // Get command and working path
-  FXString cmd = r_combo->getText( );
-  FXString pth = r_tfield->getText( );
+  FXString cmd = m_cmdfield->getText( );
 
   // Set command
   if( !cmd.empty( ) ) {
     task = GetHistory(  )->add( cmd, true );
-
-    // Set command working path
-    if( !pth.empty( ) ) {
-      task->wpth = pth;
-      if( task->wpth[ task->wpth.length( ) - 1 ] != '/' ) { task->wpth += "/"; }
-    }
 
     // Set properties
     Check_property( task );
@@ -339,7 +317,6 @@ Task* Runner::SetTask( Task *task )
 void Runner::Update( )
 {
   LoadHistory( );
-  m_runbox->handle( this, FXSEL( SEL_UPDATE, RunBox::ID_LIST ), nullptr );
 }
 
 /*** END ******************************************************************************************/

@@ -76,61 +76,6 @@ FXMenuCommand* FXMenuBox::makeCommand( FXMenuPane *pane, const FXString &title, 
    return new FXMenuCommand( pane, title, (( Application * ) this->getApp( ))->get_iconstheme( )->get_icon( icon, "Menu" ), getBoxFrame( )->getBoxTarget( ), sel );
 }
 
-/*** OPTIONS MENU ****************************************************************************/
-FXIMPLEMENT( FXOptionsBox, FXHeaderBox, NULL, 0 )
-
-FXOptionsBox::FXOptionsBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, nullptr, 0, LAYOUT_CENTER_Y | LAYOUT_RIGHT, 0, 0, 0 )
-{
-  m_button = new FXMenuButton( this, "\t\tMoznosti spusteni", ic, make_menu( ), BUTTON_TOOLBAR|ICON_ABOVE_TEXT|LAYOUT_FILL_Y );
-}
-
-void FXOptionsBox::create( )
-{
-  FXHeaderBox::create( );
-  m_button->create( );
-}
-
-FXMenuPane* FXOptionsBox::make_menu( )
-{
-  FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
-
-  // Structura menu
-  FXMenuPane *ToolsMenu = new FXMenuPane( this );
-
-  // Nabidka volby
-  new FXMenuCheck( ToolsMenu, "Superuzivatelska prava", tgt, Runner::ID_USER, 0 );
-  new FXMenuCheck( ToolsMenu, "Neblokujici rezim", tgt, Runner::ID_ANNOUNCE, 0 );
-  new FXMenuCheck( ToolsMenu, "Exit after run", tgt, Runner::ID_NOQUIT, 0 );
-  new FXVerticalSeparator( ToolsMenu, SEPARATOR_GROOVE );
-  new FXMenuCheck( ToolsMenu, "Spustit v terminalu", tgt, Runner::ID_TERMINAL, 0 );
-  new FXMenuCheck( ToolsMenu, "Nezavirat terminal", tgt, Runner::ID_TERMLOCK, 0 );
-
-  return ToolsMenu;
-}
-
-FXMenuCommand* FXOptionsBox::makeCommand( FXMenuPane *pane, const FXString &title, const FXString &icon, FXSelector sel )
-{
-   return new FXMenuCommand( pane, title, (( Application * ) this->getApp( ))->get_iconstheme( )->get_icon( icon, "Menu" ), getBoxFrame( )->getBoxTarget( ), sel );
-}
-
-/*** Tool bar *************************************************************************************/
-FXIMPLEMENT( Toolbar, FXHeaderBox, NULL, 0 )
-
-Toolbar::Toolbar( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN | LAYOUT_LEFT, 0, 0, 0 )
-{
-  Application  *app = ( Application * ) this->getApp( );
-  FXIconsTheme *icons = app->get_iconstheme( );
-  FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
-  
-  new FXButton( this, "\t\t Otevrit soubor", icons->get_icon( "open", "HeaderBar" ), tgt, Runner::OPEN_FILE, BUTTON_NORMAL | LAYOUT_RIGHT );
-  new FXButton( this, "\t\t Zmenit pracovni adresar", icons->get_icon( "directory", "HeaderBar" ), tgt, Runner::OPEN_DIR, BUTTON_NORMAL | LAYOUT_RIGHT );
-}
-
-void Toolbar::create( )
-{
-  FXHeaderBox::create( );
-}
-
 /*** Run buttons **********************************************************************************/
 FXDEFMAP( RunBox ) RB_MAP[ ] = {
   FXMAPFUNC( SEL_UPDATE, RunBox::ID_LIST, RunBox::onUpd_list ),
