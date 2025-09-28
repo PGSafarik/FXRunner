@@ -78,64 +78,69 @@ FXMenuCommand* FXMenuBox::makeCommand( FXMenuPane *pane, const FXString &title, 
 
 /*** Run buttons **********************************************************************************/
 FXDEFMAP( RunBox ) RB_MAP[ ] = {
-  FXMAPFUNC( SEL_UPDATE, RunBox::ID_LIST, RunBox::onUpd_list ),
-  FXMAPFUNC( SEL_COMMAND, RunBox::ID_LIST, RunBox::onCmd_select ),
+  FXMAPFUNCS( SEL_COMMAND, RunBox::ID_SELECT, RunBox::ID_WORKDIR, RunBox::OnCmd_Open ),
+  FXMAPFUNC( SEL_OPENED, RunBox::ID_NOTIFY, RunBox::on_Notify ),
+  FXMAPFUNC( SEL_CLOSED, RunBox::ID_NOTIFY, RunBox::on_Notify ),
 };
 FXIMPLEMENT( RunBox, FXHeaderBox, RB_MAP, ARRAYNUMBER( RB_MAP ) )
 
 RunBox::RunBox( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN | LAYOUT_LEFT, 0, 0, 0 )
 {
-   m_app = dynamic_cast< Application* >( this->getApp( ) );
-   FXIconsTheme *icons = m_app->get_iconstheme( );
-   FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
+  m_app = dynamic_cast< Application* >( this->getApp( ) );
+  FXIconsTheme *icons = m_app->get_iconstheme( );
+  FXObject     *tgt = getBoxFrame( )->getBoxTarget( );
 
-   m_popup = new FXPopup( this, POPUP_VERTICAL|FRAME_RAISED|FRAME_THICK, 0, 0, 450, 232  );
-   m_list  = new FXList( m_popup, this, ID_LIST, LIST_NORMAL | LAYOUT_FILL );
+  m_popup = new FXPopup( this, POPUP_VERTICAL | POPUP_SHRINKWRAP | FRAME_RAISED | FRAME_THICK );
+  m_popup->setBaseColor( getApp( )->getBackColor( ) );
+  FXHorizontalFrame *buttons_fr = new FXHorizontalFrame( m_popup, FRAME_NONE | LAYOUT_FILL_X | PACK_UNIFORM_WIDTH );
+  new FXButton( buttons_fr, "Find command", icons->get_icon( "open",    16 ), this, ID_SELECT, BUTTON_NORMAL | LAYOUT_FILL );
+  new FXButton( buttons_fr, "Show History", icons->get_icon( "history", 16 ), this, ID_HISTORY, BUTTON_NORMAL | LAYOUT_FILL  );
 
-   m_action_btn = new FXButton( this, "\t\t Spustit", icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT, BUTTON_NORMAL | LAYOUT_LEFT );
-   m_menu_btn   = new FXMenuButton( this, FXString::null, icons->get_icon( "popup", 16 ), m_popup, FRAME_RAISED | FRAME_THICK | JUSTIFY_NORMAL | ICON_BEFORE_TEXT | MENUBUTTON_DOWN | LAYOUT_FILL_Y, 18 );
+  new RunModes( m_popup, this, ID_NOTIFY );
+
+  m_action_btn = new FXButton( this, "\t\t Spustit", icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT, BUTTON_NORMAL | LAYOUT_LEFT );
+  m_menu_btn   = new FXMenuButton( this, FXString::null, icons->get_icon( "popup", 16 ), m_popup, FRAME_RAISED | FRAME_THICK | JUSTIFY_NORMAL | ICON_BEFORE_TEXT | MENUBUTTON_DOWN | LAYOUT_FILL_Y, 18 );
 }
 
 void RunBox::create( )
 {
   FXHeaderBox::create( );
 
-  onUpd_list( this, ID_UPDATE, NULL );
 }
 
-long RunBox::onUpd_list( FXObject *sender, FXSelector sel, void *data )
+long RunBox::OnCmd_Open( FXObject *tgt, FXSelector sel, void *data )
 {
-  History *hist = m_app->get_History( );
-  FXint    number = hist->no( );
-  FXint    count = m_app->HistoryQuickSize( );
-  Task    *t = nullptr;
+  FXlong result = 0;
 
-  if( number > 0 ) {
-    m_list->clearItems( );
-    for( int i = 0; i < count; i++ ) {
-      if( i < number ) {
-        t = hist->at( i );
-        if( t ) { m_list->insertItem( i, t->cmd ); }
-      }
-      else { break; }
+  m_menu_btn->handle( this, FXSEL( SEL_COMMAND, FXMenuButton::ID_UNPOST ), nullptr );
+  FXObject     *box_tgt = getBoxFrame( )->getBoxTarget( );
+  switch( FXSELID( sel )  ) {
+    case ID_SELECT :
+    {
+      result = box_tgt->handle( this, FXSEL( SEL_COMMAND, Runner::OPEN_FILE ), nullptr );
+      break;
+    }
+    case ID_HISTORY :
+    {
+      result = box_tgt->handle( this, FXSEL( SEL_COMMAND, Runner::HISTORY_SHOW ), nullptr );
+      break;
     }
   }
 
-  return 0;
+  return result;
 }
 
-long RunBox::onCmd_select( FXObject *sender, FXSelector sel, void *data )
+long RunBox::on_Notify( FXObject *tgt, FXSelector sel, void *data )
 {
-  FXival pos = (FXival) data;
-  Task *t = m_app->get_History( )->at( (FXint ) pos );
-  if( t ) {
-    //std::cout << pos << ". " << t->cmd << std::endl;
-    m_app->get_History( )->current( ( FXint )pos );
-    m_menu_btn->handle( this, FXSEL( SEL_COMMAND, ID_UNPOST ), nullptr );
-    return 1;
+  switch( FXSELTYPE( sel ) ) {
+    case SEL_OPENED : {
+      m_menu_btn->handle( this, FXSEL( SEL_COMMAND, FXMenuButton::ID_UNPOST ), nullptr );
+      break;
+    }
+    case SEL_CLOSED : {
+      m_menu_btn->handle( this, FXSEL( SEL_COMMAND, FXMenuButton::ID_POST ), nullptr );
+      break;
+    }
   }
-
-  return 0;
 }
-
 /*** END ******************************************************************************************/

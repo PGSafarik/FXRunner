@@ -53,7 +53,7 @@ FXDECLARE( RunBox )
   FXButton     *m_action_btn;
   FXMenuButton *m_menu_btn;
   FXPopup      *m_popup;
-  FXList       *m_list;
+  FXTextField  *m_dir_text;
 
 public:
   explicit RunBox( FXWindowHeader *p );
@@ -66,12 +66,15 @@ public:
 
   /* Messages & Handlers */
   enum {
-    ID_UPDATE = FXHeaderBox::ID_LAST,
-    ID_LIST,
+    ID_NOTIFY = FXHeaderBox::ID_LAST, //
+    ID_SELECT,                      // Open the dialog for select command
+    ID_HISTORY,                     // Switch to the history window
+    ID_WORKDIR,                     //
+
     ID_LAST
   };
-  long onUpd_list( FXObject *sender, FXSelector sel, void *data );
-  long onCmd_select( FXObject *sender, FXSelector sel, void *data );
+  long OnCmd_Open( FXObject *tgt, FXSelector sel, void *data );
+  long on_Notify( FXObject *tgt, FXSelector sel, void *data );
 
 protected:
   RunBox( ) { }
