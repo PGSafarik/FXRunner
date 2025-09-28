@@ -62,7 +62,6 @@ buffer_size=actions/view-refresh
 properties=actions/gtk-properties
 settings=categories/preferences-system
 popup=actions/go-down
-//history=actions/stock_file-properties
 
 accept="actions/dialog-ok"
 discard="actions/edit-delete"
@@ -106,6 +105,11 @@ user="status/avatar-default"
 terminal="apps/utilities-terminal"
 ui="categories/preferences-desktop"
 
+history=actions/view-list-compact
+history_top=actions/go-top
+history_delete=actions/edit-delete
+history_clear=actions/edit-clear
+
 [Adwaita]
 map.type="png"
 map.path="/usr/share/icons/Adwaita"
@@ -134,6 +138,11 @@ default="actions/star-new-symbolic.symbolic"
 user="status/avatar-default-symbolic.symbolic"
 terminal="apps/utilities-terminal-symbolic.symbolic"
 ui="categories/preferences-other-symbolic.symbolic"
+
+history=actions/view-list-compact
+history_top=actions/go-top
+history_delete=actions/edit-delete
+history_clear=actions/edit-clear
 
 [Tango2]
 map.type="png"
