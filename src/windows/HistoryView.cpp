@@ -22,7 +22,7 @@ HistoryView::HistoryView( FXTopWindow *w )
   this->getHeader(  )->setText( "History view" );
 
   FXHorizontalFrame *content_frame = new FXHorizontalFrame( this, FRAME_NONE | LAYOUT_FILL );
-  m_view = new FXIconList( content_frame, nullptr, 0, ICONLIST_EXTENDEDSELECT | ICONLIST_DETAILED | LAYOUT_FILL );
+  m_view = new FXIconList( content_frame, this, ID_SELECT, ICONLIST_EXTENDEDSELECT | ICONLIST_DETAILED | LAYOUT_FILL );
   m_view->setHeaders( "Command\nWork path\nBackground mode\nSuper user mode\nTerminal", 120 );
   m_view->setHeaderSize( 0, 250 );
   m_view->setHeaderSize( 1, 200 );
