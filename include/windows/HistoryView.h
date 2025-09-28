@@ -40,6 +40,7 @@ public :
     ID_HELP,                                   // Show help from this window
     ID_LAST,
   };
+  long on_select( FXObject *sender, FXSelector selector, void *ptr );
   long on_List( FXObject *sender, FXSelector selector, void *ptr );
   long on_Window( FXObject *sender, FXSelector selector, void *ptr );
 
