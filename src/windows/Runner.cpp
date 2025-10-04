@@ -19,8 +19,6 @@
 FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
   FXMAPFUNCS( SEL_COMMAND, Runner::ID_ACCEPT,     Runner::ID_CANCEL,   Runner::onCmd_Run ),
   FXMAPFUNCS( SEL_COMMAND, Runner::OPEN_DIR,      Runner::OPEN_HELP,   Runner::onCmd_Open ),
-  FXMAPFUNCS( SEL_COMMAND, Runner::ID_NOQUIT,     Runner::ID_TERMLOCK, Runner::onCmd_Tools ),
-  FXMAPFUNC(  SEL_UPDATE,  Runner::ID_NOQUIT,     Runner::onCmd_Tools ),
   FXMAPFUNC( SEL_COMMAND,  Runner::HISTORY_EVENT, Runner::on_HistoryEvent ),
   FXMAPFUNC( SEL_UPDATE,   Runner::HISTORY_EVENT, Runner::on_HistoryEvent ),
   FXMAPFUNC( SEL_INSERTED, Runner::HISTORY_EVENT, Runner::on_HistoryEvent ),
@@ -58,8 +56,6 @@ Runner::Runner( Application *a )
   /* Initialize */
   GetHistory( )->set_target( this );
   GetHistory( )->set_notify( HISTORY_EVENT );
-
-  this->LoadHistory( );
   m_cmdfield->setText( "" );
 
   ShortCuts( );
@@ -161,34 +157,6 @@ long Runner::onCmd_Open( FXObject *tgt, FXSelector sel, void *data )
    return 1;
 }
 
-long Runner::onCmd_Tools( FXObject *tgt, FXSelector sel, void *data )
-{
-  FXMenuCheck *check = ( FXMenuCheck* ) tgt;
-  FXbool status  = check->getCheck( );
-  FXuint msgtype = FXSELTYPE( sel );
-  FXuint msgid   = FXSELID( sel );
-
-  switch( msgid ) {
-    case Runner::ID_USER     : { /*r_acmd->su*/ r_prop.suaccess    = status; break; }
-    case Runner::ID_ANNOUNCE : { /*r_acmd->ow*/ r_prop.unblock     = status; break; }
-    case Runner::ID_TERMINAL : { /*r_acmd->te*/ r_prop.term        = status; break; } // FIXME RUNNER_001: Nefunguje?
-    case Runner::ID_TERMLOCK : { /*r_acmd->lt*/ r_prop.nocloseterm = status; break; } //  FIXME RUNNER_001: Nefunguje?
-    //case Runner::ID_LINK     : { r_acmd->cl  = status; break; }
-    case Runner::ID_NOQUIT   : { 
-      if( msgtype == SEL_UPDATE ) {
-        FXbool state =  r_app->autoexit( );
-        check->setCheck( state ); 
-      }
-      else { r_app->handle( this, FXSEL( SEL_COMMAND, Application::QUIT_NEGATION ), NULL ); }
-      break; 
-    }
-  }
-   
-  if( !r_prop.term ) { r_prop.nocloseterm = false; }
-
-  return 1;
-}
-
 long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
 {
   FXuint msg_id = FXSELID( sel );
@@ -205,7 +173,7 @@ long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
         }
         break;
       }
-
+      /* Nothig for this time
       case SEL_COMMAND : {
 
         break;
@@ -220,6 +188,7 @@ long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
 
         break;
       }
+      */
     }
   }
 
@@ -252,23 +221,6 @@ long Runner::on_HistoryShow( FXObject *tgt, FXSelector sel, void *data )
 }
 
 /**************************************************************************************************/
-void Runner::LoadHistory( )
-{
-  History *history = GetHistory( );
-  FXint num = history->no( );
-  FXString cmd;
-}
-
-void Runner::Check_property( Task *task )
-{
-  if( task ) {
-    task->prop->suaccess = r_prop.suaccess;
-    task->prop->unblock = r_prop.unblock;
-    task->prop->term = r_prop.term;
-    task->prop->nocloseterm = r_prop.nocloseterm;
-  }
-}
-
 void Runner::DefaultFocus( )
 {
    if( !m_cmdfield->hasFocus( ) ) { m_cmdfield->setFocus( ); }
@@ -298,9 +250,6 @@ Task* Runner::MakeTask( )
   // Set command
   if( !cmd.empty( ) ) {
     task = GetHistory(  )->add( cmd, true );
-
-    // Set properties
-    Check_property( task );
   }
   else {
       err_str = "The field for entering the command must not be empty!\nPlease enter the required command to run";

@@ -158,7 +158,6 @@ void HistoryView::UpdateList( )
   History     *hist = nullptr;
 
   if( ( hist = m_app->get_History( ) ) != nullptr ) {
-    //std::cout << "LOAD HISTORY TO DIALOG" << std::endl;
     FXint num = static_cast<FXint>( hist->no( ) );
 
     m_view->clearItems( );

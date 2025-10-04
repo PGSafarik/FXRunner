@@ -28,12 +28,10 @@ class RunBox;
 
 class Runner : public FXPrimaryWindow {
 FXDECLARE( Runner )
-  Application *r_app;
-  FXTextField *m_cmdfield;
-
-  RunBox *m_runbox;
-  Properties    r_prop;
+  Application  *r_app;
   FXIconsTheme *r_icons;
+  FXTextField  *m_cmdfield;
+  RunBox       *m_runbox;
 
 public:
   Runner( Application *a );
@@ -52,20 +50,12 @@ public:
     OPEN_OPTIONS,
     OPEN_HELP,
 
-    ID_NOQUIT,
-    ID_USER,
-    ID_ANNOUNCE,
-    ID_LINK,
-    ID_TERMINAL,
-    ID_TERMLOCK,
-
     HISTORY_EVENT,
     HISTORY_SHOW,
   };
 
   long onCmd_Run( FXObject *tgt, FXSelector sel, void *data );
   long onCmd_Open( FXObject *tgt, FXSelector sel, void *data );
-  long onCmd_Tools( FXObject *tgt, FXSelector sel, void *data );
   long on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data );
   long on_HistoryShow( FXObject *tgt, FXSelector sel, void *data );
 
@@ -74,9 +64,8 @@ protected:
   Runner( ) { }
   
   /* Help methods */
-  History*   GetHistory( ) { return r_app->get_History( ); } 
-  void       LoadHistory( );
-  void       Check_property( Task *task );
+  History*   GetHistory( ) { return r_app->get_History( ); }
+  //! void       Check_property( Task *task );
   void       DefaultFocus( );
   void       ShortCuts( );
   Task*      MakeTask( );  // Vytvori novou ulohu z formulare

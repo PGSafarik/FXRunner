@@ -55,7 +55,6 @@ FXDECLARE( RunBox )
   FXMenuButton *m_menu_btn;
   FXPopup      *m_popup;
   RunModes     *m_modes;
-  FXTextField  *m_dir_text;
 
 public:
   explicit RunBox( FXWindowHeader *p );
