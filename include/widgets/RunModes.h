@@ -38,6 +38,8 @@ FXDECLARE( RunModes )
   FXCheckButton *m_rterm_check;
   FXCheckButton *m_ntexit_check;
 
+  FXbool m_change;
+
 public:
   RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts = FRAME_NONE | LAYOUT_FILL );
   ~RunModes( ) override;
