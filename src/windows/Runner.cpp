@@ -107,9 +107,9 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
 
       // Compile the command
       if( task ) {
-        r_app->task_exec( );       // Running application
-        Update( );                      // Actualize history command list in combobox
-        m_cmdfield->setText( "" );      // Clean command text
+        m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_APPLY ), task );
+        r_app->task_exec( );                       // Running command
+        Update( );                                 // Actualize gui forms
         if( r_app->autoexit( ) ) { quit = true; }
       }
 
@@ -317,7 +317,8 @@ Task* Runner::SetTask( Task *task )
 
 void Runner::Update( )
 {
-  LoadHistory( );
+  m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_RESET ), nullptr );
+  m_cmdfield->setText( "" );
 }
 
 /*** END ******************************************************************************************/
