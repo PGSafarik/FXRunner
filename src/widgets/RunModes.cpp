@@ -41,14 +41,13 @@ RunModes::RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
 
   m_su_check = new FXCheckButton( this, "Root mode", this, MODE_CHANGE );
   m_nblock_check = new FXCheckButton( this, "Blocked mode", this, MODE_CHANGE );
-  m_rexit_check = new FXCheckButton( this, "Do not terminate after running the command", this, MODE_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
   m_rterm_check = new FXCheckButton( this, "Run command with terminal", this, MODE_CHANGE );
   m_ntexit_check = new FXCheckButton( this, "Not closed terminal with  ", this, MODE_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
-  new FXButton( this, "Set property", nullptr, nullptr, 0, BUTTON_NORMAL | LAYOUT_FILL_X );
+  m_rexit_check = new FXCheckButton( this, "Do not terminate after running the command", this, MODE_CHANGE );
 
   Reset( );
 }
