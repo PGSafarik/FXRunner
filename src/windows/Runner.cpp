@@ -201,6 +201,7 @@ long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
         Task *task = GetHistory( )->at( );
         if( task ) {
           m_cmdfield->setText( task->cmd );
+          m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::ID_UPDATE), nullptr );
         }
         break;
       }
