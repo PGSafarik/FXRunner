@@ -68,6 +68,8 @@ long RunModes::onCmd_Workdir( FXObject *tgt, FXSelector sel, void *data )
 {
   Notify( SEL_OPENED ); // The directory dialog opened -> parent must close menu
   FXDirDialog *dir = new FXDirDialog ( this, "Select workdir:" );
+  dir->setDirectory( FXSystem::getCurrentDirectory( ) );
+
   if( dir->execute( ) ) {
     FXString new_dir = dir->getDirectory( );
     if( m_dir_text->getText( ) != new_dir ) {
@@ -104,6 +106,31 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
         m_ntexit_check->setCheck( task->prop->nocloseterm );
 
         m_change = false;
+        result = 0;
+      }
+      break;
+    }
+    case MODE_APPLY :
+    {
+      Task *task = static_cast<Task*>(data);
+
+      if( task && m_change ) {
+        task->wpth = m_dir_text->getText( );
+        task->prop->suaccess = m_su_check->getCheck( );
+        task->prop->unblock = m_nblock_check->getCheck( );
+        task->prop->term = m_rterm_check->getCheck( );
+        task->prop->nocloseterm = m_ntexit_check->getCheck( );
+
+        result = 0;
+      }
+
+      break;
+    }
+
+    case MODE_RESET :
+    {
+      Reset( );
+      result = 0;
       break;
     }
   }
