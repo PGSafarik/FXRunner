@@ -21,7 +21,7 @@ FXIMPLEMENT( FXMenuBox, FXHeaderBox, NULL, 0 )
 
 FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, nullptr, 0, LAYOUT_CENTER_Y, 0, 0, 0 )
 {
-  m_button = new FXMenuButton( this, "\t\t Menu aplikace", ic, make_menu( ), BUTTON_TOOLBAR|ICON_ABOVE_TEXT|LAYOUT_FILL_Y );
+  m_button = new FXMenuButton( this, "\t\t Menu aplikace", ic, make_menu( ), BUTTON_TOOLBAR | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
 }
 
 void FXMenuBox::create( )
@@ -54,15 +54,6 @@ FXMenuPane* FXMenuBox::make_menu( )
   new FXVerticalSeparator( HelpMenu, SEPARATOR_GROOVE );
   new FXMenuCommand( HelpMenu, "O aplikaci", icons->get_icon( "about", "Menu" ), tgt, Runner::OPEN_HELP );
 
-  // Hlavni nabidka
-  new FXMenuCommand( MyMenu, "Spustit", icons->get_icon( "run", "Menu" ), tgt, Runner::ID_ACCEPT );
-  new FXMenuCommand( MyMenu, "Hystorie", icons->get_icon( "history", "Menu" ), tgt, Runner::HISTORY_SHOW );
-  new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
-  new FXMenuCascade( MyMenu, "Moznosti spusteni", icons->get_icon( "properties", "Menu" ), ToolsMenu );
-  new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
-  new FXMenuCommand( MyMenu, "Vybrat prikaz", icons->get_icon( "open", "Menu" ), tgt, Runner::OPEN_FILE );
-  new FXMenuCommand( MyMenu, "Zmenit pracovni adresar", icons->get_icon( "directory", "Menu" ), tgt, Runner::OPEN_DIR );
-  new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
   new FXMenuCommand( MyMenu, "Nastaveni", icons->get_icon( "settings", "Menu" ), tgt, Runner::OPEN_OPTIONS );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
   new FXMenuCascade( MyMenu, "Napoveda", icons->get_icon( "help", "Menu" ), HelpMenu );
