@@ -23,6 +23,7 @@
 *************************************************************************/
 #include "core.h"
 #include "windows.h"
+#include "RunModes.h"
 
 /*** Menu aplikace ********************************************************************************/
 class FXMenuBox : public FXHeaderBox {
@@ -53,6 +54,7 @@ FXDECLARE( RunBox )
   FXButton     *m_action_btn;
   FXMenuButton *m_menu_btn;
   FXPopup      *m_popup;
+  RunModes     *m_modes;
   FXTextField  *m_dir_text;
 
 public:
@@ -60,6 +62,7 @@ public:
   virtual ~RunBox( ) { }
 
   /* Access methods */
+  RunModes* get_Modes( ) { return m_modes; }
 
   /* Operations methods */
   void create( ) override;

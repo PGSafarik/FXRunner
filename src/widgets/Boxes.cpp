@@ -87,7 +87,7 @@ RunBox::RunBox( FXWindowHeader *p ) : FXHeaderBox( p, nullptr, 0, FRAME_SUNKEN |
   new FXButton( buttons_fr, "Find command", icons->get_icon( "open",    16 ), this, ID_SELECT, BUTTON_NORMAL | LAYOUT_FILL );
   new FXButton( buttons_fr, "Show History", icons->get_icon( "history", 16 ), this, ID_HISTORY, BUTTON_NORMAL | LAYOUT_FILL  );
 
-  new RunModes( m_popup, this, ID_NOTIFY );
+  m_modes = new RunModes( m_popup, this, ID_NOTIFY );
 
   m_action_btn = new FXButton( this, "\t\t Spustit", icons->get_icon( "run", "HeaderBar" ), tgt, Runner::ID_ACCEPT, BUTTON_NORMAL | LAYOUT_LEFT );
   m_menu_btn   = new FXMenuButton( this, FXString::null, icons->get_icon( "popup", 16 ), m_popup, FRAME_RAISED | FRAME_THICK | JUSTIFY_NORMAL | ICON_BEFORE_TEXT | MENUBUTTON_DOWN | LAYOUT_FILL_Y, 18 );
