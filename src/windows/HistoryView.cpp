@@ -92,6 +92,7 @@ long HistoryView::on_List( FXObject *sender, FXSelector selector, void *ptr )
 
 long HistoryView::on_select( FXObject *sender, FXSelector selector, void *ptr )
 {
+  long result = 1;
   Application *app = dynamic_cast<Application*>( getApp( ) );
 
   switch( FXSELTYPE( selector ) ) {
@@ -100,15 +101,18 @@ long HistoryView::on_select( FXObject *sender, FXSelector selector, void *ptr )
       if( current >= 0 ) {
         app->get_History( )->current( current, true );
         this->handle( this, FXSEL( SEL_COMMAND, ID_CLOSE ), nullptr );
+        result = 0;
       }
       break;
     }
   }
+
+  return result;
 }
 
 long HistoryView::on_Window( FXObject *sender, FXSelector selector, void *ptr )
 {
-
+  return 1;
 }
 
 /**************************************************************************************************/

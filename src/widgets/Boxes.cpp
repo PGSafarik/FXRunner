@@ -123,15 +123,19 @@ long RunBox::OnCmd_Open( FXObject *tgt, FXSelector sel, void *data )
 
 long RunBox::on_Notify( FXObject *tgt, FXSelector sel, void *data )
 {
+  long result = 0;
+
   switch( FXSELTYPE( sel ) ) {
     case SEL_OPENED : {
-      m_menu_btn->handle( this, FXSEL( SEL_COMMAND, FXMenuButton::ID_UNPOST ), nullptr );
+      result = m_menu_btn->handle( this, FXSEL( SEL_COMMAND, FXMenuButton::ID_UNPOST ), nullptr );
       break;
     }
     case SEL_CLOSED : {
-      m_menu_btn->handle( this, FXSEL( SEL_COMMAND, FXMenuButton::ID_POST ), nullptr );
+      result = m_menu_btn->handle( this, FXSEL( SEL_COMMAND, FXMenuButton::ID_POST ), nullptr );
       break;
     }
   }
+
+  return result;
 }
 /*** END ******************************************************************************************/
