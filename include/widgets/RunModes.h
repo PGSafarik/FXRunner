@@ -59,6 +59,7 @@ public:
 
 protected:
   RunModes( ) { }
+  void Reset( );    // Nastaveni vychozich modu spusteni
   long Notify( FXuint _type, void *_data = nullptr );
 };
 

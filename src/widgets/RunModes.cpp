@@ -49,6 +49,8 @@ RunModes::RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
   new FXButton( this, "Set property", nullptr, nullptr, 0, BUTTON_NORMAL | LAYOUT_FILL_X );
+
+  Reset( );
 }
 
 RunModes::~RunModes( )
@@ -73,6 +75,18 @@ long RunModes::onCmd_Workdir( FXObject *tgt, FXSelector sel, void *ptr )
 }
 
 /**************************************************************************************************/
+void RunModes::Reset()
+{
+  m_dir_text->setText( FXSystem::getHomeDirectory( ) );
+  m_su_check->setCheck( false );
+  m_nblock_check->setCheck( false );
+  m_rexit_check->setCheck( false );
+  m_rterm_check->setCheck( false );
+  m_ntexit_check->setCheck( false );
+
+  m_change = false;
+}
+
 long RunModes::Notify( FXuint _type, void *_data ) {
   long result = 1;
   if( m_target ) { result = m_target->handle( this, FXSEL( _type, m_message ), _data ); }
