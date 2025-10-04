@@ -36,7 +36,6 @@ RunModes::RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   FXHorizontalFrame *path_fr = new FXHorizontalFrame( this, FRAME_NONE | LAYOUT_FILL_X );
   m_dir_text = new FXTextField( path_fr, 50, this, ID_WORKDIR, TEXTFIELD_NORMAL | LAYOUT_FILL );
   new FXButton( path_fr, "\t\t Select workdir",   icons->get_icon( "directory", 16 ), this, ID_WORKDIR, BUTTON_NORMAL );
-  m_dir_text->setText( FXSystem::getHomeDirectory( ) );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
   m_su_check = new FXCheckButton( this, "Root mode", NULL, 0 );
