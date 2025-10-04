@@ -51,13 +51,14 @@ public:
 
   /* MSG & handlers */
   enum {
-    ID_CHANGE = FXVerticalFrame::ID_LAST, // The user changed the launch mode parameters
-    ID_UPDATE,                            // Update run mode parameters from current task
-    ID_APPLY,                             // Set the current task execution mode parameters
-    ID_WORKDIR,                           // Select and change work dir
+    MODE_CHANGE = FXVerticalFrame::ID_LAST, // The user changed the launch mode parameters
+    MODE_UPDATE,                            // Update run mode parameters from current task
+    MODE_APPLY,                             // Set the current task execution mode parameters
+    MODE_RESET,                             // Reset execution mode variables at default values
+    ID_WORKDIR,                             // Select and change work dir
   };
   long onCmd_Workdir( FXObject *tgt, FXSelector sel, void *data );
-  long onCmd_Variables( FXObject *tgt, FXSelector sel, void *data );
+  long onCmd_Mode( FXObject *tgt, FXSelector sel, void *data );
 
 protected:
   RunModes( ) { }

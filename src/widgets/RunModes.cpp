@@ -18,7 +18,7 @@
 
 /**************************************************************************************************/
 FXDEFMAP( RunModes ) PMAP[ ] = {
-  FXMAPFUNCS( SEL_COMMAND, RunModes::ID_CHANGE, RunModes::ID_UPDATE, RunModes::onCmd_Variables ),
+  FXMAPFUNCS( SEL_COMMAND, RunModes::MODE_CHANGE, RunModes::MODE_RESET, RunModes::onCmd_Mode ),
   FXMAPFUNC(  SEL_COMMAND, RunModes::ID_WORKDIR, RunModes::onCmd_Workdir ),
 };
 FXIMPLEMENT( RunModes, FXVerticalFrame, PMAP, ARRAYNUMBER( PMAP ) )
@@ -39,13 +39,13 @@ RunModes::RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   new FXButton( path_fr, "\t\t Select workdir",   icons->get_icon( "directory", 16 ), this, ID_WORKDIR, BUTTON_NORMAL );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
-  m_su_check = new FXCheckButton( this, "Root mode", this, ID_CHANGE );
-  m_nblock_check = new FXCheckButton( this, "Blocked mode", this, ID_CHANGE );
-  m_rexit_check = new FXCheckButton( this, "Do not terminate after running the command", this, ID_CHANGE );
+  m_su_check = new FXCheckButton( this, "Root mode", this, MODE_CHANGE );
+  m_nblock_check = new FXCheckButton( this, "Blocked mode", this, MODE_CHANGE );
+  m_rexit_check = new FXCheckButton( this, "Do not terminate after running the command", this, MODE_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
-  m_rterm_check = new FXCheckButton( this, "Run command with terminal", this, ID_CHANGE );
-  m_ntexit_check = new FXCheckButton( this, "Not closed terminal with  ", this, ID_CHANGE );
+  m_rterm_check = new FXCheckButton( this, "Run command with terminal", this, MODE_CHANGE );
+  m_ntexit_check = new FXCheckButton( this, "Not closed terminal with  ", this, MODE_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
   new FXButton( this, "Set property", nullptr, nullptr, 0, BUTTON_NORMAL | LAYOUT_FILL_X );
@@ -80,20 +80,23 @@ long RunModes::onCmd_Workdir( FXObject *tgt, FXSelector sel, void *data )
   return 0;
 }
 
-long RunModes::onCmd_Variables(FXObject *tgt, FXSelector sel, void *data)
+long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
 {
+  long result = 1;
   FXuint msg = FXSELID( sel );
 
   switch( msg ) {
-    case ID_CHANGE :
+    case MODE_CHANGE :
     {
       m_change = true;
+      result = 0;
       break;
     }
-    case ID_UPDATE :
+    case MODE_UPDATE :
     {
-      Task *task = m_app->get_History( )->at( );
+      Task *task = static_cast<Task*>( data );
       if( task ) {
+        if( task->wpth.empty( ) ) { task->wpth = FXSystem::getHomeDirectory( ); }
         if( m_dir_text->getText( ) != task->wpth ) { m_dir_text->setText( task->wpth ); }
         m_su_check->setCheck( task->prop->suaccess );
         m_nblock_check->setCheck( task->prop->unblock );
@@ -101,11 +104,11 @@ long RunModes::onCmd_Variables(FXObject *tgt, FXSelector sel, void *data)
         m_ntexit_check->setCheck( task->prop->nocloseterm );
 
         m_change = false;
-      }
       break;
     }
   }
 
+  return result;
 }
 
 /**************************************************************************************************/
