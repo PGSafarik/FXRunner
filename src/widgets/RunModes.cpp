@@ -18,7 +18,8 @@
 
 /**************************************************************************************************/
 FXDEFMAP( RunModes ) PMAP[ ] = {
-  FXMAPFUNC( SEL_COMMAND, RunModes::ID_WORKDIR, RunModes::onCmd_Workdir ),
+  FXMAPFUNCS( SEL_COMMAND, RunModes::ID_CHANGE, RunModes::ID_UPDATE, RunModes::onCmd_Variables ),
+  FXMAPFUNC(  SEL_COMMAND, RunModes::ID_WORKDIR, RunModes::onCmd_Workdir ),
 };
 FXIMPLEMENT( RunModes, FXVerticalFrame, PMAP, ARRAYNUMBER( PMAP ) )
 
@@ -38,13 +39,13 @@ RunModes::RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   new FXButton( path_fr, "\t\t Select workdir",   icons->get_icon( "directory", 16 ), this, ID_WORKDIR, BUTTON_NORMAL );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
-  m_su_check = new FXCheckButton( this, "Root mode", NULL, 0 );
-  m_nblock_check = new FXCheckButton( this, "Blocked mode", NULL, 0 );
-  m_rexit_check = new FXCheckButton( this, "Do not terminate after running the command", NULL, 0 );
+  m_su_check = new FXCheckButton( this, "Root mode", this, ID_CHANGE );
+  m_nblock_check = new FXCheckButton( this, "Blocked mode", this, ID_CHANGE );
+  m_rexit_check = new FXCheckButton( this, "Do not terminate after running the command", this, ID_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
-  m_rterm_check = new FXCheckButton( this, "Run command with terminal", NULL, 0 );
-  m_ntexit_check = new FXCheckButton( this, "Not closed terminal with  ", NULL, 0 );
+  m_rterm_check = new FXCheckButton( this, "Run command with terminal", this, ID_CHANGE );
+  m_ntexit_check = new FXCheckButton( this, "Not closed terminal with  ", this, ID_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
   new FXButton( this, "Set property", nullptr, nullptr, 0, BUTTON_NORMAL | LAYOUT_FILL_X );
@@ -63,14 +64,48 @@ void RunModes::create( )
 }
 
 /**************************************************************************************************/
-long RunModes::onCmd_Workdir( FXObject *tgt, FXSelector sel, void *ptr )
+long RunModes::onCmd_Workdir( FXObject *tgt, FXSelector sel, void *data )
 {
   Notify( SEL_OPENED ); // The directory dialog opened -> parent must close menu
   FXDirDialog *dir = new FXDirDialog ( this, "Select workdir:" );
-  if( dir->execute( ) ) { m_dir_text->setText( dir->getDirectory( ) ); }
+  if( dir->execute( ) ) {
+    FXString new_dir = dir->getDirectory( );
+    if( m_dir_text->getText( ) != new_dir ) {
+      m_dir_text->setText( new_dir );
+      m_change = true;
+    }
+  }
   Notify( SEL_CLOSED ); // The directory dialog closed -> parent must open menu
 
   return 0;
+}
+
+long RunModes::onCmd_Variables(FXObject *tgt, FXSelector sel, void *data)
+{
+  FXuint msg = FXSELID( sel );
+
+  switch( msg ) {
+    case ID_CHANGE :
+    {
+      m_change = true;
+      break;
+    }
+    case ID_UPDATE :
+    {
+      Task *task = m_app->get_History( )->at( );
+      if( task ) {
+        if( m_dir_text->getText( ) != task->wpth ) { m_dir_text->setText( task->wpth ); }
+        m_su_check->setCheck( task->prop->suaccess );
+        m_nblock_check->setCheck( task->prop->unblock );
+        m_rterm_check->setCheck( task->prop->term );
+        m_ntexit_check->setCheck( task->prop->nocloseterm );
+
+        m_change = false;
+      }
+      break;
+    }
+  }
+
 }
 
 /**************************************************************************************************/
