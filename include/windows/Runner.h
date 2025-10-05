@@ -65,7 +65,6 @@ protected:
   
   /* Help methods */
   History*   GetHistory( ) { return r_app->get_History( ); }
-  //! void       Check_property( Task *task );
   void       DefaultFocus( );
   void       ShortCuts( );
   Task*      MakeTask( );  // Vytvori novou ulohu z formulare
