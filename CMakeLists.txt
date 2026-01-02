@@ -21,8 +21,8 @@ SET( PROJECT_VERSION_FULL "${PROJECT_VERSION_UBUNTU} ${PROJECT_VERSION}.${FXGHI_
 # The project settings
 SET( BIN_NAME "fxrunner" )                  # Executable binnary filename
 SET( CMAKE_INSTALL_PREFIX "/usr" )  # Install target directory
-SET( LIB_FOX   "/opt/foxlib/1.7/84" )       # Fox toolkit path
-SET( LIB_FXGHI "/opt/foxghi/0.5/2"  )       # Fox GHI path
+SET( LIB_FOX   "/opt/foxlib/1.7/86" )       # Fox toolkit path
+SET( LIB_FXGHI "/opt/foxghi/0.4/4"  )       # Fox GHI path
 SET( CMAKE_CXX_STANDARD 11 )                # C++ Standard
 SET( CMAKE_CXX_STANDARD_REQUIRED ON )       # C++ Standard
 #add_compile_options(-Wall -Wextra -pedantic -Werror)
