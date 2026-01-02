@@ -90,11 +90,11 @@ public :
 
   /* Operations */
 	virtual void init( int& argc, char** argv, FXbool connect = true ); 
-  int task_exec( Task *cmd );                                            // Run a command
-  int task_exec( );                                                      //
-  void task_write( Task *cmd, const FXString &pth = FXString::null ); // Write a command on a desktop file
+  int task_exec( Task *cmd );                                            // Run a specified task
+  int task_exec( ) { return task_exec( a_history->at( ) ); }        // Run the first task in history
+  void task_write( Task *cmd, const FXString &pth = FXString::null ); // Write a command on a desktop file (Not used in this time)
   void load( );                                                          // Complete load
-  void save( );                                                          // Complete application save
+  void save( );                                                          // Complete application on save
 
   /* messages & handlers */
   enum {

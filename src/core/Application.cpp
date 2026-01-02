@@ -50,52 +50,34 @@ void Application::init( int &argc, char** argv, FXbool connect )
 	std::cout.flush( );	
 }
 
-FXint Application::task_exec( Task *cmd )
-{
-  FXint resh        = -1;
-  FXString _command = "";  // Kompletni prikaz ke spusteni
-  FXString _cmd     = "";  // zadany prikaz  
-  FXString _term    = "";  // prikaz terminalu
-  FXString _paccess = "";  // prikaz pro privilegovany pristup
+FXint Application::task_exec( Task *task ) {
+  FXint resh        = 0;
+  FXString _cmd     = "";  // Complete command for launch
+  //FXString _term    = "";  // A terminal emulator command (if anny)
+  //FXString _paccess = "";  // A sudo command for running privilege command
 
   // Prikaz, parametry, neblokujici spusteni
-  if( !cmd->cmd.empty( ) ) { _cmd += cmd->cmd; }
-  if( !cmd->prm.empty( ) ) { _cmd += cmd->prm; }
-  if( cmd->prop->unblock ) { _cmd += "&"; }
+  if( !task->cmd.empty( ) ) {
+    _cmd += task->cmd;
+    if( !task->prm.empty( ) ) { _cmd += task->prm; }
+    if( task->prop->unblock ) { _cmd += "&"; }
+    DEBUG_OUT( "Running PRE: " << _cmd )
 
-  if( !_cmd.empty( ) ) {
-    _command = CheckTerminal( cmd ) + CheckPrivilege( cmd ) + _cmd;
-    DEBUG_OUT( "Running: " << _command )
-    resh = system( _command.text( ) );
-  }
-
-  DEBUG_OUT( "Execute result " << resh )
-  return resh;
-}
-
-int Application::task_exec( )
-{
-  FXint resh = -1;
-  FXString command = FXString::null;
-  Task *t = a_history->at( );
-
-  if( !t->cmd.empty( ) ) {
-    command = t->cmd;
-    if( !t->prm.empty( ) ) { command += t->prm; }
-    if( t->prop->unblock ) { command += "&"; }
-
-    command = CheckTerminal( t ) + CheckPrivilege( t ) + command;
-    DEBUG_OUT( "Running: " << command )
-    int code = std::system( command.text( ) ); // int code =
-    // Not used for now
+    _cmd = CheckTerminal( task ) + CheckPrivilege( task ) + _cmd;
+    DEBUG_OUT( "Running: " << _cmd )
+    int code = std::system( _cmd.text( ) );
     resh = WEXITSTATUS( code );
-    DEBUG_OUT(  "Running: " << command << " with " << resh )
-    //return resh;
+    DEBUG_OUT(  "Running: " << _cmd << " with " << resh << " (" << code << ")" )
+  }
+  else {
+    FXMessageBox::error( this, MBOX_OK, "Error", "No command to execute!" );
+    return -1;
   }
 
-  DEBUG_OUT( "Execute result " << resh )
   return resh;
 }
+
+//int Application::task_exec( ) { return task_exec( a_history->at( ) ); }
 
 void Application::task_write( Task *cmd, const FXString &pth )
 {
