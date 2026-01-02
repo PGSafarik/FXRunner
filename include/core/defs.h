@@ -39,8 +39,9 @@
 #define CFG_UI_PREFIX      "Interface"
 #define CFG_HISTORY_PREFIX "History"
 
-#define ICON_THEME_MAP  "/usr/share/FXRunner/data/icons.map"
-
+//#define ICON_THEME_MAP  "/usr/share/FXRunner/data/icons.map"
+/* REMOVED: */
+#define ICON_THEME_MAP "/home/gabriel/Projects/Fox/sources/FXRunner/data/icons.map"
 /* Inter data */
 #define TASKENTRIESNUM 7
 
