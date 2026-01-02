@@ -49,10 +49,9 @@ Runner::Runner( Application *a )
   FXIconsTheme *icons = r_app->get_iconstheme( );
   setIcon( icons->get_icon( "run", "Menu" ) );
 
-  new FXMenuBox( whb, this->getMenuIcon( ) );
-  new FXVerticalSeparator( whb );
+  //new FXVerticalSeparator( whb );
   m_runbox = new RunBox( whb );
-
+  new FXMenuBox( whb, this->getMenuIcon(  true ) );
   /* Initialize */
   GetHistory( )->set_target( this );
   GetHistory( )->set_notify( HISTORY_EVENT );
@@ -104,6 +103,10 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
       // Compile the command
       if( task ) {
         m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_APPLY ), task );
+#ifdef DEBUG
+        DEBUG_OUT( "Dumping item for run: " )
+        task->Dump( );
+# endif
         r_app->task_exec( );                       // Running command
         Update( );                                 // Actualize gui forms
         if( r_app->autoexit( ) ) { quit = true; }

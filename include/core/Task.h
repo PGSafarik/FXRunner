@@ -69,6 +69,12 @@ struct Task : public Loki::SmallObject<> {
     DEBUG_OUT( "Saving task data from the data store: " << this->cmd.text( ) )
   }
 
+  void Dump( )
+  {
+    std::cout << "Task: " << cmd.text( ) << " " << prm.text( ) << std::endl;
+    std::cout << "Work dir: " << wpth.text( ) << std::endl;
+    std::cout << "Properties: " << prop->suaccess << " " << prop->unblock << " " << prop->term << " " << prop->nocloseterm << std::endl;
+  }
 };
 
 #endif /* FXRUNNER_TASK_H */

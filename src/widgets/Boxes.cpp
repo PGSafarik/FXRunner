@@ -19,7 +19,7 @@
 /*** APPLICATION MENU ****************************************************************************/
 FXIMPLEMENT( FXMenuBox, FXHeaderBox, NULL, 0 )
 
-FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, nullptr, 0, LAYOUT_CENTER_Y, 0, 0, 0 )
+FXMenuBox::FXMenuBox( FXWindowHeader *p, FXIcon *ic ) : FXHeaderBox( p, nullptr, 0, LAYOUT_CENTER_Y | LAYOUT_RIGHT, 0, 0, 0 )
 {
   m_button = new FXMenuButton( this, "\t\t Menu aplikace", ic, make_menu( ), BUTTON_TOOLBAR | ICON_ABOVE_TEXT | LAYOUT_FILL_Y );
 }
@@ -45,11 +45,12 @@ FXMenuPane* FXMenuBox::make_menu( )
   new FXVerticalSeparator( HelpMenu, SEPARATOR_GROOVE );
   new FXMenuCommand( HelpMenu, "O aplikaci", icons->get_icon( "about", "Menu" ), tgt, Runner::OPEN_HELP );
 
-  new FXMenuCommand( MyMenu, "Nastaveni", icons->get_icon( "settings", "Menu" ), tgt, Runner::OPEN_OPTIONS );
+  //new FXMenuCommand( MyMenu, "Nastaveni", icons->get_icon( "settings", "Menu" ), tgt, Runner::OPEN_OPTIONS );
+  makeCommand( MyMenu, "Settings", "settings", Runner::OPEN_OPTIONS );
   new FXVerticalSeparator( MyMenu, SEPARATOR_GROOVE );
   new FXMenuCascade( MyMenu, "Napoveda", icons->get_icon( "help", "Menu" ), HelpMenu );
-  new FXMenuCommand( MyMenu, "Zavrit", icons->get_icon( "close", "Menu" ), tgt, Runner::ID_CANCEL );
-
+  //new FXMenuCommand( MyMenu, "Zavrit", icons->get_icon( "close", "Menu" ), tgt, Runner::ID_CANCEL );
+  makeCommand( MyMenu, "Exit", "close", Runner::ID_CANCEL );
   return MyMenu;
 }
 
