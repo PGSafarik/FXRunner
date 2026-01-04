@@ -67,9 +67,9 @@ protected:
   History*   GetHistory( ) { return r_app->get_History( ); }
   void       DefaultFocus( );
   void       ShortCuts( );
-  Task*      MakeTask( );  // Vytvori novou ulohu z formulare
+  FXbool     PrepareTask( );        // Vytvori novou ulohu z formulare
   Task*      SetTask( Task *task ); // Nastavi
-  void       Update( );    // Provede nacteni hodnot z historie do UI
+  void       Update( );             // Provede nacteni hodnot z historie do UI
 };
 
 #endif /* FXRUNNER_RUNNER_H */

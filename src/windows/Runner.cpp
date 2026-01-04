@@ -86,22 +86,9 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
          Tzn. Spravne by se zde nemel task vubec resit, ale pripadne pozadat o jeho vytvoreni a hlavne nastavit podle
          uzivatelovych pokynu pres GUI formular. Jeho spusteni by pak bylo zalozitosti FXApplication::task_exec( ),
          ktera si task ke spusteni muze klidne vyzvednout na vrcholu zasobniku historie. */
-      Task *task = nullptr;
 
-      switch ( msg_type ) {
-        case SEL_COMMAND : {
-          // Command -> Create new task and insert on top in history
-          task = MakeTask( );
-          break;
-        }
-        default: {
-          // Used select task in history -> see note RUNNER_002 at up.
-          task = GetHistory( )->at( );
-        }
-      }
-
-      // Compile the command
-      if( task ) {
+      if( PrepareTask( ) ) {
+        Task *task = GetHistory( )->at( );
         m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_APPLY ), task );
 #ifdef DEBUG
         DEBUG_OUT( "Dumping item for run: " )
@@ -241,25 +228,28 @@ void Runner::ShortCuts( )
   }
 }
 
-Task* Runner::MakeTask( )
+FXbool Runner::PrepareTask( )
 {
-  Task *task = nullptr;
-  FXString err_str = "";     // Hlaseni uzivatelseke chyby
-  FXbool   err_flg = false;     // Priznak uzivatelske chyby
+  FXString err_str = "";                 // Hlaseni uzivatelseke chyby
+  FXbool   resh_flg = false;                // Priznak uspesne pripravy tasku
 
-  // Get command and working path
   FXString cmd = m_cmdfield->getText( );
 
-  // Set command
   if( !cmd.empty( ) ) {
-    task = GetHistory(  )->add( cmd, true );
+    FXint f_index = GetHistory( )->find( cmd );
+    resh_flg = ( f_index < 0 ? GetHistory( )->add( cmd, true ) : GetHistory( )->current( f_index ) );
   }
   else {
-      err_str = "The field for entering the command must not be empty!\nPlease enter the required command to run";
-      FXMessageBox::error( this, MBOX_OK, "Incorrect input", err_str.text( ) );
+    err_str = "Do you want to run the last command entered:\n '";
+    err_str += GetHistory( )->at( )->cmd + "'?";
+
+    if( FXMessageBox::question( this, MBOX_YES_NO, "Incorrect input", err_str.text( ) ) == MBOX_CLICKED_NO ) {
+      FXMessageBox::error( this, MBOX_OK, "Incorrect input", "The command input field must not be empty!" );
+    }
+    else { resh_flg = true; }
   }
 
-  return task;
+  return resh_flg;
 }
 
 Task* Runner::SetTask( Task *task )
