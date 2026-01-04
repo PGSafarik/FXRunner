@@ -39,7 +39,7 @@ RunModes::RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   new FXButton( path_fr, "\t\t Select workdir",   icons->get_icon( "directory", 16 ), this, ID_WORKDIR, BUTTON_NORMAL );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
-  m_su_check = new FXCheckButton( this, "Root mode", this, MODE_CHANGE );
+  m_su_check = new FXCheckButton( this, "Privilege mode", this, MODE_SUDO_CHANGE );
   m_nblock_check = new FXCheckButton( this, "Blocked mode", this, MODE_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
@@ -93,6 +93,23 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
       result = 0;
       break;
     }
+    case MODE_SUDO_CHANGE :
+    {
+      if ( m_su_check->getCheck( ) ) {
+        // Kontrola, zda je privilegovane spusteni povoleno
+        if( ! m_app->privilege_enabled(  ) ) {
+          FXMessageBox::error( this, MBOX_OK, "Privilege options error", "Privilege is not enabled on this application!" );
+          m_su_check->setCheck( false );
+          break;
+        }
+
+        m_change = true;
+        result = 0;
+        break;
+      }
+      break;
+    }
+
     case MODE_UPDATE :
     {
       Task *task = static_cast<Task*>( data );
