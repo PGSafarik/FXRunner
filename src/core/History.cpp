@@ -37,18 +37,31 @@ FXbool History::current( FXint pos, FXbool notify )
   return result;
 }
 
+FXint History::find( const FXString &cmd )
+{
+  FXint idx = -1;
+  if( !cmd.empty( ) ) {
+    for( FXint i = 0; i != m_buffer.no( ); i++ ) {
+      Task *task = m_buffer.at( i );
+      if( task && task->cmd == cmd ) { idx = i; break; }
+    }
+  }
+
+  return idx;
+}
+
 /**************************************************************************************************/
-Task* History::add( const FXString &cmd_str, FXbool notify )
+FXbool History::add( const FXString &cmd_str, FXbool notify )
 {
   if( !cmd_str.empty( ) ) {
     Task *task = new Task( cmd_str );
     if( m_buffer.insert( 0, task ) ) {
       if ( notify ) { Notify( SEL_INSERTED ); }
-      return task;
+      return true;
     }
   }
 
-  return nullptr;
+  return false;
 }
 
 Task* History::remove( FXint index, FXbool notify )

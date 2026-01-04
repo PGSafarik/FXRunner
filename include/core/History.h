@@ -55,10 +55,11 @@ public :
 
   /* operations methods */
   Task*  at( const FXint index = 0 ) { return m_buffer.at( index ); }   // Returns task from specific position (if any)
-  FXbool current( FXint pos, FXbool notify = true );                    // Returns true if the task is set to current (i.e., to the top of the history stack).
-  Task*  add( const FXString &cmd_str, FXbool notify = false );         // Create new Task instance and insert on list
+  FXbool current( FXint pos, FXbool notify = true );                    // Sets the requested task as 'current' (i.e., moves it to position 0 in the list). Returns false on failure (i.e., the requested position is empty), otherwise true
+  FXbool  add( const FXString &cmd_str, FXbool notify = false );         // Create new Task instance and insert on list
   Task*  remove( FXint index, FXbool notify = false );                  // Remove existing index
   void   clear( FXbool notify = false );                                // Clear all items
+  FXint  find( const FXString &cmd );                                   // Finds and returns the index of the first task in the list that contains the requested command. Returns -1 on failure.
 
   template <typename STREAMER> void load_data( STREAMER &pipe ) {
     if( pipe.get_state( ) == 0 ) {
