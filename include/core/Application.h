@@ -80,13 +80,13 @@ public :
   ~Application( ) override;
 
   /* Access methods */
-  FXIconsTheme* get_iconstheme( )   { return a_iconsth; }                // Get a icons theme instance
-  History*      get_History( )      { return a_history; }                // Get cache object, represent the launch history
-  FXint         HistoryQuickSize( ) { return a_cfg->hist_headsize; }     //
-  FXbool        autoexit( )         { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
-  FXbool        is_silent( )        { return a_cfg->silent_exit; }       // if true, the application will not ask for confirmation of termination
-  FXbool        is_changed( )       { return a_cfg->change; }            // Indicate configration is changed
-
+  FXIconsTheme* get_iconstheme( )          { return a_iconsth; }                // Get a icons theme instance
+  History*      get_History( )             { return a_history; }                // Get cache object, represent the launch history
+  FXint         HistoryQuickSize( )        { return a_cfg->hist_headsize; }     //
+  FXbool        autoexit( )                { return ( ( a_nquit_flg ) ? !a_cfg->auto_exit : a_cfg->auto_exit ); }
+  FXbool        is_silent( )               { return a_cfg->silent_exit; }       // if true, the application will not ask for confirmation of termination
+  FXbool        is_changed( )              { return a_cfg->change; }            // Indicate configration is changed
+  FXbool        privilege_enabled( ) const { return a_cfg->sudo; }        // Indicate if is privilege running enabled
 
   /* Operations */
 	virtual void init( int& argc, char** argv, FXbool connect = true ); 
