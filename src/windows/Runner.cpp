@@ -244,7 +244,7 @@ FXbool Runner::PrepareTask( )
 
   if( !cmd.empty( ) ) {
     FXint f_index = GetHistory( )->find( cmd );
-    resh_flg = ( f_index < 0 ? GetHistory( )->add( cmd, true ) : GetHistory( )->current( f_index ) );
+    resh_flg = ( f_index < 0 ? GetHistory( )->add( cmd, true ) : GetHistory( )->current( f_index, false ) );
   }
   else {
     err_str = "Do you want to run the last command entered:\n '";
