@@ -89,11 +89,10 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
          ktera si task ke spusteni muze klidne vyzvednout na vrcholu zasobniku historie. */
 
       if( PrepareTask( ) ) {
-        Task *task = GetHistory( )->at( );
-        m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_APPLY ), task );
+        m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_APPLY ), nullptr );
 #ifdef DEBUG
         DEBUG_OUT( "Dumping item for run: " )
-        task->Dump( );
+        GetHistory( )->at( )->Dump( );
 # endif
         r_app->task_exec( );                       // Running command
         Update( );                                 // Actualize gui forms
