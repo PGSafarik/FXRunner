@@ -44,6 +44,7 @@ public:
   enum {
     ID_ACCEPT = FXPrimaryWindow::ID_LAST,
     ID_CANCEL,
+    ID_RECONFIGURE,
 
     OPEN_DIR,
     OPEN_FILE,

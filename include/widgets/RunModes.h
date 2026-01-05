@@ -57,6 +57,9 @@ public:
     MODE_APPLY,                             // Set the current task execution mode parameters
     MODE_RESET,                             // Reset execution mode variables at default values
     ID_WORKDIR,                             // Select and change work dir
+
+    ID_RECONFIGURE,                         // Change application settings
+    ID_LAST
   };
   long onCmd_Workdir( FXObject *tgt, FXSelector sel, void *data );
   long onCmd_Mode( FXObject *tgt, FXSelector sel, void *data );
