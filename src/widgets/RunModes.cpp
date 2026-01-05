@@ -113,7 +113,8 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
 
     case MODE_UPDATE :
     {
-      Task *task = static_cast<Task*>( data );
+      Task *task = ( data ? static_cast<Task*>( data ) : m_app->get_History( )->at( ) );
+
       if( task ) {
         if( task->wpth.empty( ) ) { task->wpth = FXSystem::getHomeDirectory( ); }
         if( m_dir_text->getText( ) != task->wpth ) { m_dir_text->setText( task->wpth ); }
@@ -129,7 +130,7 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
     }
     case MODE_APPLY :
     {
-      Task *task = static_cast<Task*>(data);
+      Task *task = ( data ? static_cast<Task*>( data ) : m_app->get_History( )->at( ) );
 
       if( task && m_change ) {
         task->wpth = m_dir_text->getText( );
