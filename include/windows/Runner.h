@@ -59,7 +59,7 @@ public:
   long onCmd_Open( FXObject *tgt, FXSelector sel, void *data );
   long on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data );
   long on_HistoryShow( FXObject *tgt, FXSelector sel, void *data );
-
+  long on_OptionsChange( FXObject *tgt, FXSelector sel, void *data );
 
 protected:
   Runner( ) { }

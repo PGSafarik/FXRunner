@@ -17,14 +17,15 @@
 #include "windows/Runner.h"
 
 FXDEFMAP( Runner ) RUNNER_MAP[ ] = {
-  FXMAPFUNCS( SEL_COMMAND, Runner::ID_ACCEPT,     Runner::ID_CANCEL,   Runner::onCmd_Run ),
-  FXMAPFUNCS( SEL_COMMAND, Runner::OPEN_DIR,      Runner::OPEN_HELP,   Runner::onCmd_Open ),
-  FXMAPFUNC( SEL_COMMAND,  Runner::HISTORY_EVENT, Runner::on_HistoryEvent ),
-  FXMAPFUNC( SEL_UPDATE,   Runner::HISTORY_EVENT, Runner::on_HistoryEvent ),
-  FXMAPFUNC( SEL_INSERTED, Runner::HISTORY_EVENT, Runner::on_HistoryEvent ),
-  FXMAPFUNC( SEL_DELETED,  Runner::HISTORY_EVENT, Runner::on_HistoryEvent ),
-  FXMAPFUNC( SEL_COMMAND,  Runner::HISTORY_SHOW,  Runner::on_HistoryShow ),
-  FXMAPFUNC( SEL_UPDATE,   Runner::HISTORY_SHOW,  Runner::on_HistoryShow ),
+  FXMAPFUNCS( SEL_COMMAND, Runner::ID_ACCEPT,      Runner::ID_CANCEL,   Runner::onCmd_Run ),
+  FXMAPFUNCS( SEL_COMMAND, Runner::OPEN_DIR,       Runner::OPEN_HELP,   Runner::onCmd_Open ),
+  FXMAPFUNC( SEL_COMMAND,  Runner::HISTORY_EVENT,  Runner::on_HistoryEvent ),
+  FXMAPFUNC( SEL_UPDATE,   Runner::HISTORY_EVENT,  Runner::on_HistoryEvent ),
+  FXMAPFUNC( SEL_INSERTED, Runner::HISTORY_EVENT,  Runner::on_HistoryEvent ),
+  FXMAPFUNC( SEL_DELETED,  Runner::HISTORY_EVENT,  Runner::on_HistoryEvent ),
+  FXMAPFUNC( SEL_COMMAND,  Runner::HISTORY_SHOW,   Runner::on_HistoryShow ),
+  FXMAPFUNC( SEL_UPDATE,   Runner::HISTORY_SHOW,   Runner::on_HistoryShow ),
+  FXMAPFUNC( SEL_CHANGED,  Runner::ID_RECONFIGURE, Runner::on_OptionsChange ),
 };
 
 FXIMPLEMENT( Runner, FXPrimaryWindow, RUNNER_MAP, ARRAYNUMBER( RUNNER_MAP ) )
@@ -208,6 +209,12 @@ long Runner::on_HistoryShow( FXObject *tgt, FXSelector sel, void *data )
   }
 
   return resh;
+}
+
+long Runner::on_OptionsChange( FXObject *tgt, FXSelector sel, void *data )
+{
+  m_runbox->get_Modes( )->handle( this, FXSEL( SEL_CHANGED, RunModes::ID_RECONFIGURE ), nullptr );
+  return 1;
 }
 
 /**************************************************************************************************/
