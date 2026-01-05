@@ -63,6 +63,7 @@ public:
   };
   long onCmd_Workdir( FXObject *tgt, FXSelector sel, void *data );
   long onCmd_Mode( FXObject *tgt, FXSelector sel, void *data );
+  long onChng_Reconfigure( FXObject *tgt, FXSelector sel, void *data );
 
 protected:
   RunModes( ) { }

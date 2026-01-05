@@ -18,8 +18,9 @@
 
 /**************************************************************************************************/
 FXDEFMAP( RunModes ) PMAP[ ] = {
-  FXMAPFUNCS( SEL_COMMAND, RunModes::MODE_CHANGE, RunModes::MODE_RESET, RunModes::onCmd_Mode ),
-  FXMAPFUNC(  SEL_COMMAND, RunModes::ID_WORKDIR, RunModes::onCmd_Workdir ),
+  FXMAPFUNCS( SEL_COMMAND, RunModes::MODE_CHANGE,    RunModes::MODE_RESET, RunModes::onCmd_Mode ),
+  FXMAPFUNC(  SEL_COMMAND, RunModes::ID_WORKDIR,     RunModes::onCmd_Workdir ),
+  FXMAPFUNC( SEL_CHANGED,  RunModes::ID_RECONFIGURE, RunModes::onChng_Reconfigure ),
 };
 FXIMPLEMENT( RunModes, FXVerticalFrame, PMAP, ARRAYNUMBER( PMAP ) )
 
@@ -152,6 +153,12 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
   }
 
   return result;
+}
+
+long RunModes::onChng_Reconfigure( FXObject *tgt, FXSelector sel, void *data )
+{
+  Settings( );
+  return 1;
 }
 
 /**************************************************************************************************/
