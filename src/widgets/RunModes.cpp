@@ -48,8 +48,6 @@ RunModes::RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
   m_rexit_check = new FXCheckButton( this, "Do not terminate after running the command", this, MODE_CHANGE );
-
-  Reset( );
 }
 
 RunModes::~RunModes( )
@@ -60,6 +58,8 @@ RunModes::~RunModes( )
 void RunModes::create( )
 {
   FXVerticalFrame::create( );
+  Reset( );
+  Settings( );
 }
 
 /**************************************************************************************************/
