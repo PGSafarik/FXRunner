@@ -67,6 +67,7 @@ public:
 protected:
   RunModes( ) { }
   void Reset( );    // Nastaveni vychozich modu spusteni
+  void Settings( ); // Check Launch modes settings from Application object
   long Notify( FXuint _type, void *_data = nullptr );
 };
 

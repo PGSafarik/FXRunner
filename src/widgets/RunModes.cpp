@@ -167,6 +167,11 @@ void RunModes::Reset()
   m_change = false;
 }
 
+void RunModes::Settings()
+{
+  if( !m_app->privilege_enabled( ) ) { m_su_check->disable(  ); } else { m_su_check->enable(  ); }
+}
+
 long RunModes::Notify( FXuint _type, void *_data ) {
   long result = 1;
   if( m_target ) { result = m_target->handle( this, FXSEL( _type, m_message ), _data ); }
