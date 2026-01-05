@@ -98,7 +98,7 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
     {
       if ( m_su_check->getCheck( ) ) {
         // Kontrola, zda je privilegovane spusteni povoleno
-        if( ! m_app->privilege_enabled(  ) ) {
+        if( !m_app->privilege_enabled(  ) ) {
           FXMessageBox::error( this, MBOX_OK, "Privilege options error", "Privilege is not enabled on this application!" );
           m_su_check->setCheck( false );
           break;

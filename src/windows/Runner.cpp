@@ -109,7 +109,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
     }
   }
 
-  if( quit ) { r_app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), NULL ); }
+  if( quit ) { r_app->handle( this, FXSEL( SEL_COMMAND, FXApp::ID_QUIT ), nullptr ); }
   return resh;
 }
 
@@ -156,11 +156,11 @@ long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
   if( msg_id == HISTORY_EVENT ) {
     switch( msg_type ) {
       case SEL_UPDATE : {
-        std::cout << tgt->getClassName(  ) << " - History updated" << std::endl;
+        DEBUG_OUT(  tgt->getClassName(  ) << " - History updated" )
         Task *task = GetHistory( )->at( );
         if( task ) {
           m_cmdfield->setText( task->cmd );
-          m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_UPDATE), task );
+          m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_UPDATE ), task );
         }
         break;
       }
