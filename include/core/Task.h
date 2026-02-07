@@ -30,11 +30,23 @@ struct Properties : public Loki::SmallObject<> {   // Auxiliary structure for st
   FXbool nocloseterm = false; // Try to prevent automatic termination of the terminal when the command is finished running.
 };
 
-struct Task : public Loki::SmallObject<> {    
-  FXString cmd;   // Command
-  FXString prm;   // Params
-  FXString wpth;  // Work dir
-  
+enum PROPERTIES {
+  PRIVILAGE = 0,  // Privilage access flag
+  UNBLOCK,        // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI)
+  TERMINAL,       // Run in termonal emulator
+  UNCLOSED,       // Try to prevent automatic termination of the terminal when the command is finished running.
+};
+
+class Task : public FXObject /*Loki::SmallObject<>*/ {
+FXDECLARE( Task )
+  FXString m_cmd;   // Command
+  FXString m_wpth;  // Work dir
+  FXString prm;     // Params - depracated
+  FXuint m_properties;   // Properties bitmap
+
+  FXObject   *m_tgt;  //
+  FXSelector  m_msg;  //
+public:
   Properties *prop;
   
   Task( const FXString &cmd_str = FXString::null );
@@ -75,7 +87,11 @@ struct Task : public Loki::SmallObject<> {
     std::cout << "Work dir: " << wpth.text( ) << std::endl;
     std::cout << "Properties: " << prop->suaccess << " " << prop->unblock << " " << prop->term << " " << prop->nocloseterm << std::endl;
   }
+protected:
+
 };
+
+
 
 #endif /* FXRUNNER_TASK_H */
 /*** END ****************************************************************/

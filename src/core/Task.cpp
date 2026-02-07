@@ -15,12 +15,14 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
 #include "core/Task.h"
- 
+FXIMPLEMENT( Task, FXObject, NULL, 0 )
+
 Task::Task( const FXString &cmd_str )
 {
-  cmd  = cmd_str;
-  prm  = FXString::null;
-  wpth = FXString::null;
+  m_cmd        = cmd_str;
+  prm          = FXString::null;
+  m_wpth       = FXString::null;
+  m_properties = 0;
   
   prop = new Properties;
 }
@@ -29,5 +31,7 @@ Task::~Task( )
 { 
   delete prop;
 }
+
+
 
 /*** END ******************************************************************************************/
