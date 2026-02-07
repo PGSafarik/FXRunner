@@ -57,27 +57,28 @@ public:
 
   template<class STREAM> void load_data( STREAM &store )
   {
-    store >> cmd;
+    store >> m_cmd;
     store >> prm;
-    store >> wpth;    
+    store >> m_wpth;
     store >> prop->suaccess;
     store >> prop->unblock;
     store >> prop->term;   
-    store >> prop->nocloseterm; 
+    store >> prop->nocloseterm;
+    store >> m_properties;
 
     DEBUG_OUT( "Load task data from the data store: " << this->cmd.text( ) )
   }
 
   template<class STREAM> void save_data( STREAM &store )
   {
-    store << cmd;
+    store << m_cmd;
     store << prm;
-    store << wpth;
+    store << m_wpth;
     store << prop->suaccess;
     store << prop->unblock;
     store << prop->term;
     store << prop->nocloseterm; 
-
+    store << m_properties;
     DEBUG_OUT( "Saving task data from the data store: " << this->cmd.text( ) )
   }
 
