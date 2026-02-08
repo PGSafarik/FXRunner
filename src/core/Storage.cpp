@@ -48,6 +48,13 @@ SubstrStream& SubstrStream::operator >> (  FXbool &value )
 	value = ( ( str == "1" || str == "true" ) ? true : false );
 	return *this;
 }
+
+SubstrStream& SubstrStream::operator >> ( FXuint &value )
+{
+  FXString str = GetSection( );
+	value = str.toUInt( );
+	return *this;
+}
 	
 SubstrStream& SubstrStream::operator << ( const FXString &str ) 
 {
@@ -60,6 +67,13 @@ SubstrStream& SubstrStream::operator << ( FXbool value )
 {
 	if( !m_str.empty( ) ) { m_str += m_delim; }
 	m_str += ( ( value ) ?  "true": "false" );
+	return *this;
+}
+
+SubstrStream& SubstrStream::operator << ( FXuint value )
+{
+	if( !m_str.empty( ) ) { m_str += m_delim; }
+	m_str += FXString::value( value );
 	return *this;
 }
 

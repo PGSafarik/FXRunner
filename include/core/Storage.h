@@ -56,8 +56,10 @@ public:
 
 	SubstrStream& operator >> ( FXString &str );
 	SubstrStream& operator >> ( FXbool &value );
+	SubstrStream& operator >> ( FXuint &value );
 	SubstrStream& operator << ( const FXString &str );
 	SubstrStream& operator << ( FXbool value );
+	SubstrStream& operator << ( FXuint value );
 
 	/*
 	void Dump( ) {
