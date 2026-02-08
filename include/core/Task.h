@@ -68,6 +68,7 @@ public:
   void   set_property( FXuint prop )   { m_properties |= ( 1 << prop ); }
   void   unset_property( FXuint prop ) { m_properties &= ~( 1 << prop ); }
   FXbool check_property( FXuint prop ) const { return ( m_properties & ( 1 << prop ) ) != 0; }
+  void   reset_properties( ) { m_properties = 0; set_property( UNBLOCK ); }
 
   /* Operations */
   template<class STREAM> void load_data( STREAM &store )

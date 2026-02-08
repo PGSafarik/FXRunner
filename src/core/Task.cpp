@@ -22,7 +22,7 @@ Task::Task( const FXString &cmd_str )
   m_cmd        = cmd_str;
   prm          = FXString::null;
   m_wpth       = FXString::null;
-  m_properties = 0;
+  reset_properties( );
   
   prop = new Properties;
 }
