@@ -92,7 +92,7 @@ long Runner::onCmd_Run( FXObject *tgt, FXSelector sel, void *data )
         m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_APPLY ), nullptr );
 #ifdef DEBUG
         DEBUG_OUT( "Dumping item for run: " )
-        GetHistory( )->at( )->Dump( );
+        GetHistory( )->at( )->dump( );
 # endif
         r_app->task_exec( );                       // Running command
         Update( );                                 // Actualize gui forms
