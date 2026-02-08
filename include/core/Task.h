@@ -100,12 +100,7 @@ public:
     DEBUG_OUT( "Saving task data from the data store: " << this->cmd.text( ) )
   }
 
-  void Dump( )
-  {
-    std::cout << "Task: " << m_cmd.text( ) << " " << prm.text( ) << std::endl;
-    std::cout << "Work dir: " << m_wpth.text( ) << std::endl;
-    std::cout << "Properties: " << prop->suaccess << " " << prop->unblock << " " << prop->term << " " << prop->nocloseterm << std::endl;
-  }
+
 protected:
 
 };
