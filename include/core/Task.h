@@ -55,6 +55,11 @@ public:
   FXbool operator == ( const Task &other ) const { return cmd == other.cmd && prm == other.prm; }
   FXbool operator != ( const Task &other ) const { return !(*this == other); }
 
+  void   set_property( FXuint prop )   { m_properties |= ( 1 << prop ); }
+  void   unset_property( FXuint prop ) { m_properties &= ~( 1 << prop ); }
+  FXbool check_property( FXuint prop ) const { return ( m_properties & ( 1 << prop ) ) != 0; }
+
+  /* Operations */
   template<class STREAM> void load_data( STREAM &store )
   {
     store >> m_cmd;
