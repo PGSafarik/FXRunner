@@ -32,6 +32,12 @@ Task::~Task( )
   delete prop;
 }
 
+void Task::dump( )
+{
+  std::cout << "Task: " << m_cmd.text( ) << " " << prm.text( ) << std::endl;
+  std::cout << "Work dir: " << m_wpth.text( ) << std::endl;
+  std::cout << "Properties: " << prop->suaccess << " " << prop->unblock << " " << prop->term << " " << prop->nocloseterm << std::endl;
+}
 
 
 /*** END ******************************************************************************************/

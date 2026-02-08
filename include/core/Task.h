@@ -71,6 +71,8 @@ public:
   void   reset_properties( ) { m_properties = 0; set_property( UNBLOCK ); }
 
   /* Operations */
+  void dump( );
+
   template<class STREAM> void load_data( STREAM &store )
   {
     store >> m_cmd;
