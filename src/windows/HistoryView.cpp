@@ -121,8 +121,8 @@ FXString HistoryView::TaskToString( Task *task )
   FXString str = FXString::null;
 
   if( task ) {
-    str = task->cmd + "\t";
-    str += task->wpth + "\t";
+    str = task->get_cmd( ) + "\t";
+    str += task->get_wdir( ) + "\t";
     str += ( task->prop->unblock ? "true" : "false" );  str += "\t";
     str += ( task->prop->suaccess ? "true" : "false" ); str += "\t";
     str += ( task->prop->term ? "true" : "false" );     str += "\t";
@@ -141,8 +141,8 @@ Task* HistoryView::TaskFromString( const FXString &str, Task *task )
     for( FXint pos = 0; pos != 5; pos++ ) {
       segment = str.section( "\t", 0 );
       switch( pos ) {
-        case 0 : t->cmd            = segment; break;
-        case 1 : t->wpth           = segment; break;
+        case 0 : t->set_cmd( segment ); break;
+        case 1 : t->set_wdir( segment ); break;
         case 2 : t->prop->unblock  = ( segment == "true" ); break;
         case 3 : t->prop->suaccess = ( segment == "true" ); break;
         case 4 : t->prop->term     = ( segment == "true" ); break;

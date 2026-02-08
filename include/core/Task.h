@@ -52,8 +52,18 @@ public:
   Task( const FXString &cmd_str = FXString::null );
   virtual ~Task( );
 
-  FXbool operator == ( const Task &other ) const { return cmd == other.cmd && prm == other.prm; }
-  FXbool operator != ( const Task &other ) const { return !(*this == other); }
+  FXbool operator == ( const Task &other ) const { return m_cmd == other.m_cmd && prm == other.prm; }
+  FXbool operator == ( const FXString &cmd ) const { return cmd == this->m_cmd; };
+
+  FXbool operator != ( const Task &other ) const { return !( *this == other ); }
+  FXbool operator != ( const FXString &cmd ) const { return !( *this == cmd ); }
+
+/* access methods */
+  FXbool is_empty( ) const { return m_cmd.empty( ); }
+  FXString get_cmd( ) const { return m_cmd; }
+  void set_cmd( const FXString &cmd ) { this->m_cmd = cmd; }
+  FXString get_wdir( ) const { return ( !m_wpth.empty( ) ? m_wpth : FXSystem::getHomeDirectory( ) ); }
+  void set_wdir( const FXString &wd ) { if ( m_wpth != wd ) { m_wpth = wd; } }
 
   void   set_property( FXuint prop )   { m_properties |= ( 1 << prop ); }
   void   unset_property( FXuint prop ) { m_properties &= ~( 1 << prop ); }
@@ -89,8 +99,8 @@ public:
 
   void Dump( )
   {
-    std::cout << "Task: " << cmd.text( ) << " " << prm.text( ) << std::endl;
-    std::cout << "Work dir: " << wpth.text( ) << std::endl;
+    std::cout << "Task: " << m_cmd.text( ) << " " << prm.text( ) << std::endl;
+    std::cout << "Work dir: " << m_wpth.text( ) << std::endl;
     std::cout << "Properties: " << prop->suaccess << " " << prop->unblock << " " << prop->term << " " << prop->nocloseterm << std::endl;
   }
 protected:

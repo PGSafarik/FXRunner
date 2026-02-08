@@ -116,8 +116,8 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
       Task *task = ( data ? static_cast<Task*>( data ) : m_app->get_History( )->at( ) );
 
       if( task ) {
-        if( task->wpth.empty( ) ) { task->wpth = FXSystem::getHomeDirectory( ); }
-        if( m_dir_text->getText( ) != task->wpth ) { m_dir_text->setText( task->wpth ); }
+        //if( task->get_wdir( ).empty( ) ) { task->set_wdir(  FXSystem::getHomeDirectory( ) ); }          // FIXME: tohle si ma delat Task
+        if( m_dir_text->getText( ) != task->get_wdir( ) ) { m_dir_text->setText( task->get_wdir( ) ); }
         m_su_check->setCheck( task->prop->suaccess );
         m_nblock_check->setCheck( task->prop->unblock );
         m_rterm_check->setCheck( task->prop->term );
@@ -133,7 +133,7 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
       Task *task = ( data ? static_cast<Task*>( data ) : m_app->get_History( )->at( ) );
 
       if( task && m_change ) {
-        task->wpth = m_dir_text->getText( );
+        task->set_wdir( m_dir_text->getText( ) );
         task->prop->suaccess = m_su_check->getCheck( );
         task->prop->unblock = m_nblock_check->getCheck( );
         task->prop->term = m_rterm_check->getCheck( );

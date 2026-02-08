@@ -24,7 +24,7 @@ HistoryList::HistoryList( )
 /**************************************************************************************************/
 Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
 {
-  if( check_position( pos ) && entry && !entry->cmd.empty( ) ) {
+  if( check_position( pos ) && entry && !entry->get_cmd( ).empty( ) ) {
     Deduplication( entry );
     if( FXArray<Task*>::insert( pos, entry ) ) {
       Truncate( );
@@ -89,7 +89,7 @@ void HistoryList::cleaning( )
   for( FXint i = 0; i < num; i++ ) {
     Task *entry = at( i );
     // Check empty record
-    if( !entry || entry->cmd.empty( )  ) {
+    if( !entry || entry->get_cmd( ).empty( )  ) {
       remove( i, true, true );
       break;
     }

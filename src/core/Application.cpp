@@ -57,9 +57,9 @@ FXint Application::task_exec( Task *task ) {
   //FXString _paccess = "";  // A sudo command for running privilege command
 
   // Prikaz, parametry, neblokujici spusteni
-  if( !task->cmd.empty( ) ) {
-    _cmd += task->cmd;
-    if( !task->prm.empty( ) ) { _cmd += task->prm; }
+  if( !task->is_empty( ) ) {
+    _cmd += task->get_cmd( );
+    //if( !task->prm.empty( ) ) { _cmd += task->prm; }  // FIXME: Deprecated, stub
     if( task->prop->unblock ) { _cmd += "&"; }
     DEBUG_OUT( "Running PRE: " << _cmd )
 
@@ -86,17 +86,17 @@ void Application::task_write( Task *cmd, const FXString &pth )
   DEBUG_OUT( "writing " << pth )
   FXSettings desk_file;
   FXString   desk_head = "Desktop Entry";
-  FXString   command, name = FXPath::name( cmd->cmd );
+  FXString   command, name = FXPath::name( cmd->get_cmd( ) );
 
   /// FIXME APP_001 : sudo!
   //if( cmd->su ) { command += a_cfg->su + " "; }
-  command += cmd->cmd;
-  if( !cmd->prm.empty( ) ) { command += " " + cmd->prm; }
+  command += cmd->get_cmd( );
+  //if( !cmd->prm.empty( ) ) { command += " " + cmd->prm; } // FIXME: Deprecated, stub
 
   desk_file.writeStringEntry( desk_head, "name",     name.text( ) );
-  desk_file.writeStringEntry( desk_head, "TryExec",  cmd->cmd.text( ) );
+  desk_file.writeStringEntry( desk_head, "TryExec",  cmd->get_cmd( ).text( ) );
   desk_file.writeStringEntry( desk_head, "Exec",     command.text( ) );
-  desk_file.writeStringEntry( desk_head, "Path",     cmd->wpth.text( ) );
+  desk_file.writeStringEntry( desk_head, "Path",     cmd->get_wdir( ).text( ) );
   desk_file.writeBoolEntry(   desk_head, "Terminal", cmd->prop->term );
 
   desk_file.writeStringEntry( desk_head, "Comment", FXString::null );
@@ -239,8 +239,8 @@ FXString Application::CheckTerminal( Task *t )
     if( t->prop->nocloseterm == true ) { resh += a_cfg->term_noclose + " "; }
 
     // Nastavit pracovni cestu v terminalu
-    if( !t->wpth.empty( ) ) {
-      if( !a_cfg->term_work.empty( ) ) { resh += a_cfg->term_work + t->wpth + " "; }
+    if( !t->get_wdir( ).empty( ) ) {
+      if( !a_cfg->term_work.empty( ) ) { resh += a_cfg->term_work + t->get_wdir( ) + " "; }
       //else { supplement = "/bin/cd " + t->wpth + "; "; }
     }
 

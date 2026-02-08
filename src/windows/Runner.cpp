@@ -158,7 +158,7 @@ long Runner::on_HistoryEvent( FXObject *tgt, FXSelector sel, void *data )
         DEBUG_OUT(  tgt->getClassName(  ) << " - History updated" )
         Task *task = GetHistory( )->at( );
         if( task ) {
-          m_cmdfield->setText( task->cmd );
+          m_cmdfield->setText( task->get_cmd( ) );
           m_runbox->get_Modes( )->handle( this, FXSEL( SEL_COMMAND, RunModes::MODE_UPDATE ), task );
         }
         break;
@@ -247,7 +247,7 @@ FXbool Runner::PrepareTask( )
   }
   else {
     err_str = "Do you want to run the last command entered:\n '";
-    err_str += GetHistory( )->at( )->cmd + "'?";
+    err_str += GetHistory( )->at( )->get_cmd( ) + "'?";
 
     if( FXMessageBox::question( this, MBOX_YES_NO, "Incorrect input", err_str.text( ) ) == MBOX_CLICKED_NO ) {
       FXMessageBox::error( this, MBOX_OK, "Incorrect input", "The command input field must not be empty!" );

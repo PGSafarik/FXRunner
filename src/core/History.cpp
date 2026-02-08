@@ -43,7 +43,7 @@ FXint History::find( const FXString &cmd )
   if( !cmd.empty( ) ) {
     for( FXint i = 0; i != m_buffer.no( ); i++ ) {
       Task *task = m_buffer.at( i );
-      if( task && task->cmd == cmd ) { idx = i; break; }
+      if( task && (*task) == cmd ) { idx = i; break; }
     }
   }
 
@@ -99,8 +99,8 @@ void History::Dump( )
 
       Task *task = m_buffer.at( i );
       if( task ) {
-        std::cout << task->cmd  << "; ";
-        std::cout << task->wpth << "; ";
+        std::cout << task->get_cmd( ) << "; ";
+        std::cout << task->get_wdir( ) << "; ";
         std::cout << task->prop->suaccess   << "; ";
         std::cout << task->prop->term;
       }
