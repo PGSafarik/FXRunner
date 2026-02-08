@@ -84,7 +84,7 @@ public:
     store >> prop->nocloseterm;
     store >> m_properties;
 
-    DEBUG_OUT( "Load task data from the data store: " << this->cmd.text( ) )
+    DEBUG_OUT( "Load task data from the data store: " << this->m_cmd.text( ) )
   }
 
   template<class STREAM> void save_data( STREAM &store )
@@ -97,7 +97,7 @@ public:
     store << prop->term;
     store << prop->nocloseterm; 
     store << m_properties;
-    DEBUG_OUT( "Saving task data from the data store: " << this->cmd.text( ) )
+    DEBUG_OUT( "Saving task data from the data store: " << this->m_cmd.text( ) )
   }
 
 
