@@ -16,7 +16,7 @@
 #define FXRUNNER_HISTORYBUFFER_H
 
 /*************************************************************************
-* HistoryList.h                                                          *
+* HistoryTools.h                                                          *
 *                                                                        *
 * Basic structure and operation of the history list                      *
 * Copyright (c) 17/08/2025 D.A.Tiger <drakarax@seznam.cz>                *
@@ -24,12 +24,12 @@
 #include "defs.h"
 #include "Task.h"
 
-class HistoryList : protected FXArray<Task*> {
+class HistoryBuffer : protected FXArray<Task*> {
   FXbool m_change;      // List changes indicator
 
 public :
-  HistoryList( );
-  ~HistoryList( ) = default;
+  HistoryBuffer( );
+  ~HistoryBuffer( ) = default;
 
   /* Access objects & methods */
   FXint  limit = 0;				     // Limit number of items in the list ( 0 - no limit; > 0 - the value at which the number of items is maintained )

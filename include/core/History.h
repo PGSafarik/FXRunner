@@ -24,11 +24,11 @@
 #include "defs.h"
 #include "StringUtils.h"
 #include "Task.h"
-#include "HistoryList.h"
+#include "HistoryTools.h"
 
 class History : public FXObject {
 FXDECLARE( History )
-  HistoryList  m_buffer;  // Tasks list
+  HistoryBuffer  m_buffer;  // Tasks list
 
   FXObject   *m_tgt;      // A target object for notifications
   FXSelector  m_sel;      // A notification message ID

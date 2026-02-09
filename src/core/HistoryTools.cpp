@@ -1,5 +1,5 @@
 /*************************************************************************
-* HistoryList.cpp Copyright (c) 2015 - 2025 by D.A.Tiger                        *
+* HistoryTools.cpp Copyright (c) 2015 - 2025 by D.A.Tiger                        *
 *                                                                        *
 * This program is free software: you can redistribute it and/or modify   *
 * it under the terms of the GNU General Public License as published by   *
@@ -14,15 +14,15 @@
 * You should have received a copy of the GNU General Public License      *
 * along with this program.  If not, see <https://www.gnu.org/licenses/>. *
 *************************************************************************/
-#include<core/HistoryList.h>
+#include<core/HistoryTools.h>
 
 /**************************************************************************************************/
-HistoryList::HistoryList( )
+HistoryBuffer::HistoryBuffer( )
             : m_change( false )
 { }
 
 /**************************************************************************************************/
-Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
+Task* HistoryBuffer::insert( FXint pos, Task *entry, FXbool change )
 {
   if( check_position( pos ) && entry && !entry->get_cmd( ).empty( ) ) {
     Deduplication( entry );
@@ -36,7 +36,7 @@ Task* HistoryList::insert( FXint pos, Task *entry, FXbool change )
   return nullptr;
 }
 
-Task* HistoryList::remove( FXint pos, FXbool destroy, FXbool change )
+Task* HistoryBuffer::remove( FXint pos, FXbool destroy, FXbool change )
 {
   if( !check_position( pos ) ) { return nullptr; }
   Task *entry = at( pos );
@@ -52,7 +52,7 @@ Task* HistoryList::remove( FXint pos, FXbool destroy, FXbool change )
   return entry;
 }
 
-void HistoryList::clear( FXbool change )
+void HistoryBuffer::clear( FXbool change )
 {
   FXival num = no( );
 
@@ -65,7 +65,7 @@ void HistoryList::clear( FXbool change )
   m_change = change;
 }
 
-FXbool HistoryList::top( FXint pos )
+FXbool HistoryBuffer::top( FXint pos )
 {
   if( check_position( pos ) && pos > 0 ) {
     Task *entry = at( pos );
@@ -74,13 +74,13 @@ FXbool HistoryList::top( FXint pos )
   return false;
 }
 
-FXbool HistoryList::check_position( FXint value ) const
+FXbool HistoryBuffer::check_position( FXint value ) const
 {
   FXint num = static_cast<FXint>( no( ) );
   return ( num > 0 ?  0 <= value && value <= num : value == 0 );
 }
 
-void HistoryList::cleaning( )
+void HistoryBuffer::cleaning( )
 {
   // Check of size limits
   Truncate( );
@@ -99,7 +99,7 @@ void HistoryList::cleaning( )
 }
 
 /**********************************************************************************************************************/
-void HistoryList::Deduplication( const Task *entry, const FXint start )
+void HistoryBuffer::Deduplication( const Task *entry, const FXint start )
 {
   if( !check_position( start ) ) { return; }
 
@@ -110,7 +110,7 @@ void HistoryList::Deduplication( const Task *entry, const FXint start )
   }
 }
 
-void HistoryList::Truncate( )
+void HistoryBuffer::Truncate( )
 {
   FXint overload_num = CheckLimit( );
 
@@ -120,7 +120,7 @@ void HistoryList::Truncate( )
   }
 }
 
-FXint HistoryList::CheckLimit( )
+FXint HistoryBuffer::CheckLimit( )
 {
   FXint count = 0;
   FXint size  = static_cast<FXint>( no( ) );
@@ -139,5 +139,4 @@ FXint HistoryList::CheckLimit( )
   DEBUG_OUT( "History list count of overload: " << limit << "/" << hysteresis << " => " << size << "-" << count << ( size == limit ? " *" : "" ) )
   return count;
 }
-
 /*** END ******************************************************************************************/
