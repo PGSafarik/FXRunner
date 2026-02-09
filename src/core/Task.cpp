@@ -32,7 +32,7 @@ void Task::dump( )
 {
   std::cout << "Task: " << m_cmd.text( ) << " " << prm.text( ) << std::endl;
   std::cout << "Work dir: " << m_wpth.text( ) << std::endl;
-  std::cout << "PROPERTIES: " << check_property( PRIVILAGE ) << check_property( UNBLOCK ) << check_property( TERMINAL ) << check_property( UNCLOSED ) << std::endl;
+  std::cout << "PROPERTIES: " << check_property( PRIVILAGE ) << check_property( BLOCKED ) << check_property( TERMINAL ) << check_property( UNCLOSED ) << std::endl;
 }
 
 

@@ -25,7 +25,7 @@
 
 enum TASK_MODE {
   PRIVILAGE = 0,  // Privilage access mode flag
-  UNBLOCK,        // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI)
+  BLOCKED,          // Blocked mode
   TERMINAL,       // Run in termonal emulator
   UNCLOSED,       // Try to prevent automatic termination of the terminal when the command is finished running.
 };
@@ -60,7 +60,7 @@ public:
   void   set_property( FXuint prop )   { m_modes |= ( 1 << prop ); }
   void   unset_property( FXuint prop ) { m_modes &= ~( 1 << prop ); }
   FXbool check_property( FXuint prop ) const { return ( m_modes & ( 1 << prop ) ) != 0; }
-  void   reset_properties( ) { m_modes = 0; set_property( UNBLOCK ); }
+  void   reset_properties( ) { m_modes = 0; }
   void   switch_property( FXuint prop, FXbool state = true ) { state ? set_property( prop ) : unset_property( prop ); }
 
   /* Operations */

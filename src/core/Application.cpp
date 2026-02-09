@@ -58,7 +58,7 @@ FXint Application::task_exec( Task *task ) {
   if( !task->is_empty( ) ) {
     _cmd += task->get_cmd( );
     //if( !task->prm.empty( ) ) { _cmd += task->prm; }  // FIXME: Deprecated, stub
-    if( task->check_property( UNBLOCK ) ) { _cmd += "&"; }
+    if( !task->check_property( TASK_MODE::BLOCKED ) ) { _cmd += "&"; }
     DEBUG_OUT( "Running PRE: " << _cmd )
 
     _cmd = CheckTerminal( task ) + CheckPrivilege( task ) + _cmd;

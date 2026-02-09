@@ -117,10 +117,10 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
 
       if( task ) {
         if( m_dir_text->getText( ) != task->get_wdir( ) ) { m_dir_text->setText( task->get_wdir( ) ); }
-        m_su_check->setCheck( task->check_property( PRIVILAGE ) );
-        m_nblock_check->setCheck( task->check_property( UNBLOCK ) );
-        m_rterm_check->setCheck( task->check_property( TERMINAL ) );
-        m_ntexit_check->setCheck( task->check_property( UNCLOSED ) );
+        m_su_check->setCheck( task->check_property( TASK_MODE::PRIVILAGE ) );
+        m_nblock_check->setCheck( task->check_property( TASK_MODE::BLOCKED ) );
+        m_rterm_check->setCheck( task->check_property( TASK_MODE::TERMINAL ) );
+        m_ntexit_check->setCheck( task->check_property( TASK_MODE::UNCLOSED ) );
 
         m_change = false;
         result = 0;
@@ -133,10 +133,10 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
 
       if( task && m_change ) {
         task->set_wdir( m_dir_text->getText( ) );
-        task->switch_property( PRIVILAGE, m_su_check->getCheck( ) );
-        task->switch_property( UNBLOCK, m_nblock_check->getCheck( ) );
-        task->switch_property( TERMINAL, m_rterm_check->getCheck( ) );
-        task->switch_property( UNCLOSED, m_ntexit_check->getCheck( ) );
+        task->switch_property( TASK_MODE::PRIVILAGE, m_su_check->getCheck( ) );
+        task->switch_property( TASK_MODE::BLOCKED, m_nblock_check->getCheck( ) );
+        task->switch_property( TASK_MODE::TERMINAL, m_rterm_check->getCheck( ) );
+        task->switch_property( TASK_MODE::UNCLOSED, m_ntexit_check->getCheck( ) );
 
         result = 0;
       }
