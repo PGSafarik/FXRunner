@@ -75,7 +75,8 @@ public:
 /*** Storage **************************************************************************************/
 template<typename STREAMER, typename CLIENT > class Storage : private FXFile {
 	FXString m_filename;	// Path of the file of the storage
-	FXbool   m_ready;			// Indication that all conditions for proper storage function are met
+	FXbool   m_ready = false;			// Indication that all conditions for proper storage function are met
+	FXbool   m_force  = false;     // Fast mode -> No check changes, Write all record
 
 public:
 	explicit Storage( const FXString &filename = FXString::null );
@@ -83,12 +84,16 @@ public:
 
 	/* Access */
 	FXbool   ready( ) const { return m_ready; }
+	FXbool   force( ) const { return m_force; }
+	void     set_force( FXbool value ) { m_force = value; }
   FXbool   set_filename( const FXString &filename );
 	FXString get_filename( ) { return m_filename; }
 
 	/* Operations */
 	void operator <<( CLIENT &client );
 	void operator >>( CLIENT &client );
+protected:
+	FXbool WriteEnable( CLIENT &client ); // Check is write enabled. Deaktive the 'fast' mode
 };
 
 template<typename STREAMER, typename CLIENT> Storage<STREAMER, CLIENT>::Storage( const FXString &filename )
@@ -165,7 +170,8 @@ template<typename STREAMER, typename CLIENT> void Storage<STREAMER, CLIENT>::ope
 
 template<typename STREAMER, typename CLIENT> void Storage<STREAMER, CLIENT>::operator <<( CLIENT &client )
 {
-	if( !client.isChange( ) ) { return; }
+	if( !WriteEnable( client ) ) { return; }
+
 	STREAMER pipe;
 
 	if( !m_ready || !open( m_filename, FXIO::Writing | FXIO::Create, FXIO::AllReadWrite ) ) {
@@ -196,5 +202,13 @@ template<typename STREAMER, typename CLIENT> void Storage<STREAMER, CLIENT>::ope
 
 	close( );
 }
+
+template<typename STREAMER, typename CLIENT> FXbool Storage<STREAMER, CLIENT>::WriteEnable( CLIENT &client )
+{
+	const FXbool result = m_force || client.isChange( );
+	if( m_force ) { m_force = false; }
+	return result;
+}
+
 
 #endif /* FXRUNNER_Storage_H */

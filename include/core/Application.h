@@ -107,6 +107,8 @@ protected :
   /* Helpful methods */
   void settings_load( );
   void settings_save( );
+  void history_load( );
+  void history_save( FXbool force = false );
 
   FXString CheckPrivilege( Task *t );  // Check to using sudo
   FXString CheckTerminal( Task *t );   // Check to using terminal emulator 

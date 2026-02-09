@@ -207,6 +207,19 @@ void Application::settings_save( )
   if( reg( ).isModified( ) ) { reg( ).write( ); }
 }
 
+void Application::history_load()
+{
+  DEBUG_OUT( "Store " << m_history_store.get_filename( ) << " ready state: " << ( m_history_store.ready( ) ? "true" : "false" ) )
+  m_history_store >> *a_history;
+}
+
+void Application::history_save( FXbool force )
+{
+  m_history_store.set_force( force );
+  DEBUG_OUT( "Store " << m_history_store.get_filename( ) << " ready state: " << ( m_history_store.ready( ) ? "true" : "false" ) )
+  m_history_store << *a_history;
+}
+
 FXString Application::CheckPrivilege( Task *t )
 {
   FXString resh = "";
