@@ -123,9 +123,14 @@ FXString HistoryView::TaskToString( Task *task )
   if( task ) {
     str = task->get_cmd( ) + "\t";
     str += task->get_wdir( ) + "\t";
+    /*! depracated
     str += ( task->prop->unblock ? "true" : "false" );  str += "\t";
     str += ( task->prop->suaccess ? "true" : "false" ); str += "\t";
     str += ( task->prop->term ? "true" : "false" );     str += "\t";
+    */
+    str += ( task->check_property( UNBLOCK ) ? "true" : "false" ); str += "\t";
+    str += ( task->check_property( PRIVILAGE )   ? "true" : "false" ); str += "\t";
+    str += ( task->check_property( TERMINAL )  ? "true" : "false" ); str += "\t";
   }
 
   return str;
@@ -143,9 +148,14 @@ Task* HistoryView::TaskFromString( const FXString &str, Task *task )
       switch( pos ) {
         case 0 : t->set_cmd( segment ); break;
         case 1 : t->set_wdir( segment ); break;
+        /*! depracated
         case 2 : t->prop->unblock  = ( segment == "true" ); break;
         case 3 : t->prop->suaccess = ( segment == "true" ); break;
         case 4 : t->prop->term     = ( segment == "true" ); break;
+        */
+        case 2 : t->switch_property( UNBLOCK, ( segment == "true" ) ); break;
+        case 3 : t->switch_property( PRIVILAGE,   ( segment == "true" ) ); break;
+        case 4 : t->switch_property( TERMINAL,  ( segment == "true" ) ); break;
       }
     }
   }

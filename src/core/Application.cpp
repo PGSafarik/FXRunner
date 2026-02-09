@@ -60,7 +60,7 @@ FXint Application::task_exec( Task *task ) {
   if( !task->is_empty( ) ) {
     _cmd += task->get_cmd( );
     //if( !task->prm.empty( ) ) { _cmd += task->prm; }  // FIXME: Deprecated, stub
-    if( task->prop->unblock ) { _cmd += "&"; }
+    if( task->check_property( UNBLOCK ) ) { _cmd += "&"; }
     DEBUG_OUT( "Running PRE: " << _cmd )
 
     _cmd = CheckTerminal( task ) + CheckPrivilege( task ) + _cmd;
@@ -97,7 +97,7 @@ void Application::task_write( Task *cmd, const FXString &pth )
   desk_file.writeStringEntry( desk_head, "TryExec",  cmd->get_cmd( ).text( ) );
   desk_file.writeStringEntry( desk_head, "Exec",     command.text( ) );
   desk_file.writeStringEntry( desk_head, "Path",     cmd->get_wdir( ).text( ) );
-  desk_file.writeBoolEntry(   desk_head, "Terminal", cmd->prop->term );
+  desk_file.writeBoolEntry(   desk_head, "Terminal", cmd->check_property( TERMINAL ) );
 
   desk_file.writeStringEntry( desk_head, "Comment", FXString::null );
   desk_file.writeStringEntry( desk_head, "Icon",    FXString::null );
@@ -211,7 +211,7 @@ FXString Application::CheckPrivilege( Task *t )
 {
   FXString resh = "";
 
-  if( t->prop->suaccess && a_cfg->sudo  ) { 
+  if( t->check_property( PRIVILAGE ) && a_cfg->sudo  ) {
     resh = "sudo"; 
     resh += ( a_cfg->askpass ? " -A " : " " );
   }
@@ -222,13 +222,13 @@ FXString Application::CheckPrivilege( Task *t )
 FXString Application::CheckTerminal( Task *t )
 {
   FXString resh       = "";                            // Vysledny prikaz
-  FXString supplement = "";                            // Doplnek prikazu
-  FXbool   pa_term    = ( t->prop->suaccess && !a_cfg->askpass );  // Ma byt ET pouzit k autentizaci pro sudo?
+  //FXString supplement = "";                            // Doplnek prikazu
+  FXbool   pa_term    = ( t->check_property( PRIVILAGE ) && !a_cfg->askpass );  // Ma byt ET pouzit k autentizaci pro sudo?
   FXbool   use        = false;                         // Je ET vubec vyzadovan a povolen?
 
   if( a_cfg->term_enable != "Disable" ) {
     if( a_cfg->term_enable == "Always" )  { use = true; }
-    else if( t->prop->term || pa_term )   { use = true; }
+    else if( t->check_property( TERMINAL ) || pa_term )   { use = true; }
   }
   
   if( use ) {
@@ -236,7 +236,7 @@ FXString Application::CheckTerminal( Task *t )
     resh = a_cfg->term + " ";
 
     // Nezavirat terminal
-    if( t->prop->nocloseterm == true ) { resh += a_cfg->term_noclose + " "; }
+    if( t->check_property( UNCLOSED ) ) { resh += a_cfg->term_noclose + " "; }
 
     // Nastavit pracovni cestu v terminalu
     if( !t->get_wdir( ).empty( ) ) {

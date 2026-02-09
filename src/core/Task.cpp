@@ -23,8 +23,6 @@ Task::Task( const FXString &cmd_str )
   prm          = FXString::null;
   m_wpth       = FXString::null;
   reset_properties( );
-  
-  prop = new Properties;
 }
 
 Task::~Task( )
@@ -36,7 +34,6 @@ void Task::dump( )
 {
   std::cout << "Task: " << m_cmd.text( ) << " " << prm.text( ) << std::endl;
   std::cout << "Work dir: " << m_wpth.text( ) << std::endl;
-  std::cout << "Properties: " << prop->suaccess << " " << prop->unblock << " " << prop->term << " " << prop->nocloseterm << std::endl;
   std::cout << "PROPERTIES: " << check_property( PRIVILAGE ) << check_property( UNBLOCK ) << check_property( TERMINAL ) << check_property( UNCLOSED ) << std::endl;
 }
 

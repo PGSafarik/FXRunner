@@ -23,34 +23,26 @@
 *************************************************************************/
 #include "defs.h"
 
-struct Properties : public Loki::SmallObject<> {   // Auxiliary structure for storing the state of properties 
-  FXbool suaccess    = false; // Run with super user access
-  FXbool unblock     = true;  // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI) 
-  FXbool term        = false; // Run the command in terminal
-  FXbool nocloseterm = false; // Try to prevent automatic termination of the terminal when the command is finished running.
-};
-
-enum PROPERTIES {
-  PRIVILAGE = 0,  // Privilage access flag
+enum TASK_MODE {
+  PRIVILAGE = 0,  // Privilage access mode flag
   UNBLOCK,        // Add the '&' character to the end of the command string (run a command in the background, in non-blocking mode - in case of GUI)
   TERMINAL,       // Run in termonal emulator
   UNCLOSED,       // Try to prevent automatic termination of the terminal when the command is finished running.
 };
 
-class Task : public FXObject /*Loki::SmallObject<>*/ {
+class Task : public FXObject {
 FXDECLARE( Task )
   FXString m_cmd;   // Command
   FXString m_wpth;  // Work dir
-  FXString prm;     // Params - depracated
-  FXuint m_properties;   // Properties bitmap
+  FXString prm;     // Params (depracated?)
+  FXuint m_modes;   // Properties bitmap
 
-  FXObject   *m_tgt;  //
-  FXSelector  m_msg;  //
+  FXObject   *m_tgt;  // A notify target object
+  FXSelector  m_msg;  // Notify msg id
+
 public:
-  Properties *prop;
-  
-  Task( const FXString &cmd_str = FXString::null );
-  virtual ~Task( );
+  explicit Task( const FXString &cmd_str = FXString::null );
+  ~Task( ) override;
 
   FXbool operator == ( const Task &other ) const { return m_cmd == other.m_cmd && prm == other.prm; }
   FXbool operator == ( const FXString &cmd ) const { return cmd == this->m_cmd; };
@@ -65,10 +57,11 @@ public:
   FXString get_wdir( ) const { return ( !m_wpth.empty( ) ? m_wpth : FXSystem::getHomeDirectory( ) ); }
   void set_wdir( const FXString &wd ) { if ( m_wpth != wd ) { m_wpth = wd; } }
 
-  void   set_property( FXuint prop )   { m_properties |= ( 1 << prop ); }
-  void   unset_property( FXuint prop ) { m_properties &= ~( 1 << prop ); }
-  FXbool check_property( FXuint prop ) const { return ( m_properties & ( 1 << prop ) ) != 0; }
-  void   reset_properties( ) { m_properties = 0; set_property( UNBLOCK ); }
+  void   set_property( FXuint prop )   { m_modes |= ( 1 << prop ); }
+  void   unset_property( FXuint prop ) { m_modes &= ~( 1 << prop ); }
+  FXbool check_property( FXuint prop ) const { return ( m_modes & ( 1 << prop ) ) != 0; }
+  void   reset_properties( ) { m_modes = 0; set_property( UNBLOCK ); }
+  void   switch_property( FXuint prop, FXbool state = true ) { state ? set_property( prop ) : unset_property( prop ); }
 
   /* Operations */
   void dump( );
@@ -78,13 +71,10 @@ public:
     store >> m_cmd;
     store >> prm;
     store >> m_wpth;
-    store >> prop->suaccess;
-    store >> prop->unblock;
-    store >> prop->term;   
-    store >> prop->nocloseterm;
-    store >> m_properties;
+    store >> m_modes;
 
     DEBUG_OUT( "Load task data from the data store: " << this->m_cmd.text( ) )
+    dump( );
   }
 
   template<class STREAM> void save_data( STREAM &store )
@@ -92,11 +82,7 @@ public:
     store << m_cmd;
     store << prm;
     store << m_wpth;
-    store << prop->suaccess;
-    store << prop->unblock;
-    store << prop->term;
-    store << prop->nocloseterm; 
-    store << m_properties;
+    store << m_modes;
     DEBUG_OUT( "Saving task data from the data store: " << this->m_cmd.text( ) )
   }
 

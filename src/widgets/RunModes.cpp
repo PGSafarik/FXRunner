@@ -116,12 +116,11 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
       Task *task = ( data ? static_cast<Task*>( data ) : m_app->get_History( )->at( ) );
 
       if( task ) {
-        //if( task->get_wdir( ).empty( ) ) { task->set_wdir(  FXSystem::getHomeDirectory( ) ); }          // FIXME: tohle si ma delat Task
         if( m_dir_text->getText( ) != task->get_wdir( ) ) { m_dir_text->setText( task->get_wdir( ) ); }
-        m_su_check->setCheck( task->prop->suaccess );
-        m_nblock_check->setCheck( task->prop->unblock );
-        m_rterm_check->setCheck( task->prop->term );
-        m_ntexit_check->setCheck( task->prop->nocloseterm );
+        m_su_check->setCheck( task->check_property( PRIVILAGE ) );
+        m_nblock_check->setCheck( task->check_property( UNBLOCK ) );
+        m_rterm_check->setCheck( task->check_property( TERMINAL ) );
+        m_ntexit_check->setCheck( task->check_property( UNCLOSED ) );
 
         m_change = false;
         result = 0;
@@ -134,10 +133,10 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
 
       if( task && m_change ) {
         task->set_wdir( m_dir_text->getText( ) );
-        task->prop->suaccess = m_su_check->getCheck( );
-        task->prop->unblock = m_nblock_check->getCheck( );
-        task->prop->term = m_rterm_check->getCheck( );
-        task->prop->nocloseterm = m_ntexit_check->getCheck( );
+        task->switch_property( PRIVILAGE, m_su_check->getCheck( ) );
+        task->switch_property( UNBLOCK, m_nblock_check->getCheck( ) );
+        task->switch_property( TERMINAL, m_rterm_check->getCheck( ) );
+        task->switch_property( UNCLOSED, m_ntexit_check->getCheck( ) );
 
         result = 0;
       }
@@ -165,6 +164,7 @@ long RunModes::onChng_Reconfigure( FXObject *tgt, FXSelector sel, void *data )
 /**************************************************************************************************/
 void RunModes::Reset()
 {
+  // Vynuluje nastaveni checkboxu a nastvi work path textfield na ~
   m_dir_text->setText( FXSystem::getHomeDirectory( ) );
   m_su_check->setCheck( false );
   m_nblock_check->setCheck( false );
