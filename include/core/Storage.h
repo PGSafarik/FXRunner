@@ -152,6 +152,7 @@ template<typename STREAMER, typename CLIENT> void Storage<STREAMER, CLIENT>::ope
 			line.trim( );
 			if( !line.empty( ) ) {
 				pipe.clear( );
+				DEBUG_OUT( "Loading a line from store file: " << line.text( ) )
 				pipe.set_str( line );
 				client.load_data( pipe );
 			}

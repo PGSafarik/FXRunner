@@ -53,8 +53,6 @@ void Application::init( int &argc, char** argv, FXbool connect )
 FXint Application::task_exec( Task *task ) {
   FXint resh        = 0;
   FXString _cmd     = "";  // Complete command for launch
-  //FXString _term    = "";  // A terminal emulator command (if anny)
-  //FXString _paccess = "";  // A sudo command for running privilege command
 
   // Prikaz, parametry, neblokujici spusteni
   if( !task->is_empty( ) ) {
@@ -76,8 +74,6 @@ FXint Application::task_exec( Task *task ) {
 
   return resh;
 }
-
-//int Application::task_exec( ) { return task_exec( a_history->at( ) ); }
 
 void Application::task_write( Task *cmd, const FXString &pth )
 {
@@ -118,17 +114,14 @@ void Application::load( )
 
   // Storages
   m_history_store.set_filename( a_cfg->cache_dir + "/" +  getAppName( ) + "/History" );
-  DEBUG_OUT( "Store " << m_history_store.get_filename( ) << " ready state: " << ( m_history_store.ready( ) ? "true" : "false" ) )
-  m_history_store >> *a_history;
+  history_load( );
   //if( a_cfg->hist_loadopt ) { a_history->handle( this, FXSEL( SEL_UPDATE, ID_CLEANING), nullptr ); }
 }
 
 void Application::save( )
 {
   // Storages
-  DEBUG_OUT( "Store " << m_history_store.get_filename( ) << " ready state: " << ( m_history_store.ready( ) ? "true" : "false" ) )
-  m_history_store << *a_history;
-
+  history_save( );
   settings_save( );
 }
 
@@ -258,7 +251,7 @@ FXString Application::CheckTerminal( Task *t )
     }
 
     // Kompletni retezec prikazu emul. term.
-    resh += a_cfg->term_run + " " + supplement;
+    resh += a_cfg->term_run /*+ " " + supplement*/;
   }
 
   return resh;

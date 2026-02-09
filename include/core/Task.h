@@ -50,7 +50,7 @@ public:
   FXbool operator != ( const Task &other ) const { return !( *this == other ); }
   FXbool operator != ( const FXString &cmd ) const { return !( *this == cmd ); }
 
-/* access methods */
+  /* access methods */
   FXbool is_empty( ) const { return m_cmd.empty( ); }
   FXString get_cmd( ) const { return m_cmd; }
   void set_cmd( const FXString &cmd ) { this->m_cmd = cmd; }
@@ -85,13 +85,9 @@ public:
     store << m_modes;
     DEBUG_OUT( "Saving task data from the data store: " << this->m_cmd.text( ) )
   }
-
-
 protected:
 
 };
-
-
 
 #endif /* FXRUNNER_TASK_H */
 /*** END ****************************************************************/

@@ -98,12 +98,7 @@ void History::Dump( )
       std::cout << i << ". ";
 
       Task *task = m_buffer.at( i );
-      if( task ) {
-        std::cout << task->get_cmd( ) << "; ";
-        std::cout << task->get_wdir( ) << "; ";
-        std::cout << task->prop->suaccess   << "; ";
-        std::cout << task->prop->term;
-      }
+      if( task ) { task->dump( ); }
       else { std::cout << "- This entry is EMPTY! -"; }
 
       std::cout << std::endl;     

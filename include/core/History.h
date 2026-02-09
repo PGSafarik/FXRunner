@@ -70,6 +70,7 @@ public :
       m_buffer.insert( static_cast<FXint>( m_buffer.no( ) ), task, false );
     } // FIXME HISTOR_003: else -> handle state
   }
+
   template <typename STREAMER> void save_data( STREAMER &pipe ) {
     if( pipe.get_state( ) == 0 ) {
       FXint index = pipe.get_index( );

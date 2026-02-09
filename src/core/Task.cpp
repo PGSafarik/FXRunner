@@ -26,9 +26,7 @@ Task::Task( const FXString &cmd_str )
 }
 
 Task::~Task( )
-{ 
-  delete prop;
-}
+{ }
 
 void Task::dump( )
 {
