@@ -37,11 +37,10 @@ FXDECLARE( Task )
   FXString prm;     // Params (deprecated?)
   FXuint m_modes;   // Properties bitmap
 
-  FXObject   *m_tgt;  // A notify target object
-  FXSelector  m_msg;  // Notify msg id
+  FXRunnable *m_notify;
 
 public:
-  explicit Task( const FXString &cmd_str = FXString::null );
+  explicit Task( const FXString &cmd_str, FXRunnable *notifier );
   ~Task( ) override;
 
   FXbool operator == ( const Task &other ) const { return m_cmd == other.m_cmd && prm == other.prm; }
@@ -55,10 +54,10 @@ public:
   FXString get_cmd( ) const { return m_cmd; }
   void set_cmd( const FXString &cmd ) { this->m_cmd = cmd; }
   FXString get_wdir( ) const { return ( !m_wpth.empty( ) ? m_wpth : FXSystem::getHomeDirectory( ) ); }
-  void set_wdir( const FXString &wd ) { if ( m_wpth != wd ) { m_wpth = wd; } }
+  void set_wdir( const FXString &wd ) { if ( m_wpth != wd ) { m_wpth = wd; m_notify->run( ); } }
 
-  void   set_property( FXuint prop )   { m_modes |= ( 1 << prop ); }
-  void   unset_property( FXuint prop ) { m_modes &= ~( 1 << prop ); }
+  void   set_property( FXuint prop )   { if( !check_property( prop ) ) { m_modes |= ( 1 << prop ); m_notify->run( ); } }
+  void   unset_property( FXuint prop ) { if( check_property( prop ) ) {  m_modes &= ~( 1 << prop ); m_notify->run( ); } }
   FXbool check_property( FXuint prop ) const { return ( m_modes & ( 1 << prop ) ) != 0; }
   void   reset_properties( ) { m_modes = 0; }
   void   switch_property( FXuint prop, FXbool state = true ) { state ? set_property( prop ) : unset_property( prop ); }

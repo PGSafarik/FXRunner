@@ -17,11 +17,12 @@
 #include "core/Task.h"
 FXIMPLEMENT( Task, FXObject, NULL, 0 )
 
-Task::Task( const FXString &cmd_str )
+Task::Task( const FXString &cmd_str, FXRunnable *notifier )
 {
   m_cmd        = cmd_str;
   prm          = FXString::null;
   m_wpth       = FXString::null;
+  m_notify     = notifier;
   reset_properties( );
 }
 

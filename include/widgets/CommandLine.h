@@ -51,7 +51,7 @@ public :
     if( size < 0 ) {
       //cmd_list.clear( );
       for( FXint i = 0; i != size; i++ ) {
-        Task *cmd = new Task;
+        Task *cmd = new Task(FXString::null, NULL );
         cmd->load_data( store );   // alt: store >> ( *cmd );
         //cmd_list.append( cmd );
       }

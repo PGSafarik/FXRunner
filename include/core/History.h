@@ -67,7 +67,7 @@ public :
     if( pipe.get_state( ) == 0 ) {
       if( pipe.get_index( ) == 0 ) { clear( ); }
 
-      Task *task = new Task;
+      Task *task = new Task( FXString::null, m_tasknotifier );
       task->load_data( pipe );
       m_buffer.insert( static_cast<FXint>( m_buffer.no( ) ), task, false );
     } // FIXME HISTOR_003: else -> handle state

@@ -133,11 +133,12 @@ FXString HistoryView::TaskToString( Task *task )
 
 Task* HistoryView::TaskFromString( const FXString &str, Task *task )
 {
+  //?
   Task *t = nullptr;
   FXString segment;
 
   if( !str.empty( ) ) {
-    t = ( task ? task : new Task );
+    t = ( task ? task : new Task( FXString::null, NULL ) );
     for( FXint pos = 0; pos != 5; pos++ ) {
       segment = str.section( "\t", 0 );
       switch( pos ) {

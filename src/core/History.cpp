@@ -24,7 +24,9 @@ FXIMPLEMENT( History, FXObject, HISTMAP, ARRAYNUMBER( HISTMAP ) )
 /*************************************************************************************************/
 History::History( FXuint opts, FXObject* target, FXSelector notify )
        : m_tgt( target ), m_sel( notify ), m_opts( opts )
-{ }
+{
+  m_tasknotifier = new ChangeNotifier( this, TASK_CHANGE );
+}
 
 /**************************************************************************************************/
 FXbool History::current( FXint pos, FXbool notify )
@@ -56,7 +58,7 @@ FXint History::find( const FXString &cmd )
 FXbool History::add( const FXString &cmd_str, FXbool notify )
 {
   if( !cmd_str.empty( ) ) {
-    Task *task = new Task( cmd_str );
+    Task *task = new Task( cmd_str, m_tasknotifier );
     if( m_buffer.insert( 0, task ) ) {
       if ( notify ) { Notify( SEL_INSERTED ); }
       return true;
