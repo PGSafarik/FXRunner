@@ -37,6 +37,7 @@ public :
   using FXArray<Task*>::no;
   using FXArray<Task*>::at;
   FXbool is_changed( ) const  { return m_change; }
+  void   set_change( FXbool ch = true ) { m_change = ch; }
 
   /* Operations */
   Task*  insert( FXint pos, Task *entry, FXbool change = true );            // Insert item to specific position in list

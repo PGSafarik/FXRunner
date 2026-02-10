@@ -17,7 +17,7 @@
 
 /*************************************************************************
 * CommandLine.h                                                          *
-*                                                                        *
+* ERASE - DEPRACATED                                                     *
 * Widget pro zadavani prikazu a vyber z historie                         *
 * Copyright (c) 23/11/2015 D.A.Tiger <drakarax@seznam.cz>                *
 *************************************************************************/
@@ -49,7 +49,7 @@ public :
     store >> size;
 
     if( size < 0 ) {
-      cmd_list.clear( );
+      //cmd_list.clear( );
       for( FXint i = 0; i != size; i++ ) {
         Task *cmd = new Task;
         cmd->load_data( store );   // alt: store >> ( *cmd );

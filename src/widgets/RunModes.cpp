@@ -116,6 +116,7 @@ long RunModes::onCmd_Mode(FXObject *tgt, FXSelector sel, void *data)
       Task *task = ( data ? static_cast<Task*>( data ) : m_app->get_History( )->at( ) );
 
       if( task && m_change ) {
+        DEBUG_OUT( "Set Task modes and properties" )
         task->set_wdir( m_dir_text->getText( ) );
         task->switch_property( TASK_MODE::PRIVILAGE, m_su_check->getCheck( ) );
         task->switch_property( TASK_MODE::BLOCKED, m_nblock_check->getCheck( ) );

@@ -24,9 +24,9 @@
 #include "defs.h"
 
 enum TASK_MODE {
-  PRIVILAGE = 0,  // Privilage access mode flag
-  BLOCKED,          // Blocked mode
-  TERMINAL,       // Run in termonal emulator
+  PRIVILAGE = 0,  // Privilege access mode flag
+  BLOCKED,        // Blocked mode
+  TERMINAL,       // Run in the terminal emulator
   UNCLOSED,       // Try to prevent automatic termination of the terminal when the command is finished running.
 };
 
@@ -34,7 +34,7 @@ class Task : public FXObject {
 FXDECLARE( Task )
   FXString m_cmd;   // Command
   FXString m_wpth;  // Work dir
-  FXString prm;     // Params (depracated?)
+  FXString prm;     // Params (deprecated?)
   FXuint m_modes;   // Properties bitmap
 
   FXObject   *m_tgt;  // A notify target object
@@ -74,7 +74,6 @@ public:
     store >> m_modes;
 
     DEBUG_OUT( "Load task data from the data store: " << this->m_cmd.text( ) )
-    dump( );
   }
 
   template<class STREAM> void save_data( STREAM &store )
@@ -86,7 +85,7 @@ public:
     DEBUG_OUT( "Saving task data from the data store: " << this->m_cmd.text( ) )
   }
 protected:
-
+  Task( ) = default;
 };
 
 #endif /* FXRUNNER_TASK_H */

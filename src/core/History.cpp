@@ -107,6 +107,14 @@ void History::Dump( )
   else {  std::cout << "  - History is empty -  " << std::endl; }
   std::cout << "--- End History object dump ---" << std::endl;
 }
+/**************************************************************************************************/
+long History::OnCmd_Task(FXObject *tgt, FXSelector sel, void *data)
+{
+  m_buffer.set_change( true );
+  m_tasknotifier->disable( );
+  DEBUG_OUT( "Task notification disabled" )
+  return 1;
+}
 
 /**************************************************************************************************/
 long History::Notify( FXuint type, void *data )

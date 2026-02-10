@@ -78,13 +78,25 @@ public :
         Task *task = m_buffer.at( index );
         if( task ) { task->save_data( pipe ); }
       }
-      else { pipe.set_state( 1 ); }
+      else {
+        pipe.set_state( 1 );
+        m_buffer.set_change( false );
+        m_tasknotifier->enable( );
+        DEBUG_OUT( "Task notification enabled" )
+      }
     } // FIXME HISTOR_003: else -> handle stating
   }
 
   /* Debug & tests */
   void Dump( );                                           // Dumping actual history state on std::cout
-  
+
+  /* Messages & handlers */
+  enum {
+    TASK_CHANGE = 1,
+    ID_LAST
+  };
+  long OnCmd_Task( FXObject *tgt, FXSelector sel, void *data );
+
 protected :
   long Notify( FXuint type = 0, void *data = nullptr );
 };

@@ -28,8 +28,8 @@ FXDECLARE( RunModes )
   FXObject      *m_target;
   FXSelector    m_message;
 
-  FXButton      *m_file_btn;
-  FXButton      *m_dir_btn;
+  //FXButton      *m_file_btn;
+  //FXButton      *m_dir_btn;
   FXTextField   *m_dir_text;
 
   FXCheckButton *m_su_check;
