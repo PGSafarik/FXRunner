@@ -16,7 +16,9 @@
 *************************************************************************/
 #include "core/History.h"
 
-FXDEFMAP( History ) HISTMAP[ ] = { };
+FXDEFMAP( History ) HISTMAP[ ] = {
+  FXMAPFUNC(SEL_COMMAND, History::TASK_CHANGE, History::OnCmd_Task ),
+};
 FXIMPLEMENT( History, FXObject, HISTMAP, ARRAYNUMBER( HISTMAP ) )
 
 /*************************************************************************************************/

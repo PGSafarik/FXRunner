@@ -34,6 +34,8 @@ FXDECLARE( History )
   FXSelector  m_sel;      // A notification message ID
   FXuint      m_opts;     // List of the object options
 
+  ChangeNotifier *m_tasknotifier; //
+
   /* FIXME HITORY_001: Adding the settings flags for: Only read history, adding emty task, */
   /* FIXME HISTOR_002: Adding messages & handlers ;) */
 public :

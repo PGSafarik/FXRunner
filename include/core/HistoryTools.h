@@ -52,5 +52,30 @@ protected:
   void Truncate( );                                         // Monitors the buffer size based on the set limit and hysteresis.
   FXint CheckLimit( );                                      // Checking and maintaining the set number of records
 };
+/**************************************************************************************************/
+
+class ChangeNotifier : public FXRunnable
+{
+  FXObject   *m_tgt;   // Target object for notifification
+  FXSelector  m_msg;   // Notification message
+  FXbool      m_stop;  // If true, stop notifications
+
+public:
+  ChangeNotifier( FXObject *tgt, FXSelector msg ) : m_tgt( tgt ), m_msg( msg ), m_stop( false ) { }
+  ~ChangeNotifier( ) override = default;
+
+  void enable( ) { m_stop = false; }
+  void disable( ) { m_stop = true; }
+
+  FXint run( ) override {
+    if( !m_stop ) {
+      DEBUG_OUT( "Sending notification" )
+      m_tgt->handle( m_tgt, FXSEL( SEL_COMMAND, m_msg ), nullptr );
+      return 1;
+    }
+    DEBUG_OUT( "Called notification" )
+    return 0;
+  }
+};
 
 #endif //FXRUNNER_HISTORYBUFFER_H
