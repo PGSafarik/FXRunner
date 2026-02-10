@@ -52,7 +52,6 @@ public:
   /* MSG & handlers */
   enum {
     MODE_CHANGE = FXVerticalFrame::ID_LAST, // The user changed the launch mode parameters
-    MODE_SUDO_CHANGE,                       // The user changed the sudo parameters
     MODE_UPDATE,                            // Update run mode parameters from current task
     MODE_APPLY,                             // Set the current task execution mode parameters
     MODE_RESET,                             // Reset execution mode variables at default values

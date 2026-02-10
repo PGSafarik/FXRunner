@@ -87,7 +87,7 @@ void Application::task_write( Task *cmd, const FXString &pth )
   /// FIXME APP_001 : sudo!
   //if( cmd->su ) { command += a_cfg->su + " "; }
   command += cmd->get_cmd( );
-  //if( !cmd->prm.empty( ) ) { command += " " + cmd->prm; } // FIXME: Deprecated, stub
+  //if( !cmd->prm.empty( ) ) { command += " " + cmd->prm; } // FIXME APPLICATION_002: stub
 
   desk_file.writeStringEntry( desk_head, "name",     name.text( ) );
   desk_file.writeStringEntry( desk_head, "TryExec",  cmd->get_cmd( ).text( ) );
@@ -217,9 +217,14 @@ FXString Application::CheckPrivilege( Task *t )
 {
   FXString resh = "";
 
-  if( t->check_property( PRIVILAGE ) && a_cfg->sudo  ) {
-    resh = "sudo"; 
-    resh += ( a_cfg->askpass ? " -A " : " " );
+  if( !a_cfg->sudo ) { //FIXME APPLICATION_003: stub. Exception? Specific method?
+    FXMessageBox::error( this, MBOX_OK, "Privilege options error", "Privilege is not enabled on this application!" );
+  }
+  else {
+    if( t->check_property( PRIVILAGE ) ) {
+      resh = "sudo";
+      resh += ( a_cfg->askpass ? " -A " : " " );
+    }
   }
   
   return resh;
