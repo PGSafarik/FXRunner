@@ -34,22 +34,19 @@ RunModes::RunModes( FXComposite *p, FXObject *tgt, FXSelector sel, FXuint opts )
   m_change = false;
 
   FXIconsTheme *icons = m_app->get_iconstheme( );
-  FXint ic_size = 22;
+  FXint ic_size = 16;
 
   FXHorizontalFrame *path_fr = new FXHorizontalFrame( this, FRAME_NONE | LAYOUT_FILL_X );
   m_dir_text = new FXTextField( path_fr, 50, this, ID_WORKDIR, TEXTFIELD_NORMAL | LAYOUT_FILL );
-  new FXButton( path_fr, "\t\t Select workdir",   icons->get_icon( "directory", 16 ), this, ID_WORKDIR, BUTTON_NORMAL );
+  new FXButton( path_fr, "\t\t Select workdir",   icons->get_icon( "directory", ic_size ), this, ID_WORKDIR, BUTTON_NORMAL );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
 
   m_su_check = new FXCheckButton( this, "Privilege mode", this, MODE_CHANGE );
   m_nblock_check = new FXCheckButton( this, "Blocked mode", this, MODE_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
-
   m_rterm_check = new FXCheckButton( this, "Run command with terminal", this, MODE_CHANGE );
   m_ntexit_check = new FXCheckButton( this, "Not closed terminal with  ", this, MODE_CHANGE );
   new FXHorizontalSeparator( this, SEPARATOR_GROOVE | LAYOUT_FILL_X );
-
-  m_rexit_check = new FXCheckButton( this, "Do not terminate after running the command", this, MODE_CHANGE );
 }
 
 RunModes::~RunModes( )
@@ -153,7 +150,6 @@ void RunModes::Reset()
   m_dir_text->setText( FXSystem::getHomeDirectory( ) );
   m_su_check->setCheck( false );
   m_nblock_check->setCheck( false );
-  m_rexit_check->setCheck( false );
   m_rterm_check->setCheck( false );
   m_ntexit_check->setCheck( false );
 

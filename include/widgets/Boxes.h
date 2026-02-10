@@ -50,12 +50,12 @@ protected :
 /*** Run Button with menu *************************************************************************/
 class RunBox : public FXHeaderBox {
 FXDECLARE( RunBox )
-  Application  *m_app;
-  FXButton     *m_action_btn;
-  FXMenuButton *m_menu_btn;
-  FXPopup      *m_popup;
-  RunModes     *m_modes;
-
+  Application   *m_app;
+  FXButton      *m_action_btn;
+  FXMenuButton  *m_menu_btn;
+  FXPopup       *m_popup;
+  RunModes      *m_modes;
+  FXCheckButton *m_rexit_check;
 public:
   explicit RunBox( FXWindowHeader *p );
   virtual ~RunBox( ) { }
